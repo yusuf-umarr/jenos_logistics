@@ -5,38 +5,34 @@ import 'package:jenos/scr/core/util.dart';
 import 'package:jenos/scr/custom_widgets/appbbutton.dart';
 import 'package:jenos/scr/custom_widgets/navigation.dart';
 import 'package:jenos/scr/features/auth/controller/password_visibility/password_notifier.dart';
+import 'package:jenos/scr/features/auth/controller/signin/signin_notifier.dart';
 import 'package:jenos/scr/features/auth/controller/signup/signup_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
+import 'package:jenos/scr/features/auth/pages/signup_page.dart';
 
-class SignupPage extends ConsumerStatefulWidget {
-  const SignupPage({super.key});
+class SignInPage extends ConsumerStatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  ConsumerState<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignupPageState extends ConsumerState<SignupPage> {
-  final TextEditingController _nameController = TextEditingController();
+class _SignInPageState extends ConsumerState<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void dispose() {
-    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _phoneController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final signupState = ref.read(signupNotifier.notifier);
+    final signinState = ref.read(signinNotifier.notifier);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Stack(
@@ -51,10 +47,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: size.height * 0.1,
+                  height: size.height * 0.25,
                 ),
                 Text(
-                  "Start your",
+                  "Resume your",
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: 30,
                       ),
@@ -80,52 +76,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   borderRadius: 5,
                   borderColor: AppColors.grey,
                   bgColor: Colors.white,
-                  externalText: "Full name",
-                  hint: "example: john",
-                  hintColor: Colors.grey,
-                  externalTextColor: Colors.black,
-                  prefixIconColor: AppColors.primaryColor,
-                  // controller: _auth.firstName,
-                  onChanged: (val) {
-                    setState(() {
-                      // _auth.firstName.text = val;
-                    });
-                  },
-                  // onSuffixIconClick: () {},
-                ),
-                SizedBox(
-                  height: size.height * 0.025,
-                ),
-                Util.inputField2(
-                  isExternalLabel: true,
-                  useExternalText: true,
-                  isPrefix: false,
-                  isCompulsory: false,
-                  fontSizeExternal: 14,
-                  borderRadius: 5,
-                  borderColor: AppColors.grey,
-                  bgColor: Colors.white,
-                  externalText: "Phone number",
-                  hint: "example: 08012345678",
-                  hintColor: Colors.grey,
-                  externalTextColor: Colors.black,
-                  prefixIconColor: AppColors.primaryColor,
-                  // controller: _auth.firstName,
-                ),
-                SizedBox(
-                  height: size.height * 0.025,
-                ),
-                Util.inputField2(
-                  isExternalLabel: true,
-                  useExternalText: true,
-                  isPrefix: false,
-                  isCompulsory: false,
-                  fontSizeExternal: 14,
-                  borderRadius: 5,
-                  borderColor: AppColors.grey,
-                  bgColor: Colors.white,
-                  externalText: "Email address",
-                  hint: "example: john@gmail.com",
+                  externalText: "Email",
+                  hint: "john@gmail.com",
                   hintColor: Colors.grey,
                   externalTextColor: Colors.black,
                   prefixIconColor: AppColors.primaryColor,
@@ -152,52 +104,35 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     hintColor: Colors.grey,
                     prefixIconColor: AppColors.primaryColor,
                     // controller: _auth.password,
-                    validator: signupState.validatePassword,
+                    validator: signinState.validatePassword,
                     suffixWidget: IconButton(
                       onPressed: () => ref
                           .read(passwordNotifier.notifier)
-                          .togglePasswordVisibility(), 
+                          .togglePasswordVisibility(), //toggleConfirmPasswordVisibility
                       icon: Icon(
                         isVisibility ? Icons.visibility : Icons.visibility_off,
                       ),
                     ),
                     isIcon: true,
+                    // onSuffixIconClick: () {},
                   );
                 }),
                 SizedBox(
                   height: size.height * 0.025,
                 ),
-                Consumer(builder: (context, ref, _) {
-                  final isVisible =
-                      ref.watch(passwordNotifier).confirmVisibility;
-                  return Util.inputField2(
-                    isExternalLabel: true,
-                    isPassword: isVisible,
-                    useExternalText: true,
-                    isPrefix: false,
-                    isCompulsory: false,
-                    fontSizeExternal: 14,
-                    borderRadius: 5,
-                    externalTextColor: Colors.black,
-                    borderColor: AppColors.grey,
-                    bgColor: Colors.white,
-                    externalText: "Retype password",
-                    hint: "******",
-                    hintColor: Colors.grey,
-                    prefixIconColor: AppColors.primaryColor,
-                    // controller: _auth.password,
-                    validator: signupState.validatePassword,
-                    suffixWidget: IconButton(
-                      onPressed: () => ref
-                          .read(passwordNotifier.notifier)
-                          .toggleConfirmPasswordVisibility(),
-                      icon: Icon(
-                        isVisible ? Icons.visibility : Icons.visibility_off,
-                      ),
-                    ),
-                    isIcon: true,
-                  );
-                }),
+                GestureDetector(
+                  onTap: () {
+                    navigate(context, const SignupPage());
+                  },
+                  child: Text(
+                    "Forgot password",
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: AppColors.primaryColor,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 SizedBox(
                   height: size.height * 0.025,
                 ),
@@ -216,7 +151,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already have an account?",
+                      "Don’t have any account?",
                       style: Theme.of(context).textTheme.labelMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -225,10 +160,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        navigate(context, const SignInPage());
+                        navigate(context, const SignupPage());
                       },
                       child: Text(
-                        "Login here",
+                        "Register here",
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium!

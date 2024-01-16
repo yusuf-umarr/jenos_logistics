@@ -1,5 +1,6 @@
 // import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingWidget extends StatefulWidget {
   final String onboardingImage;
@@ -30,9 +31,10 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
               const SizedBox(
                 height: 50,
               ),
-              Image.asset(
-                widget.onboardingImage, width: 296, height: 220,
-                //fit: BoxFit.cover,
+              SvgPicture.asset(
+                widget.onboardingImage,
+                width: 296,
+                height: 220,
               ),
               const SizedBox(
                 height: 16,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:svg_flutter/svg.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
@@ -12,7 +12,7 @@ class AppButton extends StatelessWidget {
   final double? height;
   final double? fontSize;
   final bool? hasImage;
-  final bool? isIcon;
+  final bool isIcon;
   final IconData? icon;
   final String? imagePath;
   final BorderRadius? borderRadius;
@@ -43,39 +43,31 @@ class AppButton extends StatelessWidget {
       height: height,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: borderRadius ?? BorderRadius.circular(25),
+        borderRadius: borderRadius ?? BorderRadius.circular(15),
         side: BorderSide(color: borderColor ?? Colors.transparent),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8),
-        child: hasImage == true
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  isIcon == true
-                      ? Icon(
-                          icon,
-                          size: 20,
-                          color: Colors.white,
-                        )
-                      : SvgPicture.asset(
-                          imagePath ?? "",
-                          width: 20,
-                          height: 20,
-                        ),
-                  const SizedBox(width: 10),
-                  Text(
-                    text,
-                    style: GoogleFonts.poppins(
-                        color: textColor, fontSize: fontSize ?? 16),
-                  ),
-                ],
-              )
-            : Text(
-                text,
-                style: GoogleFonts.poppins(
-                    color: textColor, fontSize: fontSize ?? 16),
-              ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              text,
+              style: GoogleFonts.poppins(
+                  color: textColor, fontSize: fontSize ?? 15),
+            ),
+            isIcon
+                ? const Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                    size: 18,
+                  )
+                : const SizedBox(width: 10),
+          ],
+        ),
       ),
     );
   }

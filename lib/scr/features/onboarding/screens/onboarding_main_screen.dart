@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/custom_widgets/navigation.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
+import 'package:jenos/scr/features/onboarding/screens/get_started_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/onboarding_widget.dart';
@@ -42,7 +44,9 @@ class _OnboardingMainScreenState extends State<OnboardingMainScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      navigate(context, const GetStartedScreen());
+                    },
                     child: Text(
                       "Skip",
                       textAlign: TextAlign.end,
@@ -93,7 +97,7 @@ class _OnboardingMainScreenState extends State<OnboardingMainScreen> {
                       ? Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SignupPage()))
+                              builder: (context) => const GetStartedScreen()))
                       : controller.nextPage(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeInOut,
