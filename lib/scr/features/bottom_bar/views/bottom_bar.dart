@@ -7,9 +7,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/features/auth/controller/user/user_data_notifier.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
+import 'package:jenos/scr/features/home/view/home_page.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   static const String routeName = '/navbar';
@@ -22,30 +25,46 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   void initState() {
     getData();
-    // initOneSIgnal();
     super.initState();
   }
 
   void getData() async {
     if (mounted) {
       await ref.read(userDataNotifier.notifier).getUserData();
-
-   
     }
   }
 
-
-
   List<Widget> pages = [
+    const HomePage(),
     Container(),
     Container(),
-     Container(),
-     Container(),
+    Container(),
   ];
 
+  List iconList = [
+    {
+      "id": 0,
+      "name": "Home",
+      "icon": Assets.home,
+    },
+    {
+      "id": 1,
+      "name": "Request",
+      "icon": Assets.requests,
+    },
+    {
+      "id": 2,
+      "name": "Trips",
+      "icon": Assets.trips,
+    },
+    {
+      "id": 3,
+      "name": "Wallet",
+      "icon": Assets.wallet,
+    },
+  ];
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
         onWillPop: () async {
           // DateTime now = DateTime.now();
@@ -60,56 +79,35 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
           return false;
         },
-        child:
-            // debugPrint("val.isErrorToken:${val.isErrorToken}");
-            Scaffold(
+        child: Scaffold(
           body: pages[ref.watch(navBarController).currentIndex],
           bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: ref.watch(navBarController).currentIndex,
-            selectedItemColor: AppColors.primaryColor,
-            // selectedItemColor: primaryColor,
-            unselectedItemColor: Colors.black54,
-            backgroundColor: Colors.white,
-            showUnselectedLabels: true,
-            selectedFontSize: 10.0,
-            unselectedFontSize: 10.0,
-            elevation: 5,
-            onTap: (index) {
-              ref.read(navBarController.notifier).setNavbarIndex(index);
-              // provider.setNavbarIndex(index);
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                  size: 26,
-                ),
-                label: 'Dashboard',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.forum_outlined,
-                  size: 26,
-                ),
-                label: 'Forum',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.timer_rounded,
-                  size: 26,
-                ),
-                label: 'Notification',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                  size: 26,
-                ),
-                label: 'Profile',
-              ),
-            ],
-          ),
+              type: BottomNavigationBarType.fixed,
+              currentIndex: ref.watch(navBarController).currentIndex,
+              selectedItemColor: AppColors.primaryColor,
+              unselectedItemColor: Colors.black54,
+              backgroundColor: Colors.white,
+              showUnselectedLabels: true,
+              selectedFontSize: 10.0,
+              unselectedFontSize: 10.0,
+              elevation: 5,
+              onTap: (index) {
+                ref.read(navBarController.notifier).setNavbarIndex(index);
+              },
+              items: iconList.map<BottomNavigationBarItem>((e) {
+                return BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    e['icon'],
+                    colorFilter: ColorFilter.mode(
+                      ref.watch(navBarController).currentIndex == e["id"]
+                          ? AppColors.primaryColor
+                          : Colors.black54,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  label: e['name'],
+                );
+              }).toList()),
         ));
   }
 

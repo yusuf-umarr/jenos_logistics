@@ -156,7 +156,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     suffixWidget: IconButton(
                       onPressed: () => ref
                           .read(passwordNotifier.notifier)
-                          .togglePasswordVisibility(), 
+                          .togglePasswordVisibility(),
                       icon: Icon(
                         isVisibility ? Icons.visibility : Icons.visibility_off,
                       ),
@@ -205,7 +205,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   isIcon: true,
                   height: 55,
                   text: 'Register',
-                  onPressed: () async {},
+                  onPressed: () async {
+                    navigate(context, const SignInPage());
+                  },
                   color: AppColors.primaryColor,
                   textColor: Colors.white,
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/theme.dart';
+import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 import 'package:jenos/scr/features/onboarding/screens/splash_screen.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Jenos',
       debugShowCheckedModeBanner:false,
       theme: AppTheme.lightTheme,
-      home: const SplashScreen(),
+      home:  BottomBar(),
     );
   }
 }

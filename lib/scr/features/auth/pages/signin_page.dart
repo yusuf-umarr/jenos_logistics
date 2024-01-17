@@ -10,6 +10,7 @@ import 'package:jenos/scr/features/auth/controller/signup/signup_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
+import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
   const SignInPage({super.key});
@@ -139,8 +140,10 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 AppButton(
                   isIcon: true,
                   height: 55,
-                  text: 'Register',
-                  onPressed: () async {},
+                  text: 'Login ',
+                  onPressed: () async {
+                    navigate(context, BottomBar());
+                  },
                   color: AppColors.primaryColor,
                   textColor: Colors.white,
                 ),
