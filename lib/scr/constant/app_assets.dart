@@ -21,4 +21,8 @@ class Assets {
       static const locationMarker = "assets/icons/location-marker.svg";
       static const tripIcon = "assets/icons/tripp.svg";
       static const creditCard = "assets/icons/credit-card.svg";
+      static const calendar = "assets/icons/calendar.svg";
+      static const clock = "assets/icons/clock.svg";
+      static const userIcon = "assets/icons/userIcon.svg";
+      static const arrowBack = "assets/icons/arrow_back.svg";
 }

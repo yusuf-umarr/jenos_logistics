@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
-import 'package:jenos/scr/custom_widgets/custom_header.dart';
-import 'package:jenos/scr/custom_widgets/home_header_widget.dart';
+import 'package:jenos/scr/common_widgets/custom_widget.dart';
+import 'package:jenos/scr/common_widgets/home_header_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,14 +63,12 @@ class _HomePageState extends State<HomePage> {
 
   bool isShowPop = true;
   int _current = 0;
-  final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
-    final List imageSliders = dataList;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: CustomHeader.customAppbar(context, "Dashboard"),
+      // backgroundColor: AppColors.background,
+      appBar: CustomWidget.customAppbar(context,title: "Dashboard"),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSize.defaultPadding,
@@ -80,13 +78,13 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             SizedBox(
-              height: size.height * 0.005,
+              height: size.height * 0.02,
             ),
             const HomeHeaderWidget(),
 
             // PopUp //////////////
             isShowPop
-                ? CustomHeader.homePopCard(context, size, () {
+                ? CustomWidget.homePopCard(context, size, () {
                     setState(() {
                       isShowPop = false;
                     });
@@ -102,7 +100,6 @@ class _HomePageState extends State<HomePage> {
               itemCount: dataList.length,
               itemBuilder:
                   (BuildContext context, int itemIndex, int pageViewIndex) {
-                print("itemIndex:$itemIndex");
                 final data = dataList[itemIndex];
                 return Stack(
                   children: [
@@ -119,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Container(
                       width: double.infinity,
-                      height: 155,
+                      height: 175,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.black26,
@@ -136,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                             .titleMedium!
                             .copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.scaffoldBackground),
+                                color: AppColors.white),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -164,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               options: CarouselOptions(
-                height: 155,
+                height: 175,
                 aspectRatio: 16 / 9,
                 viewportFraction: 1,
                 autoPlay: true,
@@ -194,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                 itemCount: assetsList.length,
                 itemBuilder: (context, index) {
                   final card = assetsList[index];
-                  return CustomHeader.homeTripCard(
+                  return CustomWidget.homeTripCard(
                     context,
                     card['name']!,
                     card['desc']!,
@@ -245,78 +242,7 @@ class _HomePageState extends State<HomePage> {
               height: size.height * 0.05,
             ),
 
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CustomHeader.imagAvatar(
-                        isBorder: false,
-                        image: "assets/images/pizza.png",
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Pizza-Hut",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.dark,
-                                  fontSize: 12,
-                                ),
-                          ),
-                          Text(
-                            "Today,7:10pm",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.greyColor,
-                                  fontSize: 10,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Completed",
-                        style:
-                            Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.dark,
-                                  fontSize: 12,
-                                ),
-                      ),
-                      Text(
-                        "15.12.2023",
-                        textAlign: TextAlign.end,
-                        style:
-                            Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.greyColor,
-                                  fontSize: 10,
-                                ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
+            CustomWidget.recentTripCard(context)
 
             //
           ],

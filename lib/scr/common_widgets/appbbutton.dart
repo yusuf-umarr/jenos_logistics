@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jenos/scr/constant/app_colors.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final Color color;
-  final Color textColor;
+  final Color? color;
+  final Color? textColor;
   final Color? borderColor;
   final double? width;
   final double? height;
@@ -20,8 +21,8 @@ class AppButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    required this.color,
-    required this.textColor,
+    this.color,
+    this.textColor,
     this.borderColor,
     this.width,
     this.icon,
@@ -37,10 +38,10 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return MaterialButton(
-      color: color,
+      color: color ?? AppColors.primaryColor,
       onPressed: onPressed,
       minWidth: size.width,
-      height: height,
+      height: height ?? 55,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius ?? BorderRadius.circular(15),
@@ -57,7 +58,8 @@ class AppButton extends StatelessWidget {
             Text(
               text,
               style: GoogleFonts.poppins(
-                  color: textColor, fontSize: fontSize ?? 15),
+                  color: textColor ?? AppColors.white,
+                  fontSize: fontSize ?? 15),
             ),
             isIcon
                 ? const Icon(

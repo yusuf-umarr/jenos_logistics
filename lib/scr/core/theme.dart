@@ -13,6 +13,7 @@ class AppTheme {
 
   static _themeData(ColorScheme colorScheme) => ThemeData(
         colorScheme: colorScheme,
+        scaffoldBackgroundColor: AppColors.scaffoldBackground,
         textTheme: GoogleFonts.poppinsTextTheme(
           _textTheme(colorScheme),
         ),
@@ -29,10 +30,8 @@ class AppTheme {
   static final ColorScheme _lightColorScheme =
       const ColorScheme.light().copyWith(
     primary: AppColors.primaryColor,
-    // secondary: AppColors.darkBlueGreen,
-    // secondaryVariant: AppColors.blueGreen,
     onBackground: AppColors.dark,
-    onSurface: AppColors.grey,
+    onSurface: AppColors.greyColor,
   );
 
   static TextTheme _textTheme(ColorScheme colorScheme) => TextTheme(
@@ -54,6 +53,9 @@ class AppTheme {
         bodyMedium: TextStyle(
           color: colorScheme.onBackground,
         ),
+        bodySmall: TextStyle(
+          color: colorScheme.onBackground,
+        ),
         labelLarge: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
@@ -65,10 +67,8 @@ class AppTheme {
           color: colorScheme.onBackground,
         ),
         labelSmall: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
+          fontSize: 13,
           color: colorScheme.onBackground,
         ),
-       
       );
 }

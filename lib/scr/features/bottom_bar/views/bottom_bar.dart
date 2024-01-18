@@ -13,6 +13,7 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/features/auth/controller/user/user_data_notifier.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/home/view/home_page.dart';
+import 'package:jenos/scr/features/request/view/request_page.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   static const String routeName = '/navbar';
@@ -36,7 +37,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   List<Widget> pages = [
     const HomePage(),
-    Container(),
+    const RequestPage(),
     Container(),
     Container(),
   ];

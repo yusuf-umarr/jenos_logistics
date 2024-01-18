@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
-import 'package:jenos/scr/custom_widgets/appbbutton.dart';
-import 'package:jenos/scr/custom_widgets/navigation.dart';
+import 'package:jenos/scr/common_widgets/appbbutton.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
 

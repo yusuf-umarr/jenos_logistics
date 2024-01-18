@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/core/util.dart';
-import 'package:jenos/scr/custom_widgets/appbbutton.dart';
-import 'package:jenos/scr/custom_widgets/navigation.dart';
+import 'package:jenos/scr/common_widgets/appbbutton.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/features/auth/controller/password_visibility/password_notifier.dart';
 import 'package:jenos/scr/features/auth/controller/signin/signin_notifier.dart';
 import 'package:jenos/scr/features/auth/controller/signup/signup_notifier.dart';
@@ -75,7 +75,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                   isCompulsory: false,
                   fontSizeExternal: 14,
                   borderRadius: 5,
-                  borderColor: AppColors.grey,
+                  borderColor: AppColors.greyColor,
                   bgColor: Colors.white,
                   externalText: "Email",
                   hint: "john@gmail.com",
@@ -98,7 +98,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                     fontSizeExternal: 14,
                     borderRadius: 5,
                     externalTextColor: Colors.black,
-                    borderColor: AppColors.grey,
+                    borderColor: AppColors.greyColor,
                     bgColor: Colors.white,
                     externalText: "Password",
                     hint: "******",
@@ -139,13 +139,12 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                 ),
                 AppButton(
                   isIcon: true,
-                  height: 55,
+               
                   text: 'Login ',
                   onPressed: () async {
                     navigate(context, BottomBar());
                   },
-                  color: AppColors.primaryColor,
-                  textColor: Colors.white,
+                
                 ),
                 SizedBox(
                   height: size.height * 0.04,

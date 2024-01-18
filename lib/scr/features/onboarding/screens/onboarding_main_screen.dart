@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
-import 'package:jenos/scr/custom_widgets/navigation.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
 import 'package:jenos/scr/features/onboarding/screens/get_started_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -83,7 +83,7 @@ class _OnboardingMainScreenState extends State<OnboardingMainScreen> {
                         radius: 8,
                         dotWidth: 8,
                         activeDotColor: AppColors.primaryColor,
-                        dotColor: AppColors.grey.withOpacity(0.3),
+                        dotColor: AppColors.greyColor.withOpacity(0.3),
                         paintStyle: PaintingStyle.fill)),
               ),
               const SizedBox(
@@ -112,7 +112,7 @@ class _OnboardingMainScreenState extends State<OnboardingMainScreen> {
                   ),
                   child: const Icon(
                     Icons.arrow_forward,
-                    color: AppColors.scaffoldBackground,
+                    color: AppColors.white,
                     size: 25,
                   ),
                 ),

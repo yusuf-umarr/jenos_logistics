@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
-import 'package:jenos/scr/custom_widgets/custom_header.dart';
+import 'package:jenos/scr/common_widgets/custom_widget.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   const HomeHeaderWidget({
@@ -15,7 +15,7 @@ class HomeHeaderWidget extends StatelessWidget {
       children: [
         Row(
           children: [
-            CustomHeader.imagAvatar(isBorder: true),
+            CustomWidget.imagAvatar(isBorder: true),
             const SizedBox(
               width: 20,
             ),
@@ -63,9 +63,9 @@ class HomeHeaderWidget extends StatelessWidget {
         ),
         Row(
           children: [
-            CustomHeader.headerCard(Assets.bell),
+            CustomWidget.headerCard(Assets.bell),
             const SizedBox(width: 10),
-            CustomHeader.headerCard(Assets.user),
+            CustomWidget.headerCard(Assets.user),
           ],
         ),
       ],

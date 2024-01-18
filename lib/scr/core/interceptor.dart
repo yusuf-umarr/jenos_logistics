@@ -11,7 +11,7 @@ class AppInterceptor extends Interceptor {
     String? token = await prefs.getString('token');
 
     if (token == null) {
-      prefs.setString('x-auth-token', '');
+      prefs.setString('token', '');
     }
 
     // options.queryParameters["apiKey"] = AuthStrings.apiKey;

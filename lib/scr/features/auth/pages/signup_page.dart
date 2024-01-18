@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/core/util.dart';
-import 'package:jenos/scr/custom_widgets/appbbutton.dart';
-import 'package:jenos/scr/custom_widgets/navigation.dart';
+import 'package:jenos/scr/common_widgets/appbbutton.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/features/auth/controller/password_visibility/password_notifier.dart';
 import 'package:jenos/scr/features/auth/controller/signup/signup_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,7 +78,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   isCompulsory: false,
                   fontSizeExternal: 14,
                   borderRadius: 5,
-                  borderColor: AppColors.grey,
+                  borderColor: AppColors.greyColor,
                   bgColor: Colors.white,
                   externalText: "Full name",
                   hint: "example: john",
@@ -103,7 +103,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   isCompulsory: false,
                   fontSizeExternal: 14,
                   borderRadius: 5,
-                  borderColor: AppColors.grey,
+                  borderColor: AppColors.greyColor,
                   bgColor: Colors.white,
                   externalText: "Phone number",
                   hint: "example: 08012345678",
@@ -122,7 +122,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   isCompulsory: false,
                   fontSizeExternal: 14,
                   borderRadius: 5,
-                  borderColor: AppColors.grey,
+                  borderColor: AppColors.greyColor,
                   bgColor: Colors.white,
                   externalText: "Email address",
                   hint: "example: john@gmail.com",
@@ -145,7 +145,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     fontSizeExternal: 14,
                     borderRadius: 5,
                     externalTextColor: Colors.black,
-                    borderColor: AppColors.grey,
+                    borderColor: AppColors.greyColor,
                     bgColor: Colors.white,
                     externalText: "Password",
                     hint: "******",
@@ -179,7 +179,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     fontSizeExternal: 14,
                     borderRadius: 5,
                     externalTextColor: Colors.black,
-                    borderColor: AppColors.grey,
+                    borderColor: AppColors.greyColor,
                     bgColor: Colors.white,
                     externalText: "Retype password",
                     hint: "******",
@@ -203,13 +203,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                 ),
                 AppButton(
                   isIcon: true,
-                  height: 55,
                   text: 'Register',
                   onPressed: () async {
                     navigate(context, const SignInPage());
                   },
-                  color: AppColors.primaryColor,
-                  textColor: Colors.white,
                 ),
                 SizedBox(
                   height: size.height * 0.04,
