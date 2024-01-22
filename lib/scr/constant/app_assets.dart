@@ -25,4 +25,5 @@ class Assets {
       static const clock = "assets/icons/clock.svg";
       static const userIcon = "assets/icons/userIcon.svg";
       static const arrowBack = "assets/icons/arrow_back.svg";
+      static const tripLine = "assets/icons/trip_line.svg";
 }

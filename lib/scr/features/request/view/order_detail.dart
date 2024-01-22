@@ -113,7 +113,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 ),
               ),
               const SizedBox(
-                width: AppSize.defaultPadding * 2,
+                width: AppSize.defaultPadding * 3,
               ),
               Expanded(
                 child: SizedBox(

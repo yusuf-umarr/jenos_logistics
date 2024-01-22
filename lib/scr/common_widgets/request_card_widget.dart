@@ -108,7 +108,7 @@ class RequestOrderCardWIdget extends StatelessWidget {
           decoration: BoxDecoration(
               color: bgColor,
               border: Border.all(color: AppColors.primaryColor),
-              borderRadius: BorderRadius.circular(15)),
+              borderRadius: BorderRadius.circular(10)),
           child: Text(
             title,
             textAlign: TextAlign.center,

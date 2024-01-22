@@ -37,12 +37,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^2.0.7
   smooth_page_indicator: ^1.1.0
-  google_fonts: ^6.1.0
+  google_fonts: 
   flutter_riverpod:
   shared_preferences:
   dio: ^5.0.0
   carousel_slider: ^4.2.1
   dotted_dashed_line: ^0.0.3
+  flutter_polyline_points: ^1.0.0
+  google_maps_flutter: ^2.1.7
+  location: ^4.4.0
 
 
 dev_dependencies:
@@ -55,6 +58,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
