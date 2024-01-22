@@ -1,8 +1,8 @@
 /// This class defines the PasswordNotifier
 /// @author  Yusuf umar
 /// @version 1.0
-/// @since   2023-07-19 
-/// 
+/// @since   2023-12-19
+///
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/features/auth/controller/password_visibility/password_state.dart';
 
@@ -16,6 +16,7 @@ class PasswordNotifier extends StateNotifier<PasswordState> {
       visibility: !state.visibility,
     );
   }
+
   void toggleConfirmPasswordVisibility() {
     state = state.copyWith(
       confirmVisibility: !state.confirmVisibility,

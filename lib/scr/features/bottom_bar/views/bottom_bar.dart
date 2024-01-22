@@ -2,7 +2,7 @@
 /// This class defines the BottomBar
 /// @author  Yusuf umar
 /// @version 1.0
-/// @since   2023-07-19
+/// @since   2023-12-19
 ///
 
 import 'package:flutter/material.dart';
@@ -15,6 +15,7 @@ import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.d
 import 'package:jenos/scr/features/home/view/home_page.dart';
 import 'package:jenos/scr/features/request/view/request_page.dart';
 import 'package:jenos/scr/features/trip/view/trip_page.dart';
+import 'package:jenos/scr/features/wallet/view/wallat_page.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   static const String routeName = '/navbar';
@@ -39,8 +40,8 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   List<Widget> pages = [
     const HomePage(),
     const RequestPage(),
-   const TripsPage(),
-    Container(),
+    const TripsPage(),
+    const WalletPage(),
   ];
 
   List iconList = [

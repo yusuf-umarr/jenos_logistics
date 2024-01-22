@@ -1,9 +1,8 @@
 /// This class defines the AuthRepository
 /// @author  Yusuf umar
 /// @version 1.0
-/// @since   2023-07-19
+/// @since   2023-12-19
 ///
-
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +24,6 @@ abstract class AuthRepository {
 
   /// Get the user data.
   Future<ApiResponse<UserModel>> getUserData();
-
 }
 
 /// Implementation of the authentication repository.
@@ -79,8 +77,6 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-
-
   @override
   Future<ApiResponse<UserModel>> getUserData() async {
     try {
@@ -98,10 +94,6 @@ class AuthRepositoryImpl implements AuthRepository {
       return AppException.handleError(e);
     }
   }
-
-
-
-
 }
 
 final authRepository = Provider<AuthRepository>(

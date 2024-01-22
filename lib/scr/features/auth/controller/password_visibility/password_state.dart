@@ -1,9 +1,9 @@
 /// This class defines the PasswordNotifier
 /// @author  Yusuf umar
 /// @version 1.0
-/// @since   2023-07-19 
-/// 
-/// 
+/// @since   2023-12-19
+///
+///
 
 /// Represents the state of the password visibility.
 class PasswordState {
@@ -18,7 +18,7 @@ class PasswordState {
 
   /// Factory method to create the initial password state.
   factory PasswordState.initial() {
-    return PasswordState(visibility: true, confirmVisibility:true);
+    return PasswordState(visibility: true, confirmVisibility: true);
   }
 
   /// Method to create a new PasswordState by copying the current state and applying changes to specified properties.
@@ -32,4 +32,3 @@ class PasswordState {
     );
   }
 }
-

@@ -91,7 +91,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       // _auth.firstName.text = val;
                     });
                   },
-                  // onSuffixIconClick: () {},
                 ),
                 SizedBox(
                   height: size.height * 0.025,

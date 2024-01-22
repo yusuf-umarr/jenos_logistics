@@ -1,9 +1,8 @@
 /// This class defines the UserDataNotifier
 /// @author  Yusuf umar
 /// @version 1.0
-/// @since   2023-07-19 
-/// 
-
+/// @since   2023-12-19
+///
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/enums.dart';
@@ -41,10 +40,6 @@ class UserDataNotifier extends StateNotifier<UserDataState> {
       );
     }
   }
-
-
-
- 
 }
 
 /// Provider for the UserDataNotifier class.

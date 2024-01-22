@@ -51,7 +51,7 @@ class Util {
     Widget? suffixWidget,
     Color hintColor = const Color.fromARGB(86, 144, 142, 142),
     FontWeight hintFont = FontWeight.w400,
-    double hintFontSize = 16,
+    double hintFontSize = 13,
     dynamic validator,
     void Function(dynamic)? dropDownOnChanged,
     Function()? onClick,

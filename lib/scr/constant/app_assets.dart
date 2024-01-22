@@ -26,4 +26,9 @@ class Assets {
       static const userIcon = "assets/icons/userIcon.svg";
       static const arrowBack = "assets/icons/arrow_back.svg";
       static const tripLine = "assets/icons/trip_line.svg";
+
+
+      static const walletIconRight = "assets/icons/walletIconRight.png";
+      static const walletIconLeft = "assets/icons/walletIconLeft.png";
+      static const walletCircle = "assets/icons/walletCircle.png";
 }

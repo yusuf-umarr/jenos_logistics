@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       // backgroundColor: AppColors.background,
-      appBar: CustomWidget.customAppbar(context,title: "Dashboard"),
+      appBar: CustomWidget.customAppbar(context, title: "Dashboard"),
       body: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSize.defaultPadding,
@@ -203,40 +203,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Recent Trip activity",
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.dark,
-                        fontSize: 12,
-                      ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      Text(
-                        "See all",
-                        style:
-                            Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primaryColor,
-                                  fontSize: 12,
-                                ),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_right,
-                        color: AppColors.primaryColor,
-                        size: 15,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            CustomWidget.seeAllWidget(context, onTap: () {}),
 
             SizedBox(
               height: size.height * 0.05,

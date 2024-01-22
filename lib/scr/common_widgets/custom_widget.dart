@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
@@ -586,6 +587,7 @@ class CustomWidget {
     Color textColor = AppColors.white,
     Color bgColor = AppColors.primaryColor,
     double horizontalPadding = 15,
+    double fontSize = 13,
     Function()? onTap,
   }) {
     return InkWell(
@@ -600,9 +602,92 @@ class CustomWidget {
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(color: textColor),
+          style: TextStyle(color: textColor, fontSize: fontSize),
         ),
       ),
     );
   }
+
+  static Stack walletBalanceCard(BuildContext context, {String balance = ""}) {
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: AppSize.defaultPadding),
+          decoration: BoxDecoration(
+              color: AppColors.white, borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            children: [
+              Text(
+                "Total balance",
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(
+                height: AppSize.defaultPadding / 2,
+              ),
+              Text(
+                "N $balance",
+                style: GoogleFonts.montserrat(
+                    fontWeight: FontWeight.w900, fontSize: 30),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          left: 0,
+          bottom: 0,
+          child: Image.asset(
+            Assets.walletIconLeft,
+          ),
+        ),
+        Positioned(
+          right: 0,
+          bottom: 0,
+          child: Image.asset(
+            Assets.walletIconRight,
+          ),
+        ),
+      ],
+    );
+  }
+
+  static   Row seeAllWidget(BuildContext context,
+      {String title = "Recent Trip activity", String desc = "See all", onTap}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.dark,
+                fontSize: 12,
+              ),
+        ),
+        GestureDetector(
+          onTap: onTap,
+          child: Row(
+            children: [
+              Text(
+                desc,
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryColor,
+                      fontSize: 12,
+                    ),
+              ),
+              const Icon(
+                Icons.keyboard_arrow_right,
+                color: AppColors.primaryColor,
+                size: 15,
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
 }

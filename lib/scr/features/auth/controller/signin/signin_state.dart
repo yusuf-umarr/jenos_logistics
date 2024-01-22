@@ -4,9 +4,8 @@ import 'package:jenos/scr/features/auth/models/user_model.dart';
 /// This class defines the SigninState
 /// @author  Yusuf umar
 /// @version 1.0
-/// @since   2023-07-19 
-/// 
-
+/// @since   2023-12-19
+///
 
 /// Represents the state of the signin process.
 class SigninState {
