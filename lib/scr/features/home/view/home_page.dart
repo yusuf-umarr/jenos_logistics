@@ -67,7 +67,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // backgroundColor: AppColors.background,
       appBar: CustomWidget.customAppbar(context, title: "Dashboard"),
       body: Padding(
         padding: const EdgeInsets.symmetric(
