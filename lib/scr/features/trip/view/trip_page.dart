@@ -42,7 +42,7 @@ class _TripsPageState extends State<TripsPage> {
             height: 20,
           ),
           SizedBox(
-            height: 45,
+            height: 40,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: tripType.length,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
+import 'package:jenos/scr/features/notification/view/notification_page.dart';
+import 'package:jenos/scr/features/profile/view/profile_page.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   const HomeHeaderWidget({
@@ -63,9 +66,13 @@ class HomeHeaderWidget extends StatelessWidget {
         ),
         Row(
           children: [
-            CustomWidget.headerCard(Assets.bell),
+            CustomWidget.headerCard(Assets.bell, onTap: () {
+              navigate(context, const NotificationPage());
+            }),
             const SizedBox(width: 10),
-            CustomWidget.headerCard(Assets.user),
+            CustomWidget.headerCard(Assets.user, onTap: () {
+              navigate(context, const ProfilePage());
+            }),
           ],
         ),
       ],

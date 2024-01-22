@@ -41,17 +41,20 @@ class CustomWidget {
     );
   }
 
-  static Container headerCard(String img) {
-    return Container(
-      height: 50,
-      width: 50,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.greyColor,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: SvgPicture.asset(img),
+  static Widget headerCard(String img, {onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 50,
+        width: 50,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.greyColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: SvgPicture.asset(img),
+        ),
       ),
     );
   }
