@@ -45,7 +45,9 @@ dependencies:
   dotted_dashed_line: ^0.0.3
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.1.7
-  location: ^4.4.0
+  geolocator: ^10.1.0
+  # location: 
+  # location: ^4.4.0
 
 
 dev_dependencies:

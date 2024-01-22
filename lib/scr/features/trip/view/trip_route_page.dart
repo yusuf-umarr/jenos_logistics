@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jenos/config/config.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 
 class TripRoutePage extends StatefulWidget {
   const TripRoutePage({super.key});
@@ -24,40 +25,82 @@ class _TripRoutePageState extends State<TripRoutePage> {
   static const LatLng destinationLocation =
       LatLng(37.43296265331129, -122.08832357078792);
 
+  Position? _currentPosition;
+
   List<LatLng> polylineCoordinates = [];
-  LocationData? currentLocation;
+  // LocationData? currentLocation;
 
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
   void getCurrentLocation() async {
-    Location location = Location();
+    LocationPermission permission;
 
-    location.getLocation().then((location) {
-      currentLocation = location;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
 
-      // setState(() {});
-    });
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+    _currentPosition = position;
+
+    print(
+        "------position.longitude.toString() ${_currentPosition!.latitude.toString()}");
 
     GoogleMapController googleMapController = await _controller.future;
 
-    location.onLocationChanged.listen((newLoc) {
-      currentLocation = newLoc;
-
+    Future.delayed(Duration(milliseconds: 100), () {
       googleMapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
             zoom: 13.5,
             target: LatLng(
-              newLoc.latitude!,
-              newLoc.longitude!,
+              position.latitude,
+              position.longitude,
             ),
           ),
         ),
       );
     });
   }
+
+  // void getCurrentLocation() async {
+  //   Location location = Location();
+
+  //   location.getLocation().then((location) {
+  //     currentLocation = location;
+
+  //     // setState(() {});
+  //   });
+
+  //   GoogleMapController googleMapController = await _controller.future;
+
+  //   location.onLocationChanged.listen((newLoc) {
+  //     currentLocation = newLoc;
+
+  //     googleMapController.animateCamera(
+  //       CameraUpdate.newCameraPosition(
+  //         CameraPosition(
+  //           zoom: 13.5,
+  //           target: LatLng(
+  //             newLoc.latitude!,
+  //             newLoc.longitude!,
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   });
+  // }
 
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
@@ -108,6 +151,7 @@ class _TripRoutePageState extends State<TripRoutePage> {
   @override
   void initState() {
     getCurrentLocation();
+    // _getCurrentPosition();
     setCustomMarkerIcon();
     getPolyPoints();
     super.initState();
@@ -130,14 +174,14 @@ class _TripRoutePageState extends State<TripRoutePage> {
     return Scaffold(
       appBar: CustomWidget.customAppbar(context,
           title: "Trip route", isArrow: true),
-      body: currentLocation == null
+      body: _currentPosition == null
           ? const Text("Loading")
           : GoogleMap(
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               initialCameraPosition: CameraPosition(
                 target: LatLng(
-                    currentLocation!.latitude!, currentLocation!.longitude!),
+                    _currentPosition!.latitude!, _currentPosition!.longitude!),
                 zoom: 13.5,
               ),
               polylines: {
@@ -151,31 +195,24 @@ class _TripRoutePageState extends State<TripRoutePage> {
                 Marker(
                     markerId: const MarkerId("cureentLocation"),
                     icon: currentLocationIcon,
-                    position: LatLng(currentLocation!.latitude!,
-                        currentLocation!.longitude!)),
-                 Marker(
+                    position: LatLng(_currentPosition!.latitude!,
+                        _currentPosition!.longitude!)),
+                Marker(
                   markerId: const MarkerId("source"),
                   position: sourceLocation,
                   icon: sourceIcon,
                 ),
-                 Marker(
+                Marker(
                     markerId: const MarkerId("destination"),
                     position: destinationLocation,
-                    icon: destinationIcon
-                    ),
+                    icon: destinationIcon),
               },
               onMapCreated: (mapController) {
                 _controller.complete(mapController);
               },
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _goToTheLake,
-      ),
     );
   }
 
-  Future<void> _goToTheLake() async {
-    // final GoogleMapController controller = await _controller.future;
-    // await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
+
 }
