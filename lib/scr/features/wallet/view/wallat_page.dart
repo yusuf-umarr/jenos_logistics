@@ -172,11 +172,10 @@ class _WalletPageState extends State<WalletPage> {
                     borderColor: AppColors.greyColor,
                     bgColor: Colors.white,
                     externalText: "Account",
-                    hint: "",
+                    hint: "1000",
                     hintColor: Colors.grey,
                     externalTextColor: Colors.black,
                     prefixIconColor: AppColors.primaryColor,
-                    // controller: _auth.firstName,
                     onChanged: (val) {
                       setState(() {});
                     },
