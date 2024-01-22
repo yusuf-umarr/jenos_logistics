@@ -4,6 +4,7 @@ import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
+import 'package:jenos/scr/features/profile/view/profile_page.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   const HomeHeaderWidget({
@@ -69,8 +70,8 @@ class HomeHeaderWidget extends StatelessWidget {
               navigate(context, const NotificationPage());
             }),
             const SizedBox(width: 10),
-            CustomWidget.headerCard(Assets.user, onTap: (){
-              
+            CustomWidget.headerCard(Assets.user, onTap: () {
+              navigate(context, const ProfilePage());
             }),
           ],
         ),

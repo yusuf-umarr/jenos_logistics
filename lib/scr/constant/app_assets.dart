@@ -31,4 +31,8 @@ class Assets {
       static const walletIconRight = "assets/icons/walletIconRight.png";
       static const walletIconLeft = "assets/icons/walletIconLeft.png";
       static const walletCircle = "assets/icons/walletCircle.png";
+
+      static const profileCard = "assets/images/profileCard.png";
+      static const phoneMissed = "assets/icons/phone-missed-call.svg";
+      static const officeBuilding = "assets/icons/office-building.svg";
 }

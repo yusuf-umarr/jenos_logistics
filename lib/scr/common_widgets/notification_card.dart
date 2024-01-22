@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/features/notification/view/notification_detail.dart';
 
 class NotificationCard extends StatelessWidget {
   const NotificationCard({
@@ -66,6 +68,7 @@ class NotificationCard extends StatelessWidget {
                     ),
                   ],
                 ),
+               //
                 const SizedBox(
                   height: AppSize.defaultPadding,
                 ),
@@ -87,7 +90,9 @@ class NotificationCard extends StatelessWidget {
                     title: "View details",
                     bgColor: AppColors.primaryColor,
                     textColor: AppColors.white,
-                    onTap: () {}),
+                    onTap: () {
+                      navigate(context, const NotificationDetail());
+                    }),
               ],
             ),
           ],
