@@ -1,20 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/my_trips_card.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/features/trip/controller/onboard_controller.dart';
 import 'package:jenos/scr/features/trip/view/trip_route_page.dart';
 
-class TripsPage extends StatefulWidget {
+class TripsPage extends ConsumerStatefulWidget {
   const TripsPage({super.key});
 
   @override
-  State<TripsPage> createState() => _TripsPageState();
+  ConsumerState<TripsPage> createState() => _TripsPageState();
 }
 
-class _TripsPageState extends State<TripsPage> {
+class _TripsPageState extends ConsumerState<TripsPage> {
   List tripType = [
     {"id": 0, "name": "Active"},
     {"id": 1, "name": "Completed"},
@@ -81,8 +83,11 @@ class _TripsPageState extends State<TripsPage> {
       return Column(
         children: [
           MyTripsCard(
-            onTap: () {
-              navigate(context, const TripRoutePage());
+            onTap: () async {
+              // await ref.read(tripController.notifier).getCurrentLocation();
+              if (mounted) {
+                navigate(context, const TripRoutePage());
+              }
             },
             date: "Today, 02:05pm",
           ),

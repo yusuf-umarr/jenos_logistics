@@ -151,7 +151,7 @@ class CustomWidget {
   }
 //
 
-  static homePopCard(BuildContext context, size, onTap) {
+  static homePopCard(BuildContext context, size, onTap, onPress) {
     return Column(
       children: [
         SizedBox(
@@ -186,18 +186,21 @@ class CustomWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text(
-                      "Complete Setting Now",
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.white, fontWeight: FontWeight.w600),
+                  GestureDetector(
+                    onTap: onPress,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Text(
+                        "Complete Setting Now",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.white, fontWeight: FontWeight.w600),
+                      ),
                     ),
                   )
                 ],

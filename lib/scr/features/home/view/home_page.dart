@@ -1,20 +1,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/home_header_widget.dart';
+import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   var dataList = [
     {
       "text": "Spend time each day\nFocusing on your mental\nhealth",
@@ -87,6 +88,8 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       isShowPop = false;
                     });
+                  }, () {
+                    ref.read(navBarController.notifier).setNavbarIndex(3);
                   })
                 : const SizedBox.shrink(),
 

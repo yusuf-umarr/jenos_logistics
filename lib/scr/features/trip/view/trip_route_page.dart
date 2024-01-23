@@ -2,20 +2,22 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jenos/config/config.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
+import 'package:jenos/scr/features/trip/controller/onboard_controller.dart';
 // import 'package:location/location.dart';
 
-class TripRoutePage extends StatefulWidget {
+class TripRoutePage extends ConsumerStatefulWidget {
   const TripRoutePage({super.key});
 
   @override
-  State<TripRoutePage> createState() => _TripRoutePageState();
+  ConsumerState<TripRoutePage> createState() => _TripRoutePageState();
 }
 
-class _TripRoutePageState extends State<TripRoutePage> {
+class _TripRoutePageState extends ConsumerState<TripRoutePage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
@@ -25,7 +27,7 @@ class _TripRoutePageState extends State<TripRoutePage> {
   static const LatLng destinationLocation =
       LatLng(37.43296265331129, -122.08832357078792);
 
-  Position? _currentPosition;
+  // Position? currentPosition;
 
   List<LatLng> polylineCoordinates = [];
   // LocationData? currentLocation;
@@ -33,6 +35,29 @@ class _TripRoutePageState extends State<TripRoutePage> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
+
+  void showCameraPosition() async {
+    Position position = await Geolocator.getCurrentPosition();
+    position = ref.read(tripController).position!;
+
+    print("new position:$position");
+
+    GoogleMapController googleMapController = await _controller.future;
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      googleMapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            zoom: 13.5,
+            target: LatLng(
+              position.latitude,
+              position.longitude,
+            ),
+          ),
+        ),
+      );
+    });
+  }
 
   void getCurrentLocation() async {
     LocationPermission permission;
@@ -52,14 +77,13 @@ class _TripRoutePageState extends State<TripRoutePage> {
     }
 
     Position position = await Geolocator.getCurrentPosition();
-    _currentPosition = position;
+    // currentPosition = position;
 
-    print(
-        "------position.longitude.toString() ${_currentPosition!.latitude.toString()}");
+    // print("------currentPosition ${currentPosition!.latitude.toString()}");
 
     GoogleMapController googleMapController = await _controller.future;
 
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       googleMapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -73,7 +97,7 @@ class _TripRoutePageState extends State<TripRoutePage> {
       );
     });
   }
-
+// //
   // void getCurrentLocation() async {
   //   Location location = Location();
 
@@ -150,9 +174,10 @@ class _TripRoutePageState extends State<TripRoutePage> {
 
   @override
   void initState() {
-    getCurrentLocation();
+    // getCurrentLocation();
     // _getCurrentPosition();
     setCustomMarkerIcon();
+    showCameraPosition();
     getPolyPoints();
     super.initState();
   }
@@ -165,28 +190,27 @@ class _TripRoutePageState extends State<TripRoutePage> {
 
   @override
   Widget build(BuildContext context) {
-    var poly =
-        Polyline(polylineId: PolylineId("route"), points: polylineCoordinates);
-
-    Set<Polyline> polylines = const <Polyline>{};
+    // print("currentPosition:$currentPosition");
 
     // polylines.add(poly);
+
+    final currentPosition = ref.watch(tripController).position;
     return Scaffold(
       appBar: CustomWidget.customAppbar(context,
           title: "Trip route", isArrow: true),
-      body: _currentPosition == null
+      body: currentPosition == null
           ? const Text("Loading")
           : GoogleMap(
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               initialCameraPosition: CameraPosition(
                 target: LatLng(
-                    _currentPosition!.latitude!, _currentPosition!.longitude!),
+                    currentPosition!.latitude!, currentPosition!.longitude!),
                 zoom: 13.5,
               ),
               polylines: {
                 Polyline(
-                    polylineId: PolylineId("route"),
+                    polylineId: const PolylineId("route"),
                     points: polylineCoordinates,
                     color: Colors.blue,
                     width: 5)
@@ -195,8 +219,8 @@ class _TripRoutePageState extends State<TripRoutePage> {
                 Marker(
                     markerId: const MarkerId("cureentLocation"),
                     icon: currentLocationIcon,
-                    position: LatLng(_currentPosition!.latitude!,
-                        _currentPosition!.longitude!)),
+                    position: LatLng(currentPosition!.latitude!,
+                        currentPosition!.longitude!)),
                 Marker(
                   markerId: const MarkerId("source"),
                   position: sourceLocation,
@@ -213,6 +237,4 @@ class _TripRoutePageState extends State<TripRoutePage> {
             ),
     );
   }
-
-
 }

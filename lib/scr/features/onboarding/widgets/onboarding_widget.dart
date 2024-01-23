@@ -25,7 +25,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
       backgroundColor: const Color(0xffFAFAFA),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
               const SizedBox(

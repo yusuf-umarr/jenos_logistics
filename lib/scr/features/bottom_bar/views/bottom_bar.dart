@@ -14,6 +14,7 @@ import 'package:jenos/scr/features/auth/controller/user/user_data_notifier.dart'
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/home/view/home_page.dart';
 import 'package:jenos/scr/features/request/view/request_page.dart';
+import 'package:jenos/scr/features/trip/controller/onboard_controller.dart';
 import 'package:jenos/scr/features/trip/view/trip_page.dart';
 import 'package:jenos/scr/features/wallet/view/wallat_page.dart';
 
@@ -28,6 +29,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   void initState() {
     getData();
+      ref.read(tripController.notifier).getCurrentLocation();
     super.initState();
   }
 
