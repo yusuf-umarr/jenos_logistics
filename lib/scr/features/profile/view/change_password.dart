@@ -9,51 +9,23 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util.dart';
 
-class PersonalDetailPage extends StatefulWidget {
-  const PersonalDetailPage({super.key});
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<PersonalDetailPage> createState() => _PersonalDetailPageState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-class _PersonalDetailPageState extends State<PersonalDetailPage> {
+class _ChangePasswordState extends State<ChangePassword> {
   File? image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomWidget.customAppbar(context,
-          title: "Personal details", isArrow: true),
+          title: "Change password", isArrow: true),
       body: ListView(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         children: [
-          Stack(
-            children: [
-              Center(
-                child: ClipOval(
-                  child: SizedBox.fromSize(
-                    size: const Size.fromRadius(65),
-                    child: image == null
-                        ? Image.asset("assets/images/profilePics.png")
-                        : Image.file(File(image!.path), fit: BoxFit.cover),
-                  ),
-                ),
-              ),
-              Positioned(
-                right: 0,
-                bottom: 10,
-                left: 100,
-                child: GestureDetector(
-                    onTap: () async {},
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.white),
-                        child: SvgPicture.asset(Assets.camera))),
-              )
-            ],
-          ),
           const SizedBox(
             height: AppSize.defaultPadding,
           ),
@@ -66,12 +38,11 @@ class _PersonalDetailPageState extends State<PersonalDetailPage> {
             borderRadius: 5,
             borderColor: AppColors.greyColor,
             bgColor: Colors.white,
-            externalText: "Full name",
-            hint: "John obi",
+            externalText: "Old password",
+            hint: "*******",
             hintColor: Colors.grey,
             externalTextColor: Colors.black,
             prefixIconColor: AppColors.primaryColor,
-            // controller: _auth.firstName,
           ),
           const SizedBox(
             height: AppSize.defaultPadding * 1.5,
@@ -85,12 +56,23 @@ class _PersonalDetailPageState extends State<PersonalDetailPage> {
             borderRadius: 5,
             borderColor: AppColors.greyColor,
             bgColor: Colors.white,
-            externalText: "Phone number",
-            hint: "Eg:09064782522",
+            externalText: "New password",
+            hint: "******",
             hintColor: Colors.grey,
             externalTextColor: Colors.black,
             prefixIconColor: AppColors.primaryColor,
+
             // controller: _auth.firstName,
+          ),
+          const SizedBox(
+            height: AppSize.defaultPadding / 2,
+          ),
+          Text(
+            "Must be a minimum of 8 characters long, and must contain at least one special character, at least one uppercase letter and at least one numerical digit.",
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(fontWeight: FontWeight.w500, color: AppColors.grey),
           ),
           const SizedBox(
             height: AppSize.defaultPadding * 1.5,
@@ -104,18 +86,20 @@ class _PersonalDetailPageState extends State<PersonalDetailPage> {
             borderRadius: 5,
             borderColor: AppColors.greyColor,
             bgColor: Colors.white,
-            externalText: "Address",
-            hint: "Nweke rd, lagos state",
+            externalText: "Confirm new password",
+            hint: "******",
             hintColor: Colors.grey,
             externalTextColor: Colors.black,
             prefixIconColor: AppColors.primaryColor,
-            // controller: _auth.firstName,
           ),
           const SizedBox(
-            height: AppSize.defaultPadding * 3,
+            height: AppSize.defaultPadding * 1.5,
+          ),
+          const SizedBox(
+            height: AppSize.defaultPadding * 2,
           ),
           AppButton(
-            text: 'Update profile ',
+            text: 'Update password',
             onPressed: () async {},
           ),
         ],

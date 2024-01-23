@@ -9,51 +9,23 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util.dart';
 
-class PersonalDetailPage extends StatefulWidget {
-  const PersonalDetailPage({super.key});
+class AccountDetails extends StatefulWidget {
+  const AccountDetails({super.key});
 
   @override
-  State<PersonalDetailPage> createState() => _PersonalDetailPageState();
+  State<AccountDetails> createState() => _AccountDetailsState();
 }
 
-class _PersonalDetailPageState extends State<PersonalDetailPage> {
+class _AccountDetailsState extends State<AccountDetails> {
   File? image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomWidget.customAppbar(context,
-          title: "Personal details", isArrow: true),
+          title: "Account details", isArrow: true),
       body: ListView(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         children: [
-          Stack(
-            children: [
-              Center(
-                child: ClipOval(
-                  child: SizedBox.fromSize(
-                    size: const Size.fromRadius(65),
-                    child: image == null
-                        ? Image.asset("assets/images/profilePics.png")
-                        : Image.file(File(image!.path), fit: BoxFit.cover),
-                  ),
-                ),
-              ),
-              Positioned(
-                right: 0,
-                bottom: 10,
-                left: 100,
-                child: GestureDetector(
-                    onTap: () async {},
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.white),
-                        child: SvgPicture.asset(Assets.camera))),
-              )
-            ],
-          ),
           const SizedBox(
             height: AppSize.defaultPadding,
           ),
@@ -66,11 +38,30 @@ class _PersonalDetailPageState extends State<PersonalDetailPage> {
             borderRadius: 5,
             borderColor: AppColors.greyColor,
             bgColor: Colors.white,
-            externalText: "Full name",
-            hint: "John obi",
+            externalText: "Bank name",
+            hint: "Eg. Union bank",
             hintColor: Colors.grey,
             externalTextColor: Colors.black,
             prefixIconColor: AppColors.primaryColor,
+          ),
+          const SizedBox(
+            height: AppSize.defaultPadding * 1.5,
+          ),
+          Util.inputField2(
+            isExternalLabel: true,
+            useExternalText: true,
+            isPrefix: false,
+            isCompulsory: false,
+            fontSizeExternal: 14,
+            borderRadius: 5,
+            borderColor: AppColors.greyColor,
+            bgColor: Colors.white,
+            externalText: "Account name",
+            hint: "Adamu john",
+            hintColor: Colors.grey,
+            externalTextColor: Colors.black,
+            prefixIconColor: AppColors.primaryColor,
+
             // controller: _auth.firstName,
           ),
           const SizedBox(
@@ -85,37 +76,46 @@ class _PersonalDetailPageState extends State<PersonalDetailPage> {
             borderRadius: 5,
             borderColor: AppColors.greyColor,
             bgColor: Colors.white,
-            externalText: "Phone number",
-            hint: "Eg:09064782522",
+            externalText: "Account number",
+            hint: "Eg:164782522",
             hintColor: Colors.grey,
             externalTextColor: Colors.black,
             prefixIconColor: AppColors.primaryColor,
+
             // controller: _auth.firstName,
           ),
           const SizedBox(
             height: AppSize.defaultPadding * 1.5,
           ),
           Util.inputField2(
-            isExternalLabel: true,
-            useExternalText: true,
-            isPrefix: false,
-            isCompulsory: false,
-            fontSizeExternal: 14,
-            borderRadius: 5,
-            borderColor: AppColors.greyColor,
-            bgColor: Colors.white,
-            externalText: "Address",
-            hint: "Nweke rd, lagos state",
-            hintColor: Colors.grey,
-            externalTextColor: Colors.black,
-            prefixIconColor: AppColors.primaryColor,
-            // controller: _auth.firstName,
-          ),
+              isExternalLabel: true,
+              useExternalText: true,
+              isPrefix: false,
+              isCompulsory: false,
+              enable: false,
+              fontSizeExternal: 14,
+              borderRadius: 5,
+              borderColor: AppColors.greyColor,
+              bgColor: Colors.white,
+              externalText: "Account type",
+              hint: "Saving",
+              hintColor: Colors.grey,
+              externalTextColor: Colors.black,
+              prefixIconColor: AppColors.primaryColor,
+              suffixWidget: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: SvgPicture.asset(
+                  Assets.chevronDown,
+                  colorFilter:
+                      const ColorFilter.mode(AppColors.dark, BlendMode.srcIn),
+                ),
+              ),
+              onTap: () {}),
           const SizedBox(
-            height: AppSize.defaultPadding * 3,
+            height: AppSize.defaultPadding * 2,
           ),
           AppButton(
-            text: 'Update profile ',
+            text: 'Update details',
             onPressed: () async {},
           ),
         ],

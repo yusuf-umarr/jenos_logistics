@@ -42,4 +42,5 @@ class Assets {
       static const logout = "assets/icons/logout.svg";
       static const camera = "assets/icons/camera.svg";
       static const share = "assets/icons/share.svg";
+      static const chevronDown = "assets/icons/chevron-down.svg";
 }
