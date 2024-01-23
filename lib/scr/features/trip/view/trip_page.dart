@@ -51,7 +51,7 @@ class _TripsPageState extends State<TripsPage> {
                   return Container(
                     margin: const EdgeInsets.only(right: 15),
                     child: CustomWidget.commonBtn(
-                        horizontalPadding: width > 400 ? 25 : 15,
+                        horizontalPadding: width > 400 ? 25 : 17,
                         title: trip['name'],
                         bgColor: selectedIndex == trip['id']
                             ? AppColors.primaryColor

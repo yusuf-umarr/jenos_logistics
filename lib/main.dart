@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
       title: 'Jenos',
       debugShowCheckedModeBanner:false,
       theme: AppTheme.lightTheme,
-      home:  BottomBar(),
-      // home:  const OnboardingMainScreen(),
+      // home:  BottomBar(),
+      home:  const OnboardingMainScreen(),
     );
   }
 }

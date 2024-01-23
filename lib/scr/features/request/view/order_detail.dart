@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
+import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 
-class OrderDetailsPage extends StatefulWidget {
+class OrderDetailsPage extends ConsumerStatefulWidget {
   const OrderDetailsPage({super.key});
 
   @override
-  State<OrderDetailsPage> createState() => _OrderDetailsPageState();
+  ConsumerState<OrderDetailsPage> createState() => _OrderDetailsPageState();
 }
 
-class _OrderDetailsPageState extends State<OrderDetailsPage> {
+class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +113,12 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
               Expanded(
                 child: SizedBox(
                   width: 130,
-                  child: AppButton(text: "Accept", onPressed: () {}),
+                  child: AppButton(
+                      text: "Accept",
+                      onPressed: () {
+                        navigate(context, BottomBar());
+                        ref.read(navBarController.notifier).setNavbarIndex(2);
+                      }),
                 ),
               ),
               const SizedBox(

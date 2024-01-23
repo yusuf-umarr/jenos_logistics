@@ -272,7 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     AppButton(
                         height: 55,
                         isIcon: true,
-                        text: 'Log-out',
+                        text: title,
                         onPressed: onTap,
                         color: AppColors.primaryColor,
                         textColor: Colors.white),
