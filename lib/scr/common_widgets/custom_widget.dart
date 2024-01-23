@@ -656,7 +656,7 @@ class CustomWidget {
     );
   }
 
-  static   Row seeAllWidget(BuildContext context,
+  static Row seeAllWidget(BuildContext context,
       {String title = "Recent Trip activity", String desc = "See all", onTap}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -693,4 +693,159 @@ class CustomWidget {
     );
   }
 
+  static Widget profilePhoneCard(BuildContext context,
+      {String img = "",
+      String text = "",
+      FontWeight fontWeight = FontWeight.w300}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        children: [
+          Container(
+              padding: const EdgeInsets.all(5),
+              height: 30,
+              width: 30,
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.white),
+              child: SvgPicture.asset(img)),
+          const SizedBox(
+            width: AppSize.defaultPadding,
+          ),
+          Text(
+            text,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(fontWeight: fontWeight, color: AppColors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+//
+  static Stack profileHeaderCard(
+    BuildContext context, {
+    String img = Assets.profileCard,
+    String name = "",
+    String userName = "",
+    String phone = "",
+    String logisticsName = "",
+  }) {
+    return Stack(
+      children: [
+        Positioned(
+            child: Image.asset(
+          img,
+          fit: BoxFit.cover,
+        )),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSize.defaultPadding,
+                vertical: AppSize.defaultPadding / 2),
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    CustomWidget.imagAvatar(),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.white),
+                        ),
+                        Text(
+                          "@$userName",
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: AppSize.defaultPadding,
+                ),
+                profilePhoneCard(
+                  context,
+                  img: Assets.phoneMissed,
+                  text: phone,
+                  fontWeight: FontWeight.bold,
+                ),
+                profilePhoneCard(
+                  context,
+                  img: Assets.officeBuilding,
+                  text: logisticsName,
+                  fontWeight: FontWeight.w400,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+//
+
+  static ListTile profileTile(
+    BuildContext context, {
+    String img = "",
+    String title = "",
+    String desc = "",
+    icon,
+    Color iconColor = AppColors.dark,
+    onTap,
+  }) {
+    return ListTile(
+      onTap: onTap,
+      leading: Container(
+          width: 30,
+          height: 30,
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.greyColor),
+          child: SvgPicture.asset(
+            img,
+            colorFilter: ColorFilter.mode(
+              iconColor,
+              BlendMode.srcIn,
+            ),
+          )),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+            ),
+      ),
+      subtitle: Text(
+        desc,
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.grey,
+              fontSize: 11,
+            ),
+      ),
+      trailing: icon ?? SvgPicture.asset(Assets.chevronDoubleRight),
+    );
+  }
+//
 }
