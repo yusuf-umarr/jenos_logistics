@@ -35,4 +35,11 @@ class Assets {
       static const profileCard = "assets/images/profileCard.png";
       static const phoneMissed = "assets/icons/phone-missed-call.svg";
       static const officeBuilding = "assets/icons/office-building.svg";
+      static const chevronDoubleRight = "assets/icons/chevron-double-right.svg";
+      static const cash = "assets/icons/cash.svg";
+      static const lockClosed = "assets/icons/lock-closed.svg";
+      static const cloudUpload = "assets/icons/cloud-upload.svg";
+      static const logout = "assets/icons/logout.svg";
+      static const camera = "assets/icons/camera.svg";
+      static const share = "assets/icons/share.svg";
 }

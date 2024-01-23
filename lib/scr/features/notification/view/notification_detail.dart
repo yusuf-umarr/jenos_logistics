@@ -11,7 +11,8 @@ class NotificationDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomWidget.customAppbar(context, title: "Notification"),
+      appBar: CustomWidget.customAppbar(context,
+          title: "Notification", isArrow: true),
       body: ListView(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         children: [
