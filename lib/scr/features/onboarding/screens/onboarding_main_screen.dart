@@ -31,6 +31,7 @@ class _OnboardingMainScreenState extends State<OnboardingMainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -50,10 +51,9 @@ class _OnboardingMainScreenState extends State<OnboardingMainScreen> {
                     child: Text(
                       "Skip",
                       textAlign: TextAlign.end,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(color: AppColors.primaryColor),
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

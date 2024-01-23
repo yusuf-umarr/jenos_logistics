@@ -10,7 +10,7 @@ import 'package:jenos/scr/features/auth/models/user_model.dart';
 /// Represents the state of the signin process.
 class SigninState {
   /// The network state of the signin process.
-  final NetworkState loadState;
+  final NetworkState loadState; 
 
   /// The user model containing signin data.
   final UserModel userModel;

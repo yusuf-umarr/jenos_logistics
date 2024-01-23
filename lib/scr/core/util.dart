@@ -9,8 +9,9 @@ class Util {
     bool isPrefix = true,
     bool isExternalLabel = false,
     bool readOnly = false,
+    bool enable = true,
     double? size,
-    double fontSize = 16,
+    double fontSize = 13,
     double fontSizeExternal = 16,
     TextEditingController? controller,
     TextInputType inputType = TextInputType.text,
@@ -33,6 +34,7 @@ class Util {
     double inputFieldPadding = 0,
     Function(String val)? onChanged,
     Function()? onSuffixIconClick,
+    Function()? onTap,
     bool hasBorder = true,
     Color borderColor = const Color(0xff22004E),
     double elevation = 0,
@@ -78,14 +80,7 @@ class Util {
                               color: externalTextColor,
                               fontSize: fontSizeExternal,
                             ),
-                          )
-
-                          // TextView(
-                          //   text: useExternalText ? externalText : hint!,
-                          //   txtColor: externalTextColor,
-                          //   fontSize: fontSizeExternal,
-                          // ),
-                          ),
+                          )),
                     ),
                     isCompulsory
                         ? Text(
@@ -95,12 +90,6 @@ class Util {
                               fontSize: compulsoryFontSize,
                             ),
                           )
-
-                        // TextView(
-                        //     text: compulsoryText,
-                        //     fontSize: compulsoryFontSize,
-                        //     txtColor: compulsoryColor,
-                        //   )
                         : const SizedBox(height: 0, width: 0)
                   ],
                 ),
@@ -155,82 +144,64 @@ class Util {
                           width: 5,
                         ),
                   Expanded(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                          left: paddingLeft, right: paddingRight),
-                      decoration: BoxDecoration(
-                        // border: Border.all(width: 1, color: AppColors.primaryColor),
-                        borderRadius: BorderRadius.circular(borderRadius),
-                        //color: bgColor,
-                      ),
-                      child: SizedBox(
-                        width: size,
-                        child: readOnly
-                            ? InkWell(
-                                onTap: onClick,
-                                child: Container(
-                                    padding: readOnlyPadding,
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      readOnlyText,
-                                      style: TextStyle(
-                                        color: readOnlyTextColor,
-                                        fontSize: fontSize,
-                                        fontWeight: readOnlyFontWeight,
-                                      ),
-                                    )
-                                    // TextView(
-                                    //   text: readOnlyText,
-                                    //   fontSize: fontSize,
-                                    //   txtColor: readOnlyTextColor,
-                                    //   fontWeight: readOnlyFontWeight,
-                                    //   maxLine: 5,
-                                    // ),
-                                    ),
-                              )
-                            : TextFormField(
-                                obscureText: isPassword,
-                                controller: controller,
-                                keyboardType: inputType,
-                                textAlign: textAlign,
-                                readOnly: readOnly,
-                                onChanged: onChanged,
-                                validator: validator,
-                                maxLines: max,
-                                style: TextStyle(
-                                    fontSize: fontSize, color: Colors.black87),
-                                decoration: InputDecoration(
-                                  hintText: isExternalLabel
-                                      ? useExternalText
-                                          ? hint
-                                          : ""
-                                      : hint,
-                                  hintStyle: TextStyle(
-                                    color: hintColor,
-                                    fontWeight: hintFont,
-                                    fontSize: hintFontSize,
-                                  ),
-                                  suffixIconConstraints: isIcon
-                                      ? const BoxConstraints(
-                                          maxWidth: 50,
-                                        )
-                                      : const BoxConstraints(maxWidth: 26),
-                                  suffixIcon: InkWell(
-                                    onTap: onSuffixIconClick,
-                                    child: isIcon
-                                        ? Icon(
-                                            icon,
-                                            color: suffixIconColor,
-                                            size: suffixIconSize,
-                                          )
-                                        : const SizedBox(
-                                            width: 0,
-                                            height: 0,
-                                          ),
-                                  ),
-                                  border: InputBorder.none,
-                                ),
+                    child: GestureDetector(
+                      onTap: onTap,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: paddingLeft, right: paddingRight),
+                        decoration: BoxDecoration(
+                          // border: Border.all(width: 1, color: AppColors.primaryColor),
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          //color: bgColor,
+                        ),
+                        child: SizedBox(
+                          width: size,
+                          child: TextFormField(
+                            // onTap: onTap,
+                            enabled: enable,
+                            obscureText: isPassword,
+                            controller: controller,
+                            keyboardType: inputType,
+                            textAlign: textAlign,
+                            readOnly: readOnly,
+                            onChanged: onChanged,
+                            validator: validator,
+                            maxLines: max,
+                            style: TextStyle(
+                                fontSize: fontSize, color: Colors.black87),
+                            decoration: InputDecoration(
+                              hintText: isExternalLabel
+                                  ? useExternalText
+                                      ? hint
+                                      : ""
+                                  : hint,
+                              hintStyle: TextStyle(
+                                color: hintColor,
+                                fontWeight: hintFont,
+                                fontSize: hintFontSize,
                               ),
+                              suffixIconConstraints: isIcon
+                                  ? const BoxConstraints(
+                                      maxWidth: 50,
+                                    )
+                                  : const BoxConstraints(maxWidth: 26),
+                              suffixIcon: InkWell(
+                                onTap: onSuffixIconClick,
+                                child: isIcon
+                                    ? Icon(
+                                        icon,
+                                        color: suffixIconColor,
+                                        size: suffixIconSize,
+                                      )
+                                    : const SizedBox(
+                                        width: 0,
+                                        height: 0,
+                                      ),
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),

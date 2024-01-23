@@ -11,8 +11,6 @@ enum LoginState { success, error, loading, idle }
 enum CartState { filled, error, empty }
 
 enum Auth { signin, signup }
+enum AccountType { individual, enterprise }
 
 
-enum NavBarEnum{
-  notification, contactScreen, callScreen, recentScreen, profileScreen, 
-}

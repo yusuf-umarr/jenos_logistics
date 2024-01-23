@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
+import 'package:jenos/scr/core/enums.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
+import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
 
-class GetStartedScreen extends StatefulWidget {
+class GetStartedScreen extends ConsumerStatefulWidget {
   const GetStartedScreen({super.key});
 
   @override
-  State<GetStartedScreen> createState() => _GetStartedScreenState();
+  ConsumerState<GetStartedScreen> createState() => _GetStartedScreenState();
 }
 
-class _GetStartedScreenState extends State<GetStartedScreen> {
+class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
   int selectedValue = 0;
   List<String> accountType = ['Individual Driver', 'Enterprise Driver'];
   @override
@@ -80,7 +83,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                     text: 'Login',
                     borderColor: AppColors.primaryColor,
                     onPressed: () async {
-                      FocusScope.of(context).unfocus();
+                      navigate(context, const SignInPage());
                     },
                     color: Colors.white,
                     textColor: AppColors.primaryColor),
@@ -136,8 +139,14 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                               setState(() {
                                 if (option == "Individual Driver") {
                                   selectedValue = 0;
+                                  ref
+                                      .read(onboardController.notifier)
+                                      .setAccountType(AccountType.individual);
                                 } else {
                                   selectedValue = 1;
+                                  ref
+                                      .read(onboardController.notifier)
+                                      .setAccountType(AccountType.enterprise);
                                 }
                               });
                             },
