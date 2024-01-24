@@ -132,6 +132,7 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
                   desc: "Confirmation Time:",
                   time: "",
                   isStepped: switchValueFive,
+                  isShowLine: false,
                   onChange: (value) {
                     if (switchValueFour) {
                       setState(() {
@@ -166,6 +167,7 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
       String desc = "",
       String time = "",
       bool isStepped = false,
+      bool isShowLine = true,
       Function(bool)? onChange}) {
     return Stack(
       children: [
@@ -227,6 +229,8 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
             ],
           ),
         ),
+         isShowLine
+            ?
         Positioned(
           left: 5,
           top: 30,
@@ -236,7 +240,7 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
             axis: Axis.vertical,
             dashColor: isStepped ? AppColors.primaryColor : AppColors.grey,
           ),
-        )
+        ):const SizedBox.shrink()
       ],
     );
   }
