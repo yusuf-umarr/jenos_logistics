@@ -100,27 +100,33 @@ class CustomWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                name,
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              Expanded(
+                child: Text(
+                  name,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.dark,
+                      ),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  price,
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.dark,
-                    ),
+                      fontSize: 25),
+                ),
               ),
-              Text(
-                price,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.dark,
-                    fontSize: 25),
-              ),
-              Text(
-                desc,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.dark,
-                      fontSize: 14,
-                    ),
+              Expanded(
+                child: Text(
+                  desc,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.dark,
+                        fontSize: 14,
+                      ),
+                ),
               ),
             ],
           ),
