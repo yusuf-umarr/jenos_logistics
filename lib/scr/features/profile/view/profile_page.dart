@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          CustomWidget.customAppbar(context, title: "Profile", isArrow: true),
+          CustomWidget.customAppbar(context, title: "Profile"),
       body: ListView(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         children: [
