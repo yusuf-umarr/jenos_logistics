@@ -7,6 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jenos/config/config.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
+import 'package:jenos/scr/common_widgets/my_trips_card.dart';
+import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/features/trip/controller/onboard_controller.dart';
 // import 'package:location/location.dart';
 
@@ -190,6 +192,8 @@ class _TripRoutePageState extends ConsumerState<TripRoutePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     // print("currentPosition:$currentPosition");
 
     // polylines.add(poly);
@@ -199,41 +203,58 @@ class _TripRoutePageState extends ConsumerState<TripRoutePage> {
       appBar: CustomWidget.customAppbar(context,
           title: "Trip route", isArrow: true),
       body: currentPosition == null
-          ? const Text("Loading")
-          : GoogleMap(
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              initialCameraPosition: CameraPosition(
-                target: LatLng(
-                    currentPosition!.latitude!, currentPosition!.longitude!),
-                zoom: 13.5,
-              ),
-              polylines: {
-                Polyline(
-                    polylineId: const PolylineId("route"),
-                    points: polylineCoordinates,
-                    color: Colors.blue,
-                    width: 5)
-              },
-              markers: {
-                Marker(
-                    markerId: const MarkerId("cureentLocation"),
-                    icon: currentLocationIcon,
-                    position: LatLng(currentPosition!.latitude!,
-                        currentPosition!.longitude!)),
-                Marker(
-                  markerId: const MarkerId("source"),
-                  position: sourceLocation,
-                  icon: sourceIcon,
+          ? const Center(child: CupertinoActivityIndicator())
+          : Column(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: size.height * 0.65,
+                    child: GoogleMap(
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: false,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(currentPosition!.latitude!,
+                            currentPosition!.longitude!),
+                        zoom: 13.5,
+                      ),
+                      polylines: {
+                        Polyline(
+                            polylineId: const PolylineId("route"),
+                            points: polylineCoordinates,
+                            color: Colors.blue,
+                            width: 5)
+                      },
+                      markers: {
+                        Marker(
+                            markerId: const MarkerId("cureentLocation"),
+                            icon: currentLocationIcon,
+                            position: LatLng(currentPosition!.latitude!,
+                                currentPosition!.longitude!)),
+                        Marker(
+                          markerId: const MarkerId("source"),
+                          position: sourceLocation,
+                          icon: sourceIcon,
+                        ),
+                        Marker(
+                            markerId: const MarkerId("destination"),
+                            position: destinationLocation,
+                            icon: destinationIcon),
+                      },
+                      onMapCreated: (mapController) {
+                        _controller.complete(mapController);
+                      },
+                    ),
+                  ),
                 ),
-                Marker(
-                    markerId: const MarkerId("destination"),
-                    position: destinationLocation,
-                    icon: destinationIcon),
-              },
-              onMapCreated: (mapController) {
-                _controller.complete(mapController);
-              },
+                const Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: AppSize.defaultPadding),
+                  child: MyTripsCard(
+                    date: '12:20pm',
+                    isShowTopDate: false,
+                  ),
+                )
+              ],
             ),
     );
   }
