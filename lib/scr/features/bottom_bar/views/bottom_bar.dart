@@ -10,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
-import 'package:jenos/scr/features/auth/controller/user/user_data_notifier.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/home/view/home_page.dart';
 import 'package:jenos/scr/features/request/view/request_page.dart';
@@ -19,8 +18,11 @@ import 'package:jenos/scr/features/trip/view/trip_page.dart';
 import 'package:jenos/scr/features/wallet/view/wallat_page.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
-  static const String routeName = '/navbar';
+   const BottomBar({super.key, this.accountType});
 
+  final accountType;
+
+  static const String routeName = '/bottom-bar';
   @override
   ConsumerState<BottomBar> createState() => _BottomBarState();
 }
@@ -35,7 +37,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   void getData() async {
     if (mounted) {
-      await ref.read(userDataNotifier.notifier).getUserData();
+      // await ref.read(userDataNotifier.notifier).getUserData();
     }
   }
 

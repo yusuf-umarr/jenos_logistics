@@ -4,7 +4,7 @@ import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/recent_transaction_card.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
-import 'package:jenos/scr/core/util.dart';
+import 'package:jenos/scr/core/util/util.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});

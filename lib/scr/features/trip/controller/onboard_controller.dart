@@ -6,7 +6,6 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:jenos/scr/core/enums.dart';
 import 'package:jenos/scr/features/trip/controller/onboard_state.dart';
 
 /// Controller class for managing the navigation bar state.

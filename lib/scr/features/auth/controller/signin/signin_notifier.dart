@@ -3,11 +3,13 @@
 /// @version 1.0
 /// @since   2023-12-19
 
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jenos/scr/core/enums.dart';
-import 'package:jenos/scr/features/auth/models/user_model.dart';
+import 'package:jenos/scr/core/util/enums.dart';
+import 'package:jenos/scr/core/models/user_merchant_model.dart';
 import 'package:jenos/scr/features/auth/controller/signin/signin_state.dart';
-import 'package:jenos/scr/features/auth/repository/auth_repository.dart';
+import 'package:jenos/scr/core/repository/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Notifier class for handling the Signin state.
@@ -17,12 +19,13 @@ class SigninNotifier extends StateNotifier<SigninState> {
   final AuthRepository authRepository;
 
   /// Method to sign in with the provided [model].
-  Future<void> signIn(UserModel model) async {
+  Future<void> signIn(String email, String password,
+      ) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
     try {
-      final response = await authRepository.signIn(model);
+      final response = await authRepository.signIn(email, password);
 
       if (response.success) {
         state = state.copyWith(
@@ -31,17 +34,22 @@ class SigninNotifier extends StateNotifier<SigninState> {
           message: response.message,
         );
 
+        log("response.message success:${response.message}");
+
         return;
       }
       state = state.copyWith(
         loadState: NetworkState.error,
         message: response.message,
       );
+      log("response.message erro 1:${response.message}");
     } catch (e) {
       state = state.copyWith(
         loadState: NetworkState.error,
         message: e.toString(),
       );
+
+      log("response.message error 2$e");
     }
   }
 

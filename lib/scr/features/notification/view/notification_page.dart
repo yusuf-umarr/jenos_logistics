@@ -4,7 +4,8 @@ import 'package:jenos/scr/common_widgets/notification_card.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+  final bool isArrowBack;
+  const NotificationPage({super.key, required this.isArrowBack});
 
   @override
   Widget build(BuildContext context) {

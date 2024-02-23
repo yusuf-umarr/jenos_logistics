@@ -1,5 +1,5 @@
-import 'package:jenos/scr/core/enums.dart';
-import 'package:jenos/scr/features/auth/models/user_model.dart';
+import 'package:jenos/scr/core/util/enums.dart';
+import 'package:jenos/scr/core/models/user_merchant_model.dart';
 
 /// This class defines the SignupState
 /// @author  Yusuf umar
@@ -12,7 +12,7 @@ class SignupState {
   final NetworkState loadState;
 
   /// The user model containing signup data.
-  final UserModel userModel;
+  final dynamic userModel;
 
   /// A message related to the signup state.
   final String? message;
@@ -26,13 +26,7 @@ class SignupState {
   /// Factory method to create the initial signup state.
   factory SignupState.initial() {
     return SignupState(
-      userModel: UserModel(
-        name: "",
-        email: "",
-        password: "",
-        id: "",
-        v: 0,
-      ),
+      userModel: null,
       loadState: NetworkState.idle,
       message: null,
     );
@@ -41,8 +35,8 @@ class SignupState {
   /// Method to create a new SignupState by copying the current state and applying changes to specified properties.
   SignupState copyWith({
     NetworkState? loadState,
-    UserModel? userModel,
-    String? message,
+    dynamic userModel,
+    String? message,  DeliveryType? deliveryType,
   }) {
     return SignupState(
       loadState: loadState ?? this.loadState,

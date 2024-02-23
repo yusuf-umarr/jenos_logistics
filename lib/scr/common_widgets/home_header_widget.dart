@@ -5,7 +5,7 @@ import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
-import 'package:jenos/scr/core/enums.dart';
+import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
@@ -106,7 +106,7 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
         Row(
           children: [
             CustomWidget.headerCard(Assets.bell, onTap: () {
-              navigate(context, const NotificationPage());
+              navigate(context,const  NotificationPage(isArrowBack: true,));
             }),
             const SizedBox(width: 10),
             CustomWidget.headerCard(Assets.user, onTap: () {

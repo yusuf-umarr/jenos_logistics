@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
-import 'package:jenos/scr/core/enums.dart';
+import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
@@ -111,8 +111,7 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                     Text(
                       "Account Type Selection",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          fontWeight: FontWeight.bold, color: Colors.black),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
@@ -167,8 +166,21 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                               groupValue: selectedValue,
                               onChanged: (int? value) {
                                 setState(() {
-                                  selectedValue = value!;
+                                  if (option == "Individual Driver") {
+                                    selectedValue = 0;
+                                    ref
+                                        .read(onboardController.notifier)
+                                        .setAccountType(AccountType.individual);
+                                  } else {
+                                    selectedValue = 1;
+                                    ref
+                                        .read(onboardController.notifier)
+                                        .setAccountType(AccountType.enterprise);
+                                  }
                                 });
+                                // setState(() {
+                                //   selectedValue = value!;
+                                // });
                               },
                             ),
                           ),

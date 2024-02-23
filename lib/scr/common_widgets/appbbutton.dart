@@ -17,6 +17,7 @@ class AppButton extends StatelessWidget {
   final IconData? icon;
   final String? imagePath;
   final BorderRadius? borderRadius;
+  final bool isLoading;
   const AppButton({
     super.key,
     required this.text,
@@ -32,6 +33,7 @@ class AppButton extends StatelessWidget {
     this.imagePath,
     this.borderRadius,
     this.fontSize,
+    this.isLoading = false,
   });
 
   @override
@@ -55,12 +57,18 @@ class AppButton extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Text(
-              text,
-              style: GoogleFonts.poppins(
-                  color: textColor ?? AppColors.white,
-                  fontSize: fontSize ?? 15),
-            ),
+            isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  )
+                : Text(
+                    text,
+                    style: GoogleFonts.poppins(
+                        color: textColor ?? AppColors.white,
+                        fontSize: fontSize ?? 15),
+                  ),
             isIcon
                 ? const Icon(
                     Icons.arrow_forward,
