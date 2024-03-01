@@ -311,6 +311,15 @@ class Util {
 
     return '$dateText, $formattedDateTime';
   }
+  static showFormattedTimeVal(String dateTimeString, context) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    dateTime = dateTime.toLocal();
+
+    String formattedDateTime = DateFormat("h:mma").format(dateTime);
+
+
+    return formattedDateTime;
+  }
 
   static showFormattedDateString(String dateTimeString, context) {
     DateTime dateTime = DateTime.parse(dateTimeString);

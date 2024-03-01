@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +10,7 @@ import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetStartedScreen extends ConsumerStatefulWidget {
   const GetStartedScreen({super.key});
@@ -17,6 +20,48 @@ class GetStartedScreen extends ConsumerStatefulWidget {
 }
 
 class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
+  @override
+  void initState() {
+    setUsedApp();
+    super.initState();
+  }
+
+  void setUsedApp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    ref.read(onboardController.notifier).getAccountType();
+
+    // prefs.setString("usedApp", "usedApp");
+
+    var account = prefs.getString("accountType") ?? "individual";
+    var usedApp = prefs.getString("usedApp");
+
+    log("account:$account");
+
+    if (account == "individual") {
+      selectedValue = 0;
+    } else {
+      selectedValue = 1;
+    }
+
+    log("selectedValue:$selectedValue");
+
+    if (usedApp == null) {
+
+      log("=========usedApp: is null");
+      ref
+          .read(onboardController.notifier)
+          .setAccountType(AccountType.individual);
+          prefs.setString("accountType", "individual");
+    }else{
+            log("=========usedApp: is not null");
+
+    }
+
+    log("selectedValue:$selectedValue");
+
+    prefs.setString("usedApp", "usedApp");
+  }
+
   int selectedValue = 0;
   List<String> accountType = ['Individual Driver', 'Enterprise Driver'];
   @override

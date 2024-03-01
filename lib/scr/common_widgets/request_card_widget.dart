@@ -5,14 +5,17 @@ import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/request/view/order_detail.dart';
 import 'package:jenos/scr/features/request/view/status_update.dart';
 
 class RequestOrderCardWIdget extends StatelessWidget {
-  const RequestOrderCardWIdget({super.key});
+  final request;
+  const RequestOrderCardWIdget({super.key, this.request});
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
       padding: const EdgeInsets.all(AppSize.defaultPadding).copyWith(
@@ -30,24 +33,35 @@ class RequestOrderCardWIdget extends StatelessWidget {
           children: [
             Row(
               children: [
-                CustomWidget.imagAvatar(
-                  isBorder: false,
-                  image: "assets/images/pizza.png",
+                ClipOval(
+                  child: SizedBox.fromSize(
+                    size: const Size.fromRadius(25),
+                    child: request['itemImage'] != null
+                        ? Image.network(
+                            request['itemImage']!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset("assets/images/pixelBg.jpeg"),
+                  ),
                 ),
                 const SizedBox(
                   width: AppSize.defaultPadding / 2,
                 ),
-                Text(
-                  "Pizza-Hut",
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.center,
+                SizedBox(
+                  width: size.width * 0.3,
+                  child: Text(
+                    "Pizza-Hut",
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
             Text(
-              "Today, 12:15pm",
+              Util.showFormattedDateString(request['createdAt'], context),
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
                   fontWeight: FontWeight.w600, color: AppColors.greyColor),
             ),
@@ -56,32 +70,30 @@ class RequestOrderCardWIdget extends StatelessWidget {
         const SizedBox(
           height: AppSize.defaultPadding,
         ),
-        requestRowTextWidget(
-          context,
-        ),
+        requestRowTextWidget(context, desc: request['senderName']),
         requestRowTextWidget(
           context,
           title: "Pickup Date:",
-          desc: "Oct. 26, 2023",
+          desc: Util.showFormattedDateString(request['pickUpDate'], context),
           icon: Assets.calendar,
         ),
         requestRowTextWidget(
           context,
           title: "Pickup Time:",
-          desc: "02:00 pm",
+          desc: Util.showFormattedTimeVal(request['pickUpDate'], context),
           icon: Assets.clock,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             requestCardBtn(onTap: () {
-              navigate(context, const OrderDetailsPage());
+              navigate(context, OrderDetailsPage(request: request));
             }),
             const SizedBox(
               width: AppSize.defaultPadding,
             ),
             requestCardBtn(
-                title: "Status",
+                title: "Update Status", //request['status'],
                 bgColor: AppColors.white,
                 textColor: AppColors.primaryColor,
                 onTap: () {
@@ -150,11 +162,15 @@ class RequestOrderCardWIdget extends StatelessWidget {
               ),
             ],
           ),
-          Text(
-            desc,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Text(
+              desc,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
           ),
         ],
       ),

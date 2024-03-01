@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
@@ -7,75 +8,98 @@ import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
+import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
+import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
 import 'package:jenos/scr/features/profile/view/account_details.dart';
 import 'package:jenos/scr/features/profile/view/change_password.dart';
-import 'package:jenos/scr/features/profile/view/personal_details_page.dart';
+import 'package:jenos/scr/features/profile/view/update_personal_details_page.dart';
 import 'package:jenos/scr/features/profile/view/verification_page.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   bool enableNotification = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          CustomWidget.customAppbar(context, title: "Profile"),
+          CustomWidget.customAppbar(context, title: "Profile", isArrow: true),
       body: ListView(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         children: [
-          CustomWidget.profileHeaderCard(
-            context,
-            name: "Kayode ade",
-            userName: "MrK",
-            phone: "09043568909",
-            logisticsName: "GIGM Logistics",
-          ),
+          Consumer(builder: (context, ref, _) {
+            // final profile = ref.watch(userDataNotifier);
+            final personalNotifier = ref.watch(personalInfoNotifier);
+
+            return CustomWidget.profileHeaderCard(
+              profileImg: ClipOval(
+                child: SizedBox.fromSize(
+                    size: const Size.fromRadius(25),
+                    child: personalNotifier.imagePath != null
+                        ? Image.network(
+                            personalNotifier.imagePath!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset("assets/images/profileImg.jpg")),
+              ),
+              context,
+              name: personalNotifier.nameController.text,
+              userName: "MrK",
+              phone: personalNotifier.phoneController.text,
+              logisticsName: personalNotifier.nameController.text,
+            );
+          }),
           const SizedBox(
             height: AppSize.defaultPadding,
           ),
 
-          Container(
-            margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.white),
-            child: Column(
-              children: [
-                CustomWidget.profileTile(
-                  context,
-                  img: Assets.userIcon,
-                  title: "Edit profile information",
-                  desc: "Update your profile",
-                  onTap: () {
-                    navigate(context, const PersonalDetailPage());
-                  },
-                ),
-                const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: AppSize.defaultPadding),
-                  child: Divider(
-                    color: AppColors.grey,
+          Consumer(builder: (context, ref, _) {
+            final accountType = ref.watch(onboardController).accountType;
+            return Container(
+              margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.white),
+              child: Column(
+                children: [
+                  CustomWidget.profileTile(
+                    context,
+                    img: Assets.userIcon,
+                    title: "Edit profile information",
+                    desc: "Update your profile",
+                    onTap: () {
+                      ref.read(personalInfoNotifier.notifier).getUserData();
+                      ref.read(personalInfoNotifier.notifier).resetState();
+
+                      navigate(context, const UpdatePersonalDetailPage());
+                    },
                   ),
-                ),
-                CustomWidget.profileTile(
-                  context,
-                  img: Assets.userIcon,
-                  title: "KYC/ Verification",
-                  desc: "Confirm your identity",
-                  onTap: () {
-                    navigate(context, const VerificationPage());
-                  },
-                ),
-              ],
-            ),
-          ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppSize.defaultPadding),
+                    child: Divider(
+                      color: AppColors.grey,
+                    ),
+                  ),
+                  CustomWidget.profileTile(
+                    context,
+                    img: Assets.userIcon,
+                    title: "KYC/ Verification",
+                    desc: "Confirm your identity",
+                    onTap: () {
+                      navigate(context, const VerificationPage());
+                    },
+                  ),
+                ],
+              ),
+            );
+          }),
           //
           Container(
             margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
@@ -187,7 +211,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           desc:
                               "Want to take a break from\nJenosWay Logistics?",
                           onTap: () async {
-                            navigate(context, const SignInPage());
+                            ref
+                                .read(personalInfoNotifier.notifier)
+                                .logOut(context);
                           },
                         );
                       },

@@ -6,50 +6,65 @@ import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/core/util/enums.dart';
+import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
+import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
 
-class HomeHeaderWidget extends StatefulWidget {
+class HomeHeaderWidget extends ConsumerStatefulWidget {
   const HomeHeaderWidget({
     super.key,
   });
 
   @override
-  State<HomeHeaderWidget> createState() => _HomeHeaderWidgetState();
+  ConsumerState<HomeHeaderWidget> createState() => _HomeHeaderWidgetState();
 }
 
-class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
+class _HomeHeaderWidgetState extends ConsumerState<HomeHeaderWidget> {
   bool isOnline = true;
   @override
   Widget build(BuildContext context) {
+    final personalNotifier = ref.watch(personalInfoNotifier);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
-            CustomWidget.imagAvatar(isBorder: true),
+            ClipOval(
+              child: SizedBox.fromSize(
+                  size: const Size.fromRadius(25),
+                  child: personalNotifier.imagePath != null
+                      ? Image.network(
+                          personalNotifier.imagePath!,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset("assets/images/profileImg.jpg")),
+            ),
             const SizedBox(
-              width: 20,
+              width: 10,
             ),
             Consumer(builder: (context, ref, _) {
               final accountType = ref.watch(onboardController).accountType;
+              final personalNotifier = ref.watch(personalInfoNotifier);
+              final Size size = MediaQuery.of(context).size;
 
               if (accountType == AccountType.individual) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "B2B Logistics",
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.dark,
-                          fontSize: 14),
-                      textAlign: TextAlign.center,
+                    SizedBox(
+                      width: size.width * 0.35,
+                      child: Text(
+                        personalNotifier.nameController.text,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.dark,
+                            fontSize: 14),
+                      ),
                     ),
-                    // const SizedBox(
-                    //   height: 5,
-                    // ),
                     Row(
                       children: [
                         Text(
@@ -60,7 +75,6 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
                                     color: AppColors.dark,
                                     fontSize: 12,
                                   ),
-                          textAlign: TextAlign.center,
                         ),
                         const SizedBox(
                           width: 15,
@@ -77,7 +91,6 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
                             },
                           ),
                         ),
-                       
                       ],
                     ),
                   ],
@@ -87,13 +100,16 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Kayode Ola",
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.dark,
-                        fontSize: 14),
-                    textAlign: TextAlign.center,
+                  SizedBox(
+                    width: size.width * 0.35,
+                    child: Text(
+                      personalNotifier.nameController.text,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.dark,
+                          fontSize: 14),
+                    ),
                   ),
                   const SizedBox(
                     height: 5,
@@ -106,11 +122,27 @@ class _HomeHeaderWidgetState extends State<HomeHeaderWidget> {
         Row(
           children: [
             CustomWidget.headerCard(Assets.bell, onTap: () {
-              navigate(context,const  NotificationPage(isArrowBack: true,));
+              navigate(
+                  context,
+                  const NotificationPage(
+                    isArrowBack: true,
+                  ));
             }),
             const SizedBox(width: 10),
-            CustomWidget.headerCard(Assets.user, onTap: () {
-              navigate(context, const ProfilePage());
+            Consumer(builder: (context, ref, _) {
+              final accountType = ref.watch(onboardController).accountType;
+
+              if (accountType == AccountType.individual) {
+                return CustomWidget.headerCard(Assets.user, onTap: () {
+                  navigate(context, const ProfilePage());
+                });
+              }
+
+              return CustomWidget.headerCard(Assets.requests, onTap: () {
+                ref.read(navBarController.notifier).setNavbarIndex(1);
+
+                // navigate(context, const RequestPage());
+              });
             }),
           ],
         ),

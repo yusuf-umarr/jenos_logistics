@@ -11,6 +11,7 @@ import 'package:jenos/scr/features/auth/controller/signin/signin_notifier.dart';
 import 'package:jenos/scr/features/auth/controller/signin/signin_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
+import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
@@ -62,6 +63,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
             //  Navigator.pushNamedAndRemoveUntil(
             //               context, BottomBar.routeName, (route) => false);
+            ref.read(navBarController.notifier).setNavbarIndex(0);
+
             Navigator.of(context).pushNamedAndRemoveUntil(
                 '/bottom-bar', (Route<dynamic> route) => false);
           });

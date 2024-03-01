@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class representing the authentication repository.
 abstract class RequestRepository {
-  Future<ApiResponse<dynamic>> createCustomerRequest(
+  Future<ApiResponse<dynamic>> acceptRequest(
     String receiverName,
     String phone,
     String deliveryAddress,
@@ -30,7 +30,7 @@ abstract class RequestRepository {
     String userType,
   );
   //get customers added by the merchant
-  Future<ApiResponse<dynamic>> getCustomerRequest();
+  Future<ApiResponse<dynamic>> getRiderRequest({String type = "Customer"});
 }
 
 class RequestRepositoryImpl implements RequestRepository {
@@ -39,7 +39,7 @@ class RequestRepositoryImpl implements RequestRepository {
   RequestRepositoryImpl(this._dio);
 
   @override
-  Future<ApiResponse<dynamic>> createCustomerRequest(
+  Future<ApiResponse<dynamic>> acceptRequest(
     String receiverName,
     String phone,
     String deliveryAddress,
@@ -107,23 +107,18 @@ class RequestRepositoryImpl implements RequestRepository {
   }
 
   @override
-  Future<ApiResponse<dynamic>> getCustomerRequest() async {
-    log("get customer called");
+  Future<ApiResponse<dynamic>> getRiderRequest({String type= "Customer"}) async {
+    log("get getRiderRequest called:$type");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId = prefs.getString('userId') ?? "";
-        String accountType = prefs.getString('accountType') ?? ""; 
+    // String userId = prefs.getString('userId') ?? "";
+    //     String accountType = prefs.getString('accountType') ?? ""; 
 
     try {
 
-          final pathUrl = accountType == "merchant"
-          ? "/request/?merchantId=$userId"
-          : "/request/?customerId=$userId";
-
-      //https://jenosway-backend.onrender.com/api/v1/request/?customerId=65d4d570b970140a589183b4
+      
       final response = await _dio.get(
-        "${Endpoint.baseUrl}$pathUrl",
+        "${Endpoint.baseUrl}/request?userType=$type",
       );
-      // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
 
       return ApiResponse<dynamic>(
         success: true,
@@ -131,6 +126,7 @@ class RequestRepositoryImpl implements RequestRepository {
         message: " successful",
       );
     } on DioException catch (e) {
+      // log("get rider request error$e");
       return AppException.handleError(
         e,
       );

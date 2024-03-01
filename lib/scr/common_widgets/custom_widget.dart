@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
@@ -205,7 +207,8 @@ class CustomWidget {
                       child: Text(
                         "Complete Setting Now",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.white, fontWeight: FontWeight.w600),
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   )
@@ -720,12 +723,15 @@ class CustomWidget {
           const SizedBox(
             width: AppSize.defaultPadding,
           ),
-          Text(
-            text,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(fontWeight: fontWeight, color: AppColors.white),
+          Expanded(
+            child: Text(
+              text,
+              // overflow: TextOverflow.ellipsis,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontWeight: fontWeight, color: AppColors.white),
+            ),
           ),
         ],
       ),
@@ -740,9 +746,11 @@ class CustomWidget {
     String userName = "",
     String phone = "",
     String logisticsName = "",
+    Widget? profileImg,
   }) {
     return Stack(
       children: [
+        //background im`ge
         Positioned(
             child: Image.asset(
           img,
@@ -762,30 +770,37 @@ class CustomWidget {
               children: [
                 Row(
                   children: [
-                    CustomWidget.imagAvatar(),
+                    SizedBox(
+                      child: profileImg,
+                    ),
                     const SizedBox(
                       width: 5,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.white),
-                        ),
-                        Text(
-                          "@$userName",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
                                     fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                      ],
+                                    color: AppColors.white),
+                          ),
+                          Text(
+                            "@$userName",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -798,11 +813,14 @@ class CustomWidget {
                   text: phone,
                   fontWeight: FontWeight.bold,
                 ),
-                profilePhoneCard(
-                  context,
-                  img: Assets.officeBuilding,
-                  text: logisticsName,
-                  fontWeight: FontWeight.w400,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: profilePhoneCard(
+                    context,
+                    img: Assets.officeBuilding,
+                    text: logisticsName,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ],
             ),

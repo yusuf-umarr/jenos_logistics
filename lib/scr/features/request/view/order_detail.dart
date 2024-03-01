@@ -5,11 +5,13 @@ import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 
 class OrderDetailsPage extends ConsumerStatefulWidget {
-  const OrderDetailsPage({super.key});
+  final request;
+  const OrderDetailsPage({super.key, this.request});
 
   @override
   ConsumerState<OrderDetailsPage> createState() => _OrderDetailsPageState();
@@ -18,6 +20,7 @@ class OrderDetailsPage extends ConsumerStatefulWidget {
 class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CustomWidget.customAppbar(
         context,
@@ -34,7 +37,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                 ),
           ),
           Text(
-            "Oct.26, 2023| 12:10pm",
+            "${Util.showFormattedDateString(widget.request['createdAt'], context)}| ${Util.showFormattedTimeVal(widget.request['pickUpDate'], context)}",
             style: Theme.of(context)
                 .textTheme
                 .bodySmall!
@@ -44,30 +47,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             height: AppSize.defaultPadding,
           ),
           //image card
-          Container(
-            padding: const EdgeInsets.all(AppSize.defaultPadding),
-            decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(15)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Item Image",
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(
-                  height: AppSize.defaultPadding,
-                ),
-                Image.asset(
-                  "assets/images/pizzaa.png",
-                  fit: BoxFit.cover,
-                )
-              ],
-            ),
-          ),
+          imageCard(context, size),
           const SizedBox(
             height: AppSize.defaultPadding,
           ),
@@ -75,15 +55,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
           CustomWidget.particularCard(
             context,
             headerText: "Requester's particulars",
-            name: "Benjamin Kofo",
+            name: widget.request['senderName'],
             email: "benjamin@gmail.com",
-            phone: "090234546575",
+            phone: widget.request['phone'],
           ),
           //Receiver particular
           CustomWidget.particularCard(
             context,
             headerText: "Receiver's particulars",
-            name: "Ben mark",
+            name: widget.request['receiverName'],
             email: "benjamin@gmail.com",
             phone: "090234546575",
           ),
@@ -116,7 +96,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   child: AppButton(
                       text: "Accept",
                       onPressed: () {
-                        navigate(context, BottomBar());
+                        navigate(context, const BottomBar());
                         ref.read(navBarController.notifier).setNavbarIndex(2);
                       }),
                 ),
@@ -142,6 +122,46 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
           const SizedBox(
             height: AppSize.defaultPadding * 4,
           )
+        ],
+      ),
+    );
+  }
+
+  Container imageCard(BuildContext context, Size size) {
+    return Container(
+      padding: const EdgeInsets.all(AppSize.defaultPadding),
+      decoration: BoxDecoration(
+          color: AppColors.white, borderRadius: BorderRadius.circular(15)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Item Image",
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(
+            height: AppSize.defaultPadding,
+          ),
+          SizedBox(
+            height: size.height * 0.15,
+            child: widget.request['itemImage'] != null
+                ? Image.network(
+                    widget.request['itemImage']!,
+                    fit: BoxFit.cover,
+                    width: size.width,
+                  )
+                : Image.asset(
+                    "assets/images/pixelBg.jpeg",
+                    fit: BoxFit.cover,
+                    width: size.width,
+                  ),
+          )
+          // Image.asset(
+          //   "assets/images/pizzaa.png",
+          //   fit: BoxFit.cover,
+          // )
         ],
       ),
     );

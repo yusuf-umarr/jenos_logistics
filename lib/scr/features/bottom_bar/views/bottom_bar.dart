@@ -10,15 +10,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
+import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
+import 'package:jenos/scr/features/home/controller/home_controller.dart';
 import 'package:jenos/scr/features/home/view/home_page.dart';
+import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
+import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
+import 'package:jenos/scr/features/profile/view/profile_page.dart';
+import 'package:jenos/scr/features/request/controller/request_notifier.dart';
 import 'package:jenos/scr/features/request/view/request_page.dart';
-import 'package:jenos/scr/features/trip/controller/onboard_controller.dart';
+import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 import 'package:jenos/scr/features/trip/view/trip_page.dart';
 import 'package:jenos/scr/features/wallet/view/wallat_page.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
-   const BottomBar({super.key, this.accountType});
+  const BottomBar({super.key, this.accountType});
 
   final accountType;
 
@@ -31,58 +37,96 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   void initState() {
     getData();
-      ref.read(tripController.notifier).getCurrentLocation();
+    setPages();
     super.initState();
   }
 
+  List<Widget> pages = [];
+  List iconList = [];
+
   void getData() async {
     if (mounted) {
-      // await ref.read(userDataNotifier.notifier).getUserData();
+      await ref.read(onboardController.notifier).getAccountType();
+      ref.read(homeController.notifier).getShowPop();
+      await ref.read(personalInfoNotifier.notifier).getUserData();
+      ref.read(tripController.notifier).getCurrentLocation();
+      ref.read(requestNotifier.notifier).getRiderRequest();
+      ref.read(tripController.notifier).getTrips();
     }
   }
 
-  List<Widget> pages = [
-    const HomePage(),
-    const RequestPage(),
-    const TripsPage(),
-    const WalletPage(),
-  ];
+  void setPages() async {
+    final accountType = ref.read(onboardController).accountType;
 
-  List iconList = [
-    {
-      "id": 0,
-      "name": "Home",
-      "icon": Assets.home,
-    },
-    {
-      "id": 1,
-      "name": "Request",
-      "icon": Assets.requests,
-    },
-    {
-      "id": 2,
-      "name": "Trips",
-      "icon": Assets.trips,
-    },
-    {
-      "id": 3,
-      "name": "Wallet",
-      "icon": Assets.wallet,
-    },
-  ];
+    pages = [
+      const HomePage(),
+      const RequestPage(),
+      const TripsPage(),
+      accountType == AccountType.individual
+          ? const WalletPage()
+          : const ProfilePage(),
+    ];
+
+    iconList = [
+      {
+        "id": 0,
+        "name": "Home",
+        "icon": Assets.home,
+      },
+      {
+        "id": 1,
+        "name": "Request",
+        "icon": Assets.requests,
+      },
+      {
+        "id": 2,
+        "name": "Trips",
+        "icon": Assets.trips,
+      },
+      {
+        "id": 3,
+        "name": accountType == AccountType.individual ? "Wallet" : "Profile",
+        "icon":
+            accountType == AccountType.individual ? Assets.wallet : Assets.user,
+      },
+    ];
+  }
+
+  // List<Widget> pages = [
+  //   const HomePage(),
+  //   const RequestPage(),
+  //   const TripsPage(),
+  //   const WalletPage(),
+  // ];
+
+  // List iconList = [
+  //   {
+  //     "id": 0,
+  //     "name": "Home",
+  //     "icon": Assets.home,
+  //   },
+  //   {
+  //     "id": 1,
+  //     "name": "Request",
+  //     "icon": Assets.requests,
+  //   },
+  //   {
+  //     "id": 2,
+  //     "name": "Trips",
+  //     "icon": Assets.trips,
+  //   },
+  //   {
+  //     "id": 3,
+  //     "name": "Wallet",
+  //     "icon": Assets.wallet,
+  //   },
+  // ];
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          // DateTime now = DateTime.now();
-
-          // if (provider.currentIndex != 0) {
-          //   provider.setNavbarIndex(0);
-
-          //   return false;
-          // } else {
-          //   return false;
-          // }
+          ref.read(navBarController.notifier).setNavbarIndex(0);
 
           return false;
         },

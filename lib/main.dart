@@ -37,7 +37,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   void initState() {
-    // ref.read(onboardController.notifier).getAccountType();
+    ref.read(onboardController.notifier).getAccountType();
     accountType = ref.read(onboardController).accountType;
 
     super.initState();

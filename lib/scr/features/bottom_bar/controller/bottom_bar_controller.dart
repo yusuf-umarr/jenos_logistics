@@ -27,36 +27,50 @@ class NavBarController extends StateNotifier<NavBarState> {
   }
 
   Future<bool> validateToken() async {
-    log("validateToken is called");
+    print("validateToken is called");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
-        String accountType = prefs.getString('accountType') ?? "";
+    String accountType = prefs.getString('accountType') ?? "individual";
 
     final dio = Dio();
+    dio.options.connectTimeout = const Duration(seconds: 5); // 5 seconds timeout
 
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',
     };
 
-    // log("token  is called:$token");
+    // print("token is called: $token");
 
-    // var url = Uri.parse('${Endpoint.baseUrl}/merchant');
+    log("=====accountType:$accountType");
+
+    var pathUrl = accountType == "individual" ? "/rider/me" : "/enterprise/me";
 
     try {
-         var pathUrl =
-          accountType == "individual" ? "/rider" : "/enterprise";
-
       final response = await dio.get(
         "${Endpoint.baseUrl}$pathUrl",
         options: Options(headers: headers),
       );
+      // print("success here: $response");
       return true;
     } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        print("Request timeout");
+
+        return false;
+      }
+      //  else if (e.type == DioExceptionType.response) {
+      //   print("Response error: ${e.response?.statusCode}");
+      // }
+      else {
+        print("Other error: $e");
+      }
       return false;
     }
   }
+  //
 }
 
 /// Provider for accessing the [NavBarController] instance.

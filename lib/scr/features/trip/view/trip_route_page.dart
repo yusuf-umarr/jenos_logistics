@@ -9,7 +9,7 @@ import 'package:jenos/config/config.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/my_trips_card.dart';
 import 'package:jenos/scr/constant/app_size.dart';
-import 'package:jenos/scr/features/trip/controller/onboard_controller.dart';
+import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 // import 'package:location/location.dart';
 
 class TripRoutePage extends ConsumerStatefulWidget {

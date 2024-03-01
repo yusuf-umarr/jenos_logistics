@@ -4,13 +4,18 @@
 /// @since   2023-12-19
 ///
 
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:jenos/scr/features/trip/controller/onboard_state.dart';
+import 'package:jenos/scr/core/repository/trips_repository.dart';
+import 'package:jenos/scr/features/trip/controller/trips_state.dart';
 
 /// Controller class for managing the navigation bar state.
 class TripController extends StateNotifier<TripState> {
-  TripController() : super(TripState.initial());
+  TripController(this.tripsRepository) : super(TripState.initial());
+
+  final TripsRepository tripsRepository;
 
   // void setAccountType(AccountType type) {
   //   state = state.copyWith(accountType: type);
@@ -61,9 +66,40 @@ class TripController extends StateNotifier<TripState> {
     //   );
     // });
   }
+
+  Future<void> getTrips() async {
+    try {
+      final response = await tripsRepository.getTrips();
+
+      if (response.success) {
+        state = state.copyWith(
+          tripsData: response.data,
+          // message: response.message,
+        );
+        // log("get getTrips() success ${state.tripsData}");
+
+        return;
+      }
+
+      state = state.copyWith(
+        // loadState: NetworkState.error,
+        message: response.message,
+      );
+
+      return;
+    } catch (e) {
+      state = state.copyWith(
+        // loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
 //
 }
 
 /// Provider for accessing the [TripController] instance.
-final tripController =
-    StateNotifierProvider<TripController, TripState>((ref) => TripController());
+final tripController = StateNotifierProvider<TripController, TripState>(
+    (ref) => TripController(ref.read(tripsRepository)));
+
+//  (ref) => RequestNotifier(ref.read(requestRepository)

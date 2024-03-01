@@ -28,7 +28,7 @@ class OnboardController extends StateNotifier<OnboardState> {
     log("state accountType:${state.accountType}");
   }
 
-  void getAccountType() async {
+  Future<void> getAccountType() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String account = prefs.getString("accountType") ?? "individual";
     //

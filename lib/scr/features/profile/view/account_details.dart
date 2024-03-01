@@ -110,7 +110,8 @@ class _AccountDetailsState extends State<AccountDetails> {
                       const ColorFilter.mode(AppColors.dark, BlendMode.srcIn),
                 ),
               ),
-              onTap: () {}),
+              onTap: () {},
+              ),
           const SizedBox(
             height: AppSize.defaultPadding * 2,
           ),

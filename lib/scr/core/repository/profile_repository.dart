@@ -21,12 +21,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Abstract class representing the authentication repository.
 abstract class ProfileRepository {
   Future<ApiResponse<dynamic>> updateProfile(
-      String fullName, String phoneNumber, String address,
-      );
+    String fullName,
+    String phoneNumber,
+    String address,
+  );
 
   // Future<ApiResponse<dynamic>> signIn(String email, String password);
   Future<ApiResponse<dynamic>> getUserData();
-  Future<ApiResponse> uploadImage(file,);
+  Future<ApiResponse> uploadImage(
+    file,
+  );
 }
 
 /// Implementation of the authentication repository.
@@ -37,20 +41,34 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<ApiResponse<dynamic>> updateProfile(
-      String fullName, String phoneNumber, String address,
-      ) async {
+    String fullName,
+    String phoneNumber,
+    String address,
+  ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountType = prefs.getString('accountType') ?? "";
     String userId = prefs.getString('userId') ?? "";
 
+    final pathUrl =
+        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+
+    //userName
+
+    var riderBody = {
+      "userName": fullName,
+      "phoneNumber": phoneNumber,
+      "address": address,
+    };
+
+    var enterpriseriseBody = {
+      "userName": fullName,
+      "phoneNumber": phoneNumber,
+      "address": address,
+    };
+
     try {
-      final response = await _dio.put(
-        "${Endpoint.baseUrl}/merchant/$userId",
-        data: {
-          "fullName": fullName,
-          "phoneNumber": phoneNumber,
-          "address": address,
-        },
-      );
+      final response = await _dio.put("${Endpoint.baseUrl}$pathUrl",
+          data: accountType == "individual" ? riderBody : enterpriseriseBody);
 
       // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
 
@@ -68,24 +86,27 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<ApiResponse<dynamic>> getUserData() async {
+
+
+log("getUserData called");
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId = prefs.getString('userId') ?? "";
-    String accountType = prefs.getString('accountType') ?? ""; 
+    String accountType = prefs.getString('accountType') ?? "individual";
 
     log("accountType here:$accountType");
 
     final pathUrl =
-        accountType =="merchant" ? "/merchant/me" : "/customer/get-customers/?_id=$userId";
+        accountType == "individual" ? "/rider/me" : "/enterprise/me";
     try {
       final response = await _dio.get(
         "${Endpoint.baseUrl}$pathUrl",
       );
 
-      // log("getuser response:${accountType == "merchant"  ? response.data['data'] : response.data['data'][0]}");
+      // log("getuser response:${response.data}");
 
       return ApiResponse<dynamic>(
         success: true,
-        data:  accountType == "merchant"  ? response.data['data'] : response.data['data'][0],
+        data: response.data['data'],
         //this endpoint returns list as customer data
         message: "Successful",
       );
@@ -96,13 +117,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<ApiResponse> uploadImage(
-      // BuildContext? context,
-      file,
-   ) async {
+    // BuildContext? context,
+    file,
+  ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
-        String accountType = prefs.getString('accountType') ?? "";
-
+    String accountType = prefs.getString('accountType') ?? "";
 
     try {
       FormData formData = FormData.fromMap({
@@ -111,7 +131,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
       //customer/update-profile-image/65c1f348773198d5bd5baff8
 
-      final pathUrl =  accountType == "merchant" 
+      final pathUrl = accountType == "merchant"
           ? "/merchant/image/$userId"
           : "/customer/update-profile-image/$userId";
 

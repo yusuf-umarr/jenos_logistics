@@ -77,8 +77,10 @@ class AuthRepositoryImpl implements AuthRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accountType = prefs.getString('accountType') ?? "";
 
+
+
     var pathUrl =
-        accountType == "individual" ? "/rider/login" : "/enterprise/login";
+        accountType == "enterprise" ? "/enterprise/login" :  "/rider/login";
 
     try {
       final response = await _dio.post("${Endpoint.baseUrl}$pathUrl", data: {

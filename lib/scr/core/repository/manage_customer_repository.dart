@@ -95,7 +95,7 @@ class ManageCustomerRepositoryImpl implements ManageCustomerRepository {
 
   @override
   Future<ApiResponse<dynamic>> getCustomer() async {
-    log("get customer called");
+    // log("get customer called");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
     try {

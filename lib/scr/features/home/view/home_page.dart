@@ -7,6 +7,7 @@ import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/home_header_widget.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
+import 'package:jenos/scr/features/home/controller/home_controller.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -83,15 +84,20 @@ class _HomePageState extends ConsumerState<HomePage> {
             const HomeHeaderWidget(),
 
             // PopUp //////////////
-            isShowPop
-                ? CustomWidget.homePopCard(context, size, () {
-                    setState(() {
-                      isShowPop = false;
-                    });
-                  }, () {
-                    ref.read(navBarController.notifier).setNavbarIndex(3);
-                  })
-                : const SizedBox.shrink(),
+            Consumer(builder: (context, ref, _) {
+              final isShowPop = ref.watch(homeController).isShowPop;
+              return SizedBox(
+                child: isShowPop
+                    ? CustomWidget.homePopCard(context, size, () {
+                        ref.read(homeController.notifier).setShowPop(false);
+                      }, () {
+                        ref.read(homeController.notifier).setShowPop(false);
+
+                        ref.read(navBarController.notifier).setNavbarIndex(3);
+                      })
+                    : const SizedBox.shrink(),
+              );
+            }),
 
             // PopUp //////////////
             SizedBox(
@@ -205,7 +211,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 },
               ),
             ),
-            CustomWidget.seeAllWidget(context, onTap: () {}),
+            CustomWidget.seeAllWidget(context, onTap: () {
+              ref.read(navBarController.notifier).setNavbarIndex(1);
+            }),
 
             SizedBox(
               height: size.height * 0.05,

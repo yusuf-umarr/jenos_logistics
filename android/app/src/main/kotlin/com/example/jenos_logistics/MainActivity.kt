@@ -1,4 +1,4 @@
-package com.jenos.logistics.driver
+package com.jenos.rider.logistics
 
 import io.flutter.embedding.android.FlutterActivity
 

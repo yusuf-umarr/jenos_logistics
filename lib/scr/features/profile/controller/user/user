@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "msg": "Merchant successfully fetched",
+  "data": {
+    "_id": "65ca2562ff66853bcd1adb46",
+    "fullName": "yusuf u",
+    "phoneNumber": "070364560477",
+    "email": "yusuffumar02@gmail.com",
+    "password": "$2b$10$n3gKXD5oE30yFgvhCbEJEuXPpuysigkl.hhDIzaV0YGc1L7G5ebqW",
+    "merchantId": "MID74580",
+    "status": "unverified",
+    "createdAt": "2024-02-12T14:04:18.877Z",
+    "updatedAt": "2024-02-20T10:05:13.933Z",
+    "__v": 0,
+    "address": "lagos ng",
+    "image": "https://res.cloudinary.com/zillight/image/upload/v1708423513/Jenosway/profileImage/viualeh2t9ue7ympel0m.jpg"
+  }
+}
+
+
