@@ -6,8 +6,10 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/home_header_widget.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/home/controller/home_controller.dart';
+import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -28,40 +30,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     },
   ];
 
-  List<Map<String, dynamic>> assetsList = [
-    {
-      "name": "Total Assets",
-      "price": "N10,000",
-      "desc": "Generated",
-      "icon": Assets.creditCard,
-      "color": AppColors.cardOne,
-      "iconColor": Colors.green,
-    },
-    {
-      "name": "Total Trips",
-      "price": "500",
-      "desc": "Trips",
-      "icon": Assets.tripIcon,
-      "color": AppColors.cardTwo,
-      "iconColor": AppColors.dark,
-    },
-    {
-      "name": "Completed Trips",
-      "price": "300",
-      "desc": "Trips",
-      "icon": Assets.locationMarker,
-      "color": AppColors.cardThree,
-      "iconColor": AppColors.dark,
-    },
-    {
-      "name": "Active Trips",
-      "price": "300",
-      "desc": "Trips",
-      "icon": Assets.badgeCheck,
-      "color": AppColors.cardFour,
-      "iconColor": Colors.green,
-    },
-  ];
+  List<Map<String, dynamic>> assetsList = [];
 
   bool isShowPop = true;
   int _current = 0;
@@ -178,39 +147,78 @@ class _HomePageState extends ConsumerState<HomePage> {
             SizedBox(
               height: size.height * 0.05,
             ),
-            // Row(
-            //   children: [
-            //     homeTripCard(context),
-            //     homeTripCard(context),
-            //   ],
-            // )
 
-            SizedBox(
-              height: 350,
-              child: GridView.builder(
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisExtent: 170,
-                  crossAxisSpacing: 17,
-                  childAspectRatio: 1,
-                ),
-                itemCount: assetsList.length,
-                itemBuilder: (context, index) {
-                  final card = assetsList[index];
-                  return CustomWidget.homeTripCard(
-                    context,
-                    card['name']!,
-                    card['desc']!,
-                    card['icon']!,
-                    card['price']!,
-                    card['color']!,
-                    card['iconColor'],
-                  );
+            Builder(builder: (context) {
+              final tripsAnalysis = ref.watch(tripController).riderAnalysis;
+
+              assetsList = [
+                {
+                  "name": "Total Assets",
+                  "price": "${tripsAnalysis['collection'] ?? 0}",
+                  "desc": "Generated",
+                  "icon": Assets.creditCard,
+                  "color": AppColors.cardOne,
+                  "iconColor": Colors.green,
                 },
-              ),
-            ),
+                {
+                  "name": "Completed Trips",
+                  "price": tripsAnalysis['completed'] ?? 0,
+                  "desc": "Trips",
+                  "icon": Assets.tripIcon,
+                  "color": AppColors.cardTwo,
+                  "iconColor": AppColors.dark,
+                },
+                {
+                  "name": "Pending Trips",
+                  "price": tripsAnalysis['pending'] ?? 0,
+                  "desc": "Trips",
+                  "icon": Assets.locationMarker,
+                  "color": AppColors.cardThree,
+                  "iconColor": AppColors.dark,
+                },
+                {
+                  "name": "Cancelled Trips",
+                  "price": tripsAnalysis['cancelled'] ?? 0,
+                  "desc": "Trips",
+                  "icon": Assets.badgeCheck,
+                  "color": AppColors.cardFour,
+                  "iconColor": Colors.green,
+                },
+              ];
+              return SizedBox(
+                height: 350,
+                child: GridView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisExtent: 170,
+                    crossAxisSpacing: 17,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: assetsList.length,
+                  itemBuilder: (context, index) {
+                    final card = assetsList[index];
+                    return CustomWidget.homeTripCard(
+                      context,
+                      card['name']!,
+                      card['desc']!,
+                      card['icon']!,
+                      card['price'].toString(),
+                      card['color']!,
+                      card['iconColor'],
+                    );
+                  },
+                ),
+              );
+            }),
+            //
+
+            // Util.customFuturBuilder(
+            //     ref.read(tripController.notifier).getRiderAnalysis(),
+
+            // ),
+//
             CustomWidget.seeAllWidget(context, onTap: () {
               ref.read(navBarController.notifier).setNavbarIndex(1);
             }),

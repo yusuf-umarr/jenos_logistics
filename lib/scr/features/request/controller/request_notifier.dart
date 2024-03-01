@@ -71,7 +71,7 @@ class RequestNotifier extends StateNotifier<RequestState> {
     }
   }
 
-  Future<void> getRiderRequest() async {
+  Future getRiderRequest() async {
     try {
       final response = await requestRepository.getRiderRequest();
 
@@ -82,7 +82,7 @@ class RequestNotifier extends StateNotifier<RequestState> {
         );
         // log("get getRiderRequest success ${state.requestData}");
 
-        return;
+        return true;
       }
 
       state = state.copyWith(
@@ -90,12 +90,14 @@ class RequestNotifier extends StateNotifier<RequestState> {
         message: response.message,
       );
 
-      return;
+      return false;
     } catch (e) {
+      
       state = state.copyWith(
         // loadState: NetworkState.error,
         message: e.toString(),
       );
+      return false;
     }
   }
 

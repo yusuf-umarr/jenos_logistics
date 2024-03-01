@@ -67,7 +67,7 @@ class TripController extends StateNotifier<TripState> {
     // });
   }
 
-  Future<void> getTrips() async {
+  Future getTrips() async {
     try {
       final response = await tripsRepository.getTrips();
 
@@ -78,7 +78,7 @@ class TripController extends StateNotifier<TripState> {
         );
         // log("get getTrips() success ${state.tripsData}");
 
-        return;
+        return true;
       }
 
       state = state.copyWith(
@@ -86,12 +86,43 @@ class TripController extends StateNotifier<TripState> {
         message: response.message,
       );
 
-      return;
+      return false;
     } catch (e) {
       state = state.copyWith(
         // loadState: NetworkState.error,
         message: e.toString(),
       );
+    }
+    return false;
+  }
+
+//
+  Future getRiderAnalysis() async {
+    try {
+      final response = await tripsRepository.getRiderAnalysis();
+
+      if (response.success) {
+        state = state.copyWith(
+          riderAnalysis: response.data,
+          // message: response.message,
+        );
+        log("get getRiderAnalysis() success ${state.riderAnalysis}");
+
+        return true;
+      }
+
+      state = state.copyWith(
+        // loadState: NetworkState.error,
+        message: response.message,
+      );
+
+      return false;
+    } catch (e) {
+      state = state.copyWith(
+        // loadState: NetworkState.error,
+        message: e.toString(),
+      );
+      return false;
     }
   }
 

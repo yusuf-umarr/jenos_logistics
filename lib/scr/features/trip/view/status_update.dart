@@ -126,21 +126,21 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
                     }
                   },
                 ),
-                stepperCard(
-                  context,
-                  title: "Payment has been made",
-                  desc: "Confirmation Time:",
-                  time: "",
-                  isStepped: switchValueFive,
-                  isShowLine: false,
-                  onChange: (value) {
-                    if (switchValueFour) {
-                      setState(() {
-                        switchValueFive = value;
-                      });
-                    }
-                  },
-                ),
+                // stepperCard(
+                //   context,
+                //   title: "Payment has been made",
+                //   desc: "Confirmation Time:",
+                //   time: "",
+                //   isStepped: switchValueFive,
+                //   isShowLine: false,
+                //   onChange: (value) {
+                //     if (switchValueFour) {
+                //       setState(() {
+                //         switchValueFive = value;
+                //       });
+                //     }
+                //   },
+                // ),
               ],
             ),
           ),
@@ -152,9 +152,9 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
               horizontal: AppSize.defaultPadding,
             ),
             child: AppButton(
-                text: "Close",
+                text: "End trip",
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
                 }),
           )
         ],
@@ -229,18 +229,19 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
             ],
           ),
         ),
-         isShowLine
-            ?
-        Positioned(
-          left: 5,
-          top: 30,
-          child: DottedDashedLine(
-            height: 100,
-            width: 100,
-            axis: Axis.vertical,
-            dashColor: isStepped ? AppColors.primaryColor : AppColors.grey,
-          ),
-        ):const SizedBox.shrink()
+        isShowLine
+            ? Positioned(
+                left: 5,
+                top: 30,
+                child: DottedDashedLine(
+                  height: 100,
+                  width: 100,
+                  axis: Axis.vertical,
+                  dashColor:
+                      isStepped ? AppColors.primaryColor : AppColors.grey,
+                ),
+              )
+            : const SizedBox.shrink()
       ],
     );
   }

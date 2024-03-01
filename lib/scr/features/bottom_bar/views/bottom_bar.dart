@@ -14,6 +14,7 @@ import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/home/controller/home_controller.dart';
 import 'package:jenos/scr/features/home/view/home_page.dart';
+import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
 import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
@@ -52,6 +53,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       ref.read(tripController.notifier).getCurrentLocation();
       ref.read(requestNotifier.notifier).getRiderRequest();
       ref.read(tripController.notifier).getTrips();
+      ref.read(tripController.notifier).getRiderAnalysis();
     }
   }
 
@@ -60,7 +62,10 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
     pages = [
       const HomePage(),
-      const RequestPage(),
+         accountType == AccountType.individual
+          ? const RequestPage()
+          : const NotificationPage(isArrowBack: false),
+      // const RequestPage(),
       const TripsPage(),
       accountType == AccountType.individual
           ? const WalletPage()
@@ -73,11 +78,17 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         "name": "Home",
         "icon": Assets.home,
       },
-      {
+        {
         "id": 1,
-        "name": "Request",
-        "icon": Assets.requests,
+        "name": accountType == AccountType.individual ? "Request" : "Notification",
+        "icon":
+            accountType == AccountType.individual ? Assets.requests : Assets.bell,
       },
+      // {
+      //   "id": 1,
+      //   "name": "Request",
+      //   "icon": Assets.requests,
+      // },
       {
         "id": 2,
         "name": "Trips",

@@ -108,7 +108,6 @@ class RequestRepositoryImpl implements RequestRepository {
 
   @override
   Future<ApiResponse<dynamic>> getRiderRequest({String type= "Customer"}) async {
-    log("get getRiderRequest called:$type");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // String userId = prefs.getString('userId') ?? "";
     //     String accountType = prefs.getString('accountType') ?? ""; 

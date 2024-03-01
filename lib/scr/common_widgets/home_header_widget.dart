@@ -121,14 +121,18 @@ class _HomeHeaderWidgetState extends ConsumerState<HomeHeaderWidget> {
         ),
         Row(
           children: [
-            CustomWidget.headerCard(Assets.bell, onTap: () {
-              navigate(
-                  context,
-                  const NotificationPage(
-                    isArrowBack: true,
-                  ));
-            }),
-            const SizedBox(width: 10),
+            Row(
+              children: [
+                CustomWidget.headerCard(Assets.bell, onTap: () {
+                  navigate(
+                      context,
+                      const NotificationPage(
+                        isArrowBack: true,
+                      ));
+                }),
+                const SizedBox(width: 10),
+              ],
+            ),
             Consumer(builder: (context, ref, _) {
               final accountType = ref.watch(onboardController).accountType;
 
@@ -138,8 +142,8 @@ class _HomeHeaderWidgetState extends ConsumerState<HomeHeaderWidget> {
                 });
               }
 
-              return CustomWidget.headerCard(Assets.requests, onTap: () {
-                ref.read(navBarController.notifier).setNavbarIndex(1);
+              return CustomWidget.headerCard(Assets.tripIcon, onTap: () {
+                ref.read(navBarController.notifier).setNavbarIndex(2);
 
                 // navigate(context, const RequestPage());
               });

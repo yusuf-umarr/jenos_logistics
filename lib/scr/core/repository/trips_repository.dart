@@ -18,6 +18,7 @@ abstract class TripsRepository {
 
   //get customers added by the merchant
   Future<ApiResponse<dynamic>> getTrips();
+  Future<ApiResponse<dynamic>> getRiderAnalysis();
 }
 
 class TripsRepositoryImpl implements TripsRepository {
@@ -51,6 +52,33 @@ class TripsRepositoryImpl implements TripsRepository {
       );
     }
   }
+//
+  @override
+  Future<ApiResponse<dynamic>> getRiderAnalysis(
+     ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId') ?? "";
+        String accountType = prefs.getString('accountType') ?? "";
+
+    try {
+      final response = await _dio.get(
+        "${Endpoint.baseUrl}/trips/rider/analysis/$userId",
+      );
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data['data'],
+        message: " successful",
+      );
+    } on DioException catch (e) {
+      // log("get rider request error$e");
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+//
+
 }
 
 final tripsRepository = Provider<TripsRepository>(

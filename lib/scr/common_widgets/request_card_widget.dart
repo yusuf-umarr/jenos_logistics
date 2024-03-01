@@ -7,7 +7,7 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/request/view/order_detail.dart';
-import 'package:jenos/scr/features/request/view/status_update.dart';
+import 'package:jenos/scr/features/trip/view/status_update.dart';
 
 class RequestOrderCardWIdget extends StatelessWidget {
   final request;
@@ -86,18 +86,18 @@ class RequestOrderCardWIdget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            requestCardBtn(onTap: () {
+            Util.cardBtn(onTap: () {
               navigate(context, OrderDetailsPage(request: request));
             }),
             const SizedBox(
               width: AppSize.defaultPadding,
             ),
-            requestCardBtn(
-                title: "Update Status", //request['status'],
+            Util.cardBtn(
+                title: "N3,000", //request['status'],
                 bgColor: AppColors.white,
                 textColor: AppColors.primaryColor,
                 onTap: () {
-                  navigate(context, const StatusUpdatePage());
+                  // navigate(context, const StatusUpdatePage());
                 }),
           ],
         )
@@ -105,31 +105,6 @@ class RequestOrderCardWIdget extends StatelessWidget {
     );
   }
 
-  Widget requestCardBtn({
-    String title = "View Detail",
-    Color textColor = AppColors.white,
-    Color bgColor = AppColors.primaryColor,
-    Function()? onTap,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          width: 133,
-          decoration: BoxDecoration(
-              color: bgColor,
-              border: Border.all(color: AppColors.primaryColor),
-              borderRadius: BorderRadius.circular(10)),
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: textColor),
-          ),
-        ),
-      ),
-    );
-  }
 
   requestRowTextWidget(
     BuildContext context, {

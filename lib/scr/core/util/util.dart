@@ -311,12 +311,12 @@ class Util {
 
     return '$dateText, $formattedDateTime';
   }
+
   static showFormattedTimeVal(String dateTimeString, context) {
     DateTime dateTime = DateTime.parse(dateTimeString);
     dateTime = dateTime.toLocal();
 
     String formattedDateTime = DateFormat("h:mma").format(dateTime);
-
 
     return formattedDateTime;
   }
@@ -339,5 +339,51 @@ class Util {
       return '*This field is required';
     }
     return null;
+  }
+
+  static Widget cardBtn({
+    String title = "View Detail",
+    Color textColor = AppColors.white,
+    Color bgColor = AppColors.primaryColor,
+    Function()? onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          width: 133,
+          decoration: BoxDecoration(
+              color: bgColor,
+              border: Border.all(color: AppColors.primaryColor),
+              borderRadius: BorderRadius.circular(10)),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: textColor),
+          ),
+        ),
+      ),
+    );
+  }
+
+  static FutureBuilder<dynamic> customFuturBuilder(ref, child) {
+    return FutureBuilder<dynamic>(
+      future: ref,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasData || snapshot.data != null) {
+          return child;
+        } else {
+          return const SizedBox();
+
+          // Placeholder when there are no loans
+        }
+      },
+    );
   }
 }

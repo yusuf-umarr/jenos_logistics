@@ -13,11 +13,13 @@ class TripState {
   final List tripsData;
   final NetworkState? loadState;
   final String? message;
+  final Map<String, dynamic> riderAnalysis;
 
   /// Constructs a [TripState] instance.
   TripState({
     this.position,
     required this.tripsData,
+    required this.riderAnalysis,
     this.loadState,
     this.message,
   });
@@ -28,6 +30,7 @@ class TripState {
       tripsData: [],
       loadState: NetworkState.idle,
       message: null,
+      riderAnalysis: {},
     );
   }
 
@@ -36,12 +39,14 @@ class TripState {
     NetworkState? loadState,
     List? tripsData,
     String? message,
+    Map<String, dynamic>? riderAnalysis,
   }) {
     return TripState(
       position: position ?? this.position,
       tripsData: tripsData ?? this.tripsData,
       loadState: loadState ?? this.loadState,
       message: message ?? this.message,
+      riderAnalysis: riderAnalysis ?? this.riderAnalysis,
     );
   }
 }
