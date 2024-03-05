@@ -57,7 +57,7 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
     return Scaffold(
       appBar: CustomWidget.customAppbar(
         context,
-        title: "Staus update",
+        title: "Status update",
         isArrow: true,
       ),
       body: ListView(

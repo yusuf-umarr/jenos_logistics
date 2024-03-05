@@ -14,7 +14,9 @@ import 'package:jenos/scr/features/trip/view/trip_route_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TripsPage extends ConsumerStatefulWidget {
-  const TripsPage({super.key});
+  final AccountType accountType ;
+  const TripsPage( {super.key, required this.accountType,
+  });
 
   @override
   ConsumerState<TripsPage> createState() => _TripsPageState();
@@ -31,17 +33,17 @@ class _TripsPageState extends ConsumerState<TripsPage> {
 
   @override
   void initState() {
-    getAccountType();
+    // getAccountType();
     ref.read(tripController.notifier).getTrips();
     super.initState();
   }
 
-  String accountType = "";
+  // String accountType = "";
 
-  getAccountType() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    accountType = prefs.getString('accountType') ?? "individual";
-  }
+  // getAccountType() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   accountType = prefs.getString('accountType') ?? "individual";
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            tripsHeaderWidget(context, width, accountType),
+            tripsHeaderWidget(context, width),
 
             Expanded(
               child: ListView.builder(
@@ -88,8 +90,8 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     return formattedDate;
   }
 
-  tripsHeaderWidget(BuildContext context, double width, accountType) {
-    if (accountType == "individual") {
+  tripsHeaderWidget(BuildContext context, double width) {
+    if (widget.accountType == AccountType.individual) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -133,17 +135,18 @@ class _TripsPageState extends ConsumerState<TripsPage> {
           ),
         ],
       );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Text(
+          "Assigned trips",
+          textAlign: TextAlign.start,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      );
     }
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Text(
-        "Assigned trips",
-        textAlign: TextAlign.start,
-        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-      ),
-    );
   }
 
   // tripsTypesWidget(List trips) {

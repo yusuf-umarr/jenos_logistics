@@ -80,7 +80,7 @@ class RequestNotifier extends StateNotifier<RequestState> {
           requestData: response.data,
           // message: response.message,
         );
-        // log("get getRiderRequest success ${state.requestData}");
+        log("get getRiderRequest success ${state.requestData}");
 
         return true;
       }

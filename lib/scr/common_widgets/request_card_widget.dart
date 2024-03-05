@@ -47,30 +47,35 @@ class RequestOrderCardWIdget extends StatelessWidget {
                 const SizedBox(
                   width: AppSize.defaultPadding / 2,
                 ),
-                SizedBox(
-                  width: size.width * 0.3,
-                  child: Text(
-                    "Pizza-Hut",
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
+                Text(
+                  Util.showFormattedDateString(request['createdAt'], context),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontWeight: FontWeight.w600, color: AppColors.greyColor),
                 ),
+                // SizedBox(
+                //   width: size.width * 0.3,
+                //   child: Text(
+                //     "", //Pizza-Hut
+                //     overflow: TextOverflow.ellipsis,
+                //     style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //     textAlign: TextAlign.center,
+                //   ),
+                // ),
               ],
             ),
-            Text(
-              Util.showFormattedDateString(request['createdAt'], context),
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  fontWeight: FontWeight.w600, color: AppColors.greyColor),
-            ),
+            // Text(
+            //   Util.showFormattedDateString(request['createdAt'], context),
+            //   style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            //       fontWeight: FontWeight.w600, color: AppColors.greyColor),
+            // ),
           ],
         ),
         const SizedBox(
           height: AppSize.defaultPadding,
         ),
-        requestRowTextWidget(context, desc: request['senderName']),
+        requestRowTextWidget(context, desc: request['receiverName']),
         requestRowTextWidget(
           context,
           title: "Pickup Date:",
@@ -104,7 +109,6 @@ class RequestOrderCardWIdget extends StatelessWidget {
       ]),
     );
   }
-
 
   requestRowTextWidget(
     BuildContext context, {

@@ -43,10 +43,10 @@ class AuthRepositoryImpl implements AuthRepository {
   ) async {
     try {
       var body = {
-        "email": email,
-        "password": password,
-        "userName": userName,
-        "phoneNumber": phoneNumber,
+        "email": email.trim(),
+        "password": password.trim(),
+        "userName": userName.trim(),
+        "phoneNumber": phoneNumber.trim(),
       };
 
       final response = await _dio.post("${Endpoint.baseUrl}/rider", data: body);
@@ -77,15 +77,13 @@ class AuthRepositoryImpl implements AuthRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accountType = prefs.getString('accountType') ?? "";
 
-
-
     var pathUrl =
-        accountType == "enterprise" ? "/enterprise/login" :  "/rider/login";
+        accountType == "enterprise" ? "/enterprise/login" : "/rider/login";
 
     try {
       final response = await _dio.post("${Endpoint.baseUrl}$pathUrl", data: {
-        "email": email,
-        "password": password,
+        "email": email.trim(),
+        "password": password.trim(),
       });
       // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
 

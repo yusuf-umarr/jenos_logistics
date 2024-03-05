@@ -23,6 +23,7 @@ import 'package:jenos/scr/features/request/view/request_page.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 import 'package:jenos/scr/features/trip/view/trip_page.dart';
 import 'package:jenos/scr/features/wallet/view/wallat_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({super.key, this.accountType});
@@ -41,6 +42,12 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     setPages();
     super.initState();
   }
+
+
+  //   getAccountType() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   accountType = prefs.getString('accountType') ?? "individual";
+  // }
 
   List<Widget> pages = [];
   List iconList = [];
@@ -66,7 +73,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           ? const RequestPage()
           : const NotificationPage(isArrowBack: false),
       // const RequestPage(),
-      const TripsPage(),
+       TripsPage(accountType: accountType),
       accountType == AccountType.individual
           ? const WalletPage()
           : const ProfilePage(),

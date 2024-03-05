@@ -30,7 +30,7 @@ abstract class RequestRepository {
     String userType,
   );
   //get customers added by the merchant
-  Future<ApiResponse<dynamic>> getRiderRequest({String type = "Customer"});
+  Future<ApiResponse<dynamic>> getRiderRequest();
 }
 
 class RequestRepositoryImpl implements RequestRepository {
@@ -52,7 +52,6 @@ class RequestRepositoryImpl implements RequestRepository {
     String customerId,
     String userType,
   ) async {
-   
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
     String accountType = prefs.getString('accountType') ?? "";
@@ -107,16 +106,22 @@ class RequestRepositoryImpl implements RequestRepository {
   }
 
   @override
-  Future<ApiResponse<dynamic>> getRiderRequest({String type= "Customer"}) async {
+  Future<ApiResponse<dynamic>> getRiderRequest() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String userId = prefs.getString('userId') ?? "";
-    //     String accountType = prefs.getString('accountType') ?? ""; 
+    String userId = prefs.getString('userId') ?? "";
+    //     String accountType = prefs.getString('accountType') ?? "";
+
+    String accountType = prefs.getString('accountType') ?? "";
+
+    var pathUrl =
+        accountType == "enterprise" ? "/request/?createdBy=$userId" : "/request?assignRider=$userId";
+
 
     try {
+      //https://jenosway-backend.onrender.com/api/v1/request?assignRider=65d49a1b5c0de0b309e10ef5
 
-      
       final response = await _dio.get(
-        "${Endpoint.baseUrl}/request?userType=$type",
+        "${Endpoint.baseUrl}$pathUrl",
       );
 
       return ApiResponse<dynamic>(
