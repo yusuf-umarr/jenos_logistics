@@ -92,7 +92,6 @@ class RequestNotifier extends StateNotifier<RequestState> {
 
       return false;
     } catch (e) {
-      
       state = state.copyWith(
         // loadState: NetworkState.error,
         message: e.toString(),
@@ -122,6 +121,4 @@ class RequestNotifier extends StateNotifier<RequestState> {
 }
 
 final requestNotifier = StateNotifierProvider<RequestNotifier, RequestState>(
-    (ref) => RequestNotifier(ref.read(requestRepository)
-    )
-    );
+    (ref) => RequestNotifier(ref.read(requestRepository)));

@@ -428,6 +428,7 @@ class CustomWidget {
     BuildContext context, {
     String headerText = "",
     String amount = "",
+    String paymentType = "",
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
@@ -462,7 +463,7 @@ class CustomWidget {
                       icon: Assets.creditCard,
                     ),
                     CustomWidget.detailCard(context,
-                        title: "Instant payment", desc: "Bank transfer"),
+                        title: "Payment type", desc: paymentType),
                     payIconCard(
                         icon: Assets.badgeCheck, color: AppColors.green),
                   ],
@@ -471,16 +472,12 @@ class CustomWidget {
                   height: AppSize.defaultPadding,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: CustomWidget.detailCard(context,
-                          title: "Payer", desc: "Receiver"),
-                    ),
-                    Expanded(
-                      child: CustomWidget.detailCard(context,
-                          title: "Amount", desc: "NGN $amount"),
-                    ),
+                    CustomWidget.detailCard(context,
+                        title: "Payer", desc: "Receiver"),
+                    CustomWidget.detailCard(context,
+                        title: "Amount", desc: "NGN $amount"),
                   ],
                 ),
               ],
@@ -569,7 +566,7 @@ class CustomWidget {
                     ),
                     Expanded(
                       child: CustomWidget.detailCard(context,
-                          title: "Drop-off date", desc: dropOffDate),
+                          title: "Request type", desc: dropOffDate),
                     ),
                   ],
                 ),

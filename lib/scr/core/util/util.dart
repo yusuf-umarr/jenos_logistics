@@ -386,4 +386,27 @@ class Util {
       },
     );
   }
+
+    static formatTimeAgo(time) {
+    DateTime dateTime = DateTime.parse(time);
+
+    DateTime now = DateTime.now();
+
+    Duration difference = now.difference(dateTime);
+
+    if (difference.inDays >= 7) {
+      return 'a week ago';
+    } else if (difference.inDays >= 1) {
+      return " day ago";
+    } else if (difference.inHours >= 1) {
+      return '${difference.inHours} hour ago';
+    } else {
+      int minutesDifference = difference.inMinutes;
+
+      String formattedTimeDifference = '$minutesDifference min. ago';
+
+      return formattedTimeDifference;
+    }
+  }
+
 }

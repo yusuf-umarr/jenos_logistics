@@ -5,18 +5,17 @@ import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/notification/view/notification_detail.dart';
 
 class NotificationCard extends StatelessWidget {
-  const NotificationCard({
-    super.key,
-    required this.size,
-  });
+  final index;
 
-  final Size size;
+  const NotificationCard({super.key, this.index});
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Column(
       children: [
         Row(
@@ -50,17 +49,22 @@ class NotificationCard extends StatelessWidget {
                     const SizedBox(
                       width: AppSize.defaultPadding / 2,
                     ),
-                    Text(
-                      "Reminder",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                    SizedBox(
+                      width: size.width * 0.4,
+                      child: Text(
+                        index['title'],
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
                     ),
                     const SizedBox(
                       width: AppSize.defaultPadding,
                     ),
                     Text(
-                      "21 min. ago",
+                      Util.formatTimeAgo(index['createdAt']),
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: AppColors.grey,
                             fontWeight: FontWeight.w500,
@@ -68,14 +72,14 @@ class NotificationCard extends StatelessWidget {
                     ),
                   ],
                 ),
-               //
+                //
                 const SizedBox(
                   height: AppSize.defaultPadding,
                 ),
                 SizedBox(
                   width: size.width * 0.8,
                   child: Text(
-                    "We're delighted to inform you that you that you have received a delivery request.",
+                    index['message'],
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: AppColors.grey,
                           fontWeight: FontWeight.w500,
@@ -91,7 +95,7 @@ class NotificationCard extends StatelessWidget {
                     bgColor: AppColors.primaryColor,
                     textColor: AppColors.white,
                     onTap: () {
-                      navigate(context, const NotificationDetail());
+                      navigate(context, NotificationDetail(index: index));
                     }),
               ],
             ),

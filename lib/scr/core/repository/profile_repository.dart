@@ -5,17 +5,13 @@
 ///
 
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/constant/app_endpoint.dart';
 import 'package:jenos/scr/core/helper/api_response.dart';
 import 'package:jenos/scr/core/helper/app_exception.dart';
 import 'package:jenos/scr/core/dio_provider/dio_provider.dart';
-import 'package:jenos/scr/core/util/util.dart';
-import 'package:jenos/scr/core/models/user_merchant_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class representing the authentication repository.
@@ -25,6 +21,8 @@ abstract class ProfileRepository {
     String phoneNumber,
     String address,
   );
+    Future<ApiResponse<dynamic>> getNotifications();
+
 
   // Future<ApiResponse<dynamic>> signIn(String email, String password);
   Future<ApiResponse<dynamic>> getUserData();
@@ -155,6 +153,28 @@ log("getUserData called");
       );
     }
   }
+
+  @override
+  Future<ApiResponse<dynamic>> getNotifications() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userId = prefs.getString('userId') ?? "";
+    // String accountType = prefs.getString('accountType') ?? "";
+
+    try {
+      final response = await _dio.get(
+        "${Endpoint.baseUrl}/notification?recipientId=$userId",
+      );
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data['data'],
+        message: "Successful",
+      );
+    } on DioException catch (e) {
+      return AppException.handleError(e);
+    }
+  }
+
 }
 
 final profileRepository = Provider<ProfileRepository>(

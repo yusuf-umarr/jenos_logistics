@@ -22,6 +22,8 @@ class PersonalInformationState {
   /// uses to store message related to the signin state.
   final String? message;
     String? imagePath;
+      List? appNotificationList;
+
 
   PersonalInformationState({
     required this.loadState,
@@ -32,6 +34,7 @@ class PersonalInformationState {
     required this.phoneController,
     required this.addrController,
     required this.CACRegController,
+    this.appNotificationList,
   });
 
   /// Factory method to create the initial signin state.
@@ -45,6 +48,7 @@ class PersonalInformationState {
       loadState: NetworkState.idle,
       message: null,
       imagePath: null,
+      appNotificationList:[],
     );
   }
 
@@ -58,6 +62,7 @@ class PersonalInformationState {
     phoneController,
     addrController,
     CACRegController,
+    appNotificationList,
   }) {
     return PersonalInformationState(
       loadState: loadState ?? this.loadState,
@@ -68,6 +73,7 @@ class PersonalInformationState {
       emailController: emailController ?? this.emailController,
       addrController: addrController ?? this.addrController,
       CACRegController: CACRegController ?? this.CACRegController,
+      appNotificationList: appNotificationList ?? this.appNotificationList,
     );
   }
 }

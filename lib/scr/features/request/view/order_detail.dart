@@ -30,12 +30,12 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       body: ListView(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         children: [
-          Text(
-            "Pizza hut",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
+          // Text(
+          //   "Pizza hut",
+          //   style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          // ),
           Text(
             "${Util.showFormattedDateString(widget.request['createdAt'], context)}| ${Util.showFormattedTimeVal(widget.request['pickUpDate'], context)}",
             style: Theme.of(context)
@@ -56,37 +56,37 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             context,
             headerText: "Requester's particulars",
             name: widget.request['senderName'],
-            email: "benjamin@gmail.com",
-            phone: widget.request['phone'],
+            email: widget.request['createdBy']['email'] ?? "",
+            phone: widget.request['senderPhone'] ?? "",
           ),
           //Receiver particular
           CustomWidget.particularCard(
             context,
             headerText: "Receiver's particulars",
             name: widget.request['receiverName'],
-            email: "benjamin@gmail.com",
-            phone: "090234546575",
+            email: widget.request['receiverEmail'] ?? "",
+            phone: widget.request['receiverPhone'],
           ),
           //delievry detail
 
           CustomWidget.deliveryCard(
             context,
             headerText: "Delivery details",
-            pickUpLocation: "1 Ikeja Str.Lagos",
-            pickUptime: "12:10pm",
-            pickUpDate: "Oct.27,2023",
-            dropOffDate: "Oct.27,2023",
-            dropOffLocation: "25, Oshodi, Lagos",
+            pickUpLocation: widget.request['pickUpAddress'],
+            pickUptime: widget.request['pickUpTime'],
+            pickUpDate:
+                "${Util.showFormattedDateString(widget.request['pickUpDate'], context)}",
+            dropOffDate: widget.request['requestType'],
+            dropOffLocation: widget.request['deliveryAddress'],
             packageSize: "Medium size",
           ),
 
           //payment method
 
-          CustomWidget.paymentMethodCard(
-            context,
-            headerText: "Payment method",
-            amount: "10,000",
-          ),
+          CustomWidget.paymentMethodCard(context,
+              headerText: "Payment method",
+              amount: widget.request['amount'].toString(),
+              paymentType: widget.request['paymentType']),
 
           Row(
             children: [

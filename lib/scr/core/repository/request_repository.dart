@@ -110,18 +110,18 @@ class RequestRepositoryImpl implements RequestRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
     //     String accountType = prefs.getString('accountType') ?? "";
+//request?assignedTo=65d88026e17c676b8d272565
+    // String accountType = prefs.getString('accountType') ?? "";
 
-    String accountType = prefs.getString('accountType') ?? "";
-
-    var pathUrl =
-        accountType == "enterprise" ? "/request/?createdBy=$userId" : "/request?assignRider=$userId";
-
+    // var pathUrl = accountType == "enterprise"
+    //     ? "/request/?createdBy=$userId"
+    //     : "/request?assignedTo=$userId";
 
     try {
       //https://jenosway-backend.onrender.com/api/v1/request?assignRider=65d49a1b5c0de0b309e10ef5
 
       final response = await _dio.get(
-        "${Endpoint.baseUrl}$pathUrl",
+        "${Endpoint.baseUrl}/request?assignedTo=$userId",
       );
 
       return ApiResponse<dynamic>(

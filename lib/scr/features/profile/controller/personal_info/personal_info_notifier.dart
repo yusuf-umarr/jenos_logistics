@@ -69,6 +69,31 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
 
   }
 
+    Future<void> getNotifications() async {
+    try {
+      final response = await profileRepository.getNotifications();
+
+      if (response.success) {
+        state = state.copyWith(appNotificationList: response.data);
+
+        log("getNotifications:${state.appNotificationList}");
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+//
+
   Future<void> updateProfile(
       String fullName, String phoneNumber, String address,
       {bool isMerchant = true}) async {

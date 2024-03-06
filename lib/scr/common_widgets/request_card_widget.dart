@@ -7,7 +7,6 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/request/view/order_detail.dart';
-import 'package:jenos/scr/features/trip/view/status_update.dart';
 
 class RequestOrderCardWIdget extends StatelessWidget {
   final request;
@@ -15,7 +14,6 @@ class RequestOrderCardWIdget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
       padding: const EdgeInsets.all(AppSize.defaultPadding).copyWith(
@@ -48,9 +46,9 @@ class RequestOrderCardWIdget extends StatelessWidget {
                   width: AppSize.defaultPadding / 2,
                 ),
                 Text(
-                  Util.showFormattedDateString(request['createdAt'], context),
+                  "${Util.showFormattedDateString(request['createdAt'], context)}| ${Util.showFormattedTimeVal(request['pickUpDate'], context)}",
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w600, color: AppColors.greyColor),
+                      fontWeight: FontWeight.w500, color: AppColors.grey),
                 ),
                 // SizedBox(
                 //   width: size.width * 0.3,
@@ -75,7 +73,7 @@ class RequestOrderCardWIdget extends StatelessWidget {
         const SizedBox(
           height: AppSize.defaultPadding,
         ),
-        requestRowTextWidget(context, desc: request['receiverName']),
+        requestRowTextWidget(context, desc: request['senderName']),
         requestRowTextWidget(
           context,
           title: "Pickup Date:",
@@ -85,7 +83,7 @@ class RequestOrderCardWIdget extends StatelessWidget {
         requestRowTextWidget(
           context,
           title: "Pickup Time:",
-          desc: Util.showFormattedTimeVal(request['pickUpDate'], context),
+          desc: request['pickUpTime'],
           icon: Assets.clock,
         ),
         Row(
@@ -98,7 +96,7 @@ class RequestOrderCardWIdget extends StatelessWidget {
               width: AppSize.defaultPadding,
             ),
             Util.cardBtn(
-                title: "N3,000", //request['status'],
+                title: "N 300${request['amount'] ?? 0}", //request['status'],
                 bgColor: AppColors.white,
                 textColor: AppColors.primaryColor,
                 onTap: () {
