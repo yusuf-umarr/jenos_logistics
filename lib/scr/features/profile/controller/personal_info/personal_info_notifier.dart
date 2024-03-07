@@ -76,7 +76,7 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
       if (response.success) {
         state = state.copyWith(appNotificationList: response.data);
 
-        log("getNotifications:${state.appNotificationList}");
+        // log("getNotifications:${state.appNotificationList}");
 
         return;
       }

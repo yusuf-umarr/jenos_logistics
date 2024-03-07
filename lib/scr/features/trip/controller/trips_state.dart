@@ -8,7 +8,7 @@ import 'package:jenos/scr/core/util/enums.dart';
 ///
 
 class TripState {
-  final List tripsData;
+   List tripsData;
   final NetworkState? loadState;
   final String? message;
   final Map<String, dynamic> riderAnalysis;

@@ -14,6 +14,7 @@ import 'package:jenos/scr/features/profile/view/account_details.dart';
 import 'package:jenos/scr/features/profile/view/change_password.dart';
 import 'package:jenos/scr/features/profile/view/update_personal_details_page.dart';
 import 'package:jenos/scr/features/profile/view/verification_page.dart';
+import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -211,6 +212,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           desc:
                               "Want to take a break from\nJenosWay Logistics?",
                           onTap: () async {
+                            ref.read(tripController.notifier).clearData();
                             ref
                                 .read(personalInfoNotifier.notifier)
                                 .logOut(context);

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -137,6 +135,14 @@ class _TripsPageState extends ConsumerState<TripsPage> {
   }
 
   tripsTypesBottomWidget(tripsProvider) {
+    if ((tripsProvider.tripsData.isEmpty)) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: 200),
+          child: Text("Opp! no active trip!!!"),
+        ),
+      );
+    }
     if (selectedIndex == 0) {
       return Expanded(
         child: ListView.builder(
@@ -180,7 +186,10 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                 );
               }
               return const Center(
-                child: Text("Opp! no active trip!!!"),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 200),
+                  child: Text("Opp! no active trip!!!"),
+                ),
               );
             }),
       );

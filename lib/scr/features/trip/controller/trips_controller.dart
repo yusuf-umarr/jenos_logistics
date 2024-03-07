@@ -150,6 +150,10 @@ class TripController extends StateNotifier<TripState> {
     }
   }
 
+  void clearData() {
+    state = state.copyWith(tripsData: state.tripsData = []);
+  }
+
 //
 }
 
