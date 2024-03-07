@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
-import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/util.dart';
-import 'package:jenos/scr/features/trip/view/status_update.dart';
 
 class MyTripsCard extends StatelessWidget {
   final String date;
   final String? itemName;
-  final Function()? endTripTap;
-  final Function()? updateTap;
+  final String? itemImage;
+  final String? tripText;
+  final String? price;
+  final String? pickUpAddress;
+  final String? dropOffAddr;
+  final Function()? viewDetailTap;
+  final Function()? startTripTap;
   final bool isShowTopDate;
+  final bool startTrip;
+  final bool endTrip;
   const MyTripsCard(
       {super.key,
       required this.date,
+      required this.price,
+      required this.pickUpAddress,
+      required this.tripText,
+      required this.dropOffAddr,
       this.itemName,
-      this.endTripTap,
-      this.updateTap,
+      this.itemImage,
+      this.viewDetailTap,
+      this.startTripTap,
+      required this.startTrip,
+      this.endTrip = false,
       this.isShowTopDate = true});
 
   @override
@@ -65,10 +77,42 @@ class MyTripsCard extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              CustomWidget.imagAvatar(
-                                isBorder: false,
-                                image: "assets/images/pizza.png",
-                              ),
+                              // CustomWidget.imagAvatar(
+                              //   isBorder: false,
+                              //   image: "assets/images/pizza.png",
+                              // ),
+                              itemImage != null
+                                  ? Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.transparent,
+                                        ),
+                                      ),
+                                      child: Image.network(
+                                        itemImage!,
+                                        width: 50, height: 50,
+                                        fit: BoxFit.cover,
+                                        // width: size.width,
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.transparent,
+                                        ),
+                                      ),
+                                      child: Image.asset(
+                                        "assets/images/pixelBg.jpeg",
+                                        fit: BoxFit.cover,
+                                        // width: size.width,
+                                      ),
+                                    ),
                               const SizedBox(
                                 width: AppSize.defaultPadding / 2,
                               ),
@@ -98,7 +142,7 @@ class MyTripsCard extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            "N 3,000",
+                            "NGN $price",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
@@ -137,7 +181,7 @@ class MyTripsCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "20 Okota palace, lagos state",
+                                    pickUpAddress!,
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
@@ -145,7 +189,7 @@ class MyTripsCard extends StatelessWidget {
                                     height: 40,
                                   ),
                                   Text(
-                                    "15 Okota palace, lagos state",
+                                    dropOffAddr!,
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),
@@ -159,21 +203,31 @@ class MyTripsCard extends StatelessWidget {
                           Row(
                             children: [
                               Util.cardBtn(
-                                  title: "End trip", //request['status'],
-                                  // bgColor: AppColors.white,
-                                  // textColor: AppColors.primaryColor,
-                                  onTap: () {
-                                    // navigate(context, const StatusUpdatePage());
-                                  }),
+                                  title: "View detail",
+                                  textColor: startTrip
+                                      ? AppColors.primaryColor
+                                      : AppColors.white,
+                                  bgColor: startTrip
+                                      ? AppColors.white
+                                      : AppColors.primaryColor,
+                                  onTap: viewDetailTap),
                               const SizedBox(
                                 width: 30,
                               ),
-                              Util.cardBtn(
-                                  title: "Update trip", //request['status'],
-
-                                  onTap: () {
-                                    navigate(context, const StatusUpdatePage());
-                                  }),
+                              endTrip
+                                  ? const Expanded(
+                                      child: SizedBox(
+                                      width: 20,
+                                    ))
+                                  : Util.cardBtn(
+                                      bgColor: startTrip
+                                          ? AppColors.primaryColor
+                                          : AppColors.white,
+                                      textColor: startTrip
+                                          ? AppColors.white
+                                          : AppColors.primaryColor,
+                                      title: tripText!,
+                                      onTap: startTripTap),
                             ],
                           )
                         ],

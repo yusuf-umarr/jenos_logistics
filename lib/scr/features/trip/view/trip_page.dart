@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -8,14 +10,14 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
-import 'package:jenos/scr/features/trip/view/status_update.dart';
+import 'package:jenos/scr/features/request/view/order_detail.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
-import 'package:jenos/scr/features/trip/view/trip_route_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TripsPage extends ConsumerStatefulWidget {
-  final AccountType accountType ;
-  const TripsPage( {super.key, required this.accountType,
+  final AccountType accountType;
+  const TripsPage({
+    super.key,
+    required this.accountType,
   });
 
   @override
@@ -59,22 +61,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             tripsHeaderWidget(context, width),
-
-            Expanded(
-              child: ListView.builder(
-                  itemCount: tripsProvider.tripsData.length,
-                  itemBuilder: (context, int index) {
-                    final trip = tripsProvider.tripsData[index];
-                    return MyTripsCard(
-                      updateTap: () {
-                        navigate(context, const StatusUpdatePage());
-                      },
-                      date: Util.showFormattedTimeString(
-                          trip['createdAt'], context),
-                    );
-                  }),
-            )
-            // tripsTypesWidget(tripsProvider.tripsData!),
+            tripsTypesBottomWidget(tripsProvider),
           ],
         ),
       ),
@@ -149,74 +136,153 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     }
   }
 
-  // tripsTypesWidget(List trips) {
-  //   if (selectedIndex == 0) {
-  //     return Expanded(
-  //       child: ListView.builder(
-  //           itemCount: trips.length,
-  //           itemBuilder: (context, int index) {
-  //             final trip = trips[index];
-  //             return MyTripsCard(
-  //               onTap: () {
-  //                 // navigate(context, const TripRoutePage());
-  //               },
-  //               date: Util.showFormattedTimeString(trip['createdAt'], context),
-  //             );
-  //           }),
-  //     );
+  tripsTypesBottomWidget(tripsProvider) {
+    if (selectedIndex == 0) {
+      return Expanded(
+        child: ListView.builder(
+            itemCount: tripsProvider.tripsData.length,
+            itemBuilder: (context, int index) {
+              final trip = tripsProvider.tripsData[index];
 
-  //     // Column(
-  //     //   children: trips.map((e) {
-  //     // return   MyTripsCard(
-  //     //   onTap: () {
-  //     //     navigate(context, const TripRoutePage());
-  //     //   },
-  //     //   date: "Yesterday, 02:05pm",
-  //     // );
-  //     //   }).toList()
+              if (!trip['endTrip']) {
+                //ongoing/active trip
+                return MyTripsCard(
+                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                  price: trip['requestId']['amount'].toString(),
+                  startTrip: trip['startTrip'],
+                  itemImage: trip['requestId']['itemImage'],
+                  tripText: tripsProvider.loadState == NetworkState.loading
+                      ? "Loading..."
+                      : trip['startTrip']
+                          ? "End trip"
+                          : "Start trip",
+                  date:
+                      Util.showFormattedTimeString(trip['createdAt'], context),
+                  viewDetailTap: () {
+                    navigate(context,
+                        OrderDetailsPage(request: trip, isFromTrip: true));
+                  },
+                  startTripTap: () {
+                    if (trip['startTrip']) {
+                      //end trip
 
-  //     // );
-  //   } else if (selectedIndex == 1) {
-  //     return Column(
-  //       children: [
-  //         MyTripsCard(
-  //           onTap: () {
-  //             navigate(context, const TripRoutePage());
-  //           },
-  //           itemName: "Cake",
-  //           date: "Today, 04:00pm",
-  //         ),
-  //         MyTripsCard(
-  //           onTap: () {
-  //             navigate(context, const TripRoutePage());
-  //           },
-  //           date: "Today, 02:00pm",
-  //         ),
-  //         MyTripsCard(
-  //           onTap: () {
-  //             navigate(context, const TripRoutePage());
-  //           },
-  //           date: "Yesterday, 03:15pm",
-  //         )
-  //       ],
-  //     );
-  //   }
+                      ref
+                          .read(tripController.notifier)
+                          .endTrip(trip['_id'], context);
+                    } else {
+                      //start trip
+                      ref
+                          .read(tripController.notifier)
+                          .startTrip(trip['_id'], context);
+                    }
+                  },
+                );
+              }
+              return const Center(
+                child: Text("Opp! no active trip!!!"),
+              );
+            }),
+      );
+    } else if (selectedIndex == 1) {
+      return Expanded(
+        child: ListView.builder(
+            itemCount: tripsProvider.tripsData.length,
+            itemBuilder: (context, int index) {
+              final trip = tripsProvider.tripsData[index];
 
-  //   return Column(
-  //     children: [
-  //       MyTripsCard(
-  //         onTap: () {
-  //           navigate(context, const TripRoutePage());
-  //         },
-  //         date: "Today, 12:05pm",
-  //       ),
-  //       MyTripsCard(
-  //         onTap: () {
-  //           navigate(context, const TripRoutePage());
-  //         },
-  //         date: "Today, 02:30pm",
-  //       ),
-  //     ],
-  //   );
-  // }
+              if (trip['endTrip']) {
+                //completed trip
+                return MyTripsCard(
+                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                  price: trip['requestId']['amount'].toString(),
+                  startTrip: trip['startTrip'],
+                  endTrip: trip['endTrip'],
+                  itemImage: trip['requestId']['itemImage'],
+                  tripText: tripsProvider.loadState == NetworkState.loading
+                      ? "Loading..."
+                      : trip['startTrip']
+                          ? "End trip"
+                          : "Start trip",
+                  date:
+                      Util.showFormattedTimeString(trip['createdAt'], context),
+                  viewDetailTap: () {
+                    navigate(context,
+                        OrderDetailsPage(request: trip, isFromTrip: true));
+                  },
+                  startTripTap: () {
+                    if (trip['startTrip']) {
+                      //end trip
+
+                      ref
+                          .read(tripController.notifier)
+                          .endTrip(trip['_id'], context);
+                    } else {
+                      //start trip
+                      ref
+                          .read(tripController.notifier)
+                          .startTrip(trip['_id'], context);
+                    }
+
+                    // navigate(context, const StatusUpdatePage());
+                  },
+                );
+              }
+              return const SizedBox();
+            }),
+      );
+    }
+
+    return Expanded(
+      child: ListView.builder(
+          itemCount: tripsProvider.tripsData.length,
+          itemBuilder: (context, int index) {
+            final trip = tripsProvider.tripsData[index];
+
+            // if (!trip['endTrip']) {
+            //   return
+
+            //   MyTripsCard(
+            //     pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+            //     dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+            //     price: trip['requestId']['amount'].toString(),
+            //     startTrip: trip['startTrip'],
+            //     itemImage: trip['requestId']['itemImage'],
+            //     tripText:
+            //         tripsProvider.loadState == NetworkState.loading
+            //             ? "Loading..."
+            //             : trip['startTrip']
+            //                 ? "End trip"
+            //                 : "Start trip",
+            //     date: Util.showFormattedTimeString(
+            //         trip['createdAt'], context),
+            //     viewDetailTap: () {
+            //       navigate(
+            //           context,
+            //           OrderDetailsPage(
+            //               request: trip, isFromTrip: true));
+            //     },
+            //     startTripTap: () {
+            //       if (trip['startTrip']) {
+            //         //end trip
+
+            //         ref
+            //             .read(tripController.notifier)
+            //             .endTrip(trip['_id'], context);
+            //       } else {
+            //         //start trip
+            //         ref
+            //             .read(tripController.notifier)
+            //             .startTrip(trip['_id'], context);
+            //       }
+
+            //       // navigate(context, const StatusUpdatePage());
+            //     },
+            //   );
+            // }
+            return const SizedBox();
+          }),
+    );
+  }
 }

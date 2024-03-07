@@ -16,18 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class representing the authentication repository.
 abstract class RequestRepository {
-  Future<ApiResponse<dynamic>> acceptRequest(
-    String receiverName,
-    String phone,
-    String deliveryAddress,
-    String pickUpDate,
-    String pickUpTime,
-    String paymentMethod,
-    String paymentType,
-    String senderName,
-    itemImage,
-    String customerId,
-    String userType,
+  Future<ApiResponse<dynamic>> updateRequest(
+    String request,
+    String requestId,
   );
   //get customers added by the merchant
   Future<ApiResponse<dynamic>> getRiderRequest();
@@ -39,64 +30,19 @@ class RequestRepositoryImpl implements RequestRepository {
   RequestRepositoryImpl(this._dio);
 
   @override
-  Future<ApiResponse<dynamic>> acceptRequest(
-    String receiverName,
-    String phone,
-    String deliveryAddress,
-    String pickUpDate,
-    String pickUpTime,
-    String paymentMethod,
-    String paymentType,
-    String senderName,
-    itemImage,
-    String customerId,
-    String userType,
+  Future<ApiResponse<dynamic>> updateRequest(
+    String request,
+    String requestId,
   ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId = prefs.getString('userId') ?? "";
-    String accountType = prefs.getString('accountType') ?? "";
-
     try {
-      FormData merchantFormData = FormData.fromMap({
-        "receiverName": receiverName,
-        "phone": phone,
-        "deliveryAddress": deliveryAddress,
-        "pickUpDate": pickUpDate,
-        "pickUpTime": pickUpTime,
-        "paymentMethod": paymentMethod,
-        "paymentType": paymentType,
-        "senderName": senderName,
-        "itemImage": itemImage != null
-            ? await MultipartFile.fromFile(itemImage.path)
-            : '',
-        "customerId": customerId,
-        "userType": userType,
-        "createdBy": userId
-      });
+      var body = {"status": request};
 
-      FormData customerFormData = FormData.fromMap({
-        "receiverName": receiverName,
-        "phone": phone,
-        "deliveryAddress": deliveryAddress,
-        "pickUpDate": pickUpDate,
-        "pickUpTime": pickUpTime,
-        "paymentMethod": paymentMethod,
-        "paymentType": paymentType,
-        "senderName": senderName,
-        "itemImage": itemImage != null
-            ? await MultipartFile.fromFile(itemImage.path)
-            : '',
-        "customerId": userId,
-      });
-      final response = await _dio.post(
-        "${Endpoint.baseUrl}/request",
-        data: accountType == "merchant" ? merchantFormData : customerFormData,
-      );
-      log("new request success ============$accountType======");
+      final response = await _dio
+          .put("${Endpoint.baseUrl}/request/accept/$requestId", data: body);
       return ApiResponse<dynamic>(
         success: true,
         data: response.data,
-        message: "Request successful created",
+        message: "Request accepted!",
       );
     } on DioException catch (e) {
       return AppException.handleError(
@@ -109,13 +55,6 @@ class RequestRepositoryImpl implements RequestRepository {
   Future<ApiResponse<dynamic>> getRiderRequest() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
-    //     String accountType = prefs.getString('accountType') ?? "";
-//request?assignedTo=65d88026e17c676b8d272565
-    // String accountType = prefs.getString('accountType') ?? "";
-
-    // var pathUrl = accountType == "enterprise"
-    //     ? "/request/?createdBy=$userId"
-    //     : "/request?assignedTo=$userId";
 
     try {
       //https://jenosway-backend.onrender.com/api/v1/request?assignRider=65d49a1b5c0de0b309e10ef5

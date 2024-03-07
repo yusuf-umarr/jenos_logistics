@@ -15,9 +15,10 @@ import 'package:jenos/scr/core/helper/app_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class TripsRepository {
-
   //get customers added by the merchant
   Future<ApiResponse<dynamic>> getTrips();
+  Future<ApiResponse<dynamic>> startTrip(String tripId);
+  Future<ApiResponse<dynamic>> endTrip(String tripId);
   Future<ApiResponse<dynamic>> getRiderAnalysis();
 }
 
@@ -26,18 +27,15 @@ class TripsRepositoryImpl implements TripsRepository {
 
   TripsRepositoryImpl(this._dio);
 
-
-
   @override
-  Future<ApiResponse<dynamic>> getTrips(
-     ) async {
+  Future<ApiResponse<dynamic>> getTrips() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String userId = prefs.getString('userId') ?? "";
+    String userId = prefs.getString('userId') ?? "";
     //     String accountType = prefs.getString('accountType') ?? "";
 
     try {
       final response = await _dio.get(
-        "${Endpoint.baseUrl}/trips",
+        "${Endpoint.baseUrl}/trips/?assignedRider=$userId",
       );
 
       return ApiResponse<dynamic>(
@@ -52,13 +50,55 @@ class TripsRepositoryImpl implements TripsRepository {
       );
     }
   }
+
+  @override
+  Future<ApiResponse<dynamic>> startTrip(String tripId) async {
+    try {
+      final response = await _dio.put(
+        "${Endpoint.baseUrl}/trips/start-trip/$tripId",
+      );
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data['data'],
+        message: " successful",
+      );
+    } on DioException catch (e) {
+      // log("get rider request error$e");
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+
 //
   @override
-  Future<ApiResponse<dynamic>> getRiderAnalysis(
-     ) async {
+  Future<ApiResponse<dynamic>> endTrip(String tripId) async {
+    //https://jenosway-backend.onrender.com/api/v1/trips/end-trip/65e8aae30d799bf9baf7d4b5
+    try {
+      final response = await _dio.put(
+        "${Endpoint.baseUrl}/trips/end-trip/$tripId",
+      );
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data['data'],
+        message: " successful",
+      );
+    } on DioException catch (e) {
+      // log("get rider request error$e");
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+
+//
+  @override
+  Future<ApiResponse<dynamic>> getRiderAnalysis() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
-        String accountType = prefs.getString('accountType') ?? "";
+    // String accountType = prefs.getString('accountType') ?? "";
 
     try {
       final response = await _dio.get(
@@ -78,7 +118,6 @@ class TripsRepositoryImpl implements TripsRepository {
     }
   }
 //
-
 }
 
 final tripsRepository = Provider<TripsRepository>(

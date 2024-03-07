@@ -31,7 +31,7 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
 
       if (response.success) {
 
-        log("getUserData res:${response.data}");
+        // log("getUserData res:${response.data}");
         state = state.copyWith(
           nameController:
               TextEditingController(text: accountType == "individual"? response.data["userName"]: response.data["fullName"]),

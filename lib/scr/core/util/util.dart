@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
@@ -407,6 +408,10 @@ class Util {
 
       return formattedTimeDifference;
     }
+  }
+
+    static callNumber(number) async {
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
 }

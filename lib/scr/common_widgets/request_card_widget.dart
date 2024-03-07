@@ -43,23 +43,26 @@ class RequestOrderCardWIdget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  width: AppSize.defaultPadding / 2,
+                  width: AppSize.defaultPadding / 3,
                 ),
                 Text(
-                  "${Util.showFormattedDateString(request['createdAt'], context)}| ${Util.showFormattedTimeVal(request['pickUpDate'], context)}",
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w500, color: AppColors.grey),
+                  request['status'],
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: request['status'] == "accepted"
+                          ? Colors.green
+                          : Colors.yellow),
                 ),
-                // SizedBox(
-                //   width: size.width * 0.3,
-                //   child: Text(
-                //     "", //Pizza-Hut
-                //     overflow: TextOverflow.ellipsis,
-                //     style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //     textAlign: TextAlign.center,
-                //   ),
+                const SizedBox(
+                  width: AppSize.defaultPadding / 3,
+                ),
+                // Text(
+                //   "${Util.showFormattedDateString(request['createdAt'], context)} "
+                //   "||"
+                //   " ${Util.showFormattedTimeVal(request['pickUpDate'], context)}",
+                //   style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                //       fontWeight: FontWeight.w500, color: AppColors.grey),
                 // ),
               ],
             ),

@@ -341,6 +341,8 @@ class CustomWidget {
     BuildContext context, {
     String title = "",
     String desc = "",
+    bool isWidget = false,
+    widget,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,17 +363,29 @@ class CustomWidget {
               .bodySmall!
               .copyWith(fontWeight: FontWeight.w500, color: AppColors.grey),
         ),
+        // Row(
+        //   children: [
+        //     isWidget ? SizedBox(child: widget) : const SizedBox(),
+        //     Text(
+        //       desc,
+        //       style: Theme.of(context)
+        //           .textTheme
+        //           .bodySmall!
+        //           .copyWith(fontWeight: FontWeight.w500, color: AppColors.grey),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
 
-  static Container particularCard(
-    BuildContext context, {
-    String headerText = "",
-    String name = "",
-    String email = "",
-    String phone = "",
-  }) {
+  static Container particularCard(BuildContext context,
+      {String headerText = "",
+      String name = "",
+      String email = "",
+      String phone = "",
+      bool isWidget = false,
+      onTap}) {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
       decoration: BoxDecoration(
@@ -403,12 +417,22 @@ class CustomWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: CustomWidget.detailCard(context,
-                          title: "Full name", desc: name),
+                      child: CustomWidget.detailCard(
+                        context,
+                        title: "Full name",
+                        desc: name,
+                      ),
                     ),
                     Expanded(
-                      child: CustomWidget.detailCard(context,
-                          title: "Phone number", desc: phone),
+                      flex: 2,
+                      child: GestureDetector(
+                        onTap: onTap,
+                        child: CustomWidget.detailCard(
+                          context,
+                          title: "Phone number",
+                          desc: isWidget ? " 📞 $phone" : phone,
+                        ),
+                      ),
                     ),
                   ],
                 ),

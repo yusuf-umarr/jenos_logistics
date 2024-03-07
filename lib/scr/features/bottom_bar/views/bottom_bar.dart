@@ -57,7 +57,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       await ref.read(onboardController.notifier).getAccountType();
       ref.read(homeController.notifier).getShowPop();
       await ref.read(personalInfoNotifier.notifier).getUserData();
-      ref.read(tripController.notifier).getCurrentLocation();
       ref.read(requestNotifier.notifier).getRiderRequest();
       ref.read(tripController.notifier).getTrips();
       ref.read(tripController.notifier).getRiderAnalysis();

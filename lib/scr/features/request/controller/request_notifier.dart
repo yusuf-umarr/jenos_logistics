@@ -14,53 +14,46 @@ class RequestNotifier extends StateNotifier<RequestState> {
     state = state.copyWith(selectedCustomer: name);
   }
 
-//this request is used for both merchant(customer-request) and Customer-request
-  Future<void> addCustomerRequest(
-    String receiverName,
-    String phone,
-    String deliveryAddress,
-    String pickUpDate,
-    String pickUpTime,
-    String paymentMethod,
-    String paymentType,
-    String senderName,
-    itemImage,
-    String customerId,
-    String userType,
+  Future<void> updateRequest(
+    String request,
+    String requestId,
     context,
   ) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
     try {
-      final response = await requestRepository.acceptRequest(
-        receiverName,
-        phone,
-        deliveryAddress,
-        pickUpDate,
-        pickUpTime,
-        paymentMethod,
-        paymentType,
-        senderName,
-        itemImage,
-        customerId,
-        userType,
-      );
+      // Future.delayed(Duration(seconds: 3), () {
+      //   state = state.copyWith(
+      //     loadState: NetworkState.success,
+      //     message: "request accepted!",
+      //   );
+      // });
+
+      final response =
+          await requestRepository.updateRequest(request, requestId);
 
       if (response.success) {
         state = state.copyWith(
           loadState: NetworkState.success,
           message: response.message,
         );
+        log("success response ${response.data}");
+
+        Future.delayed(Duration(seconds: 4), () {
+          state = state.copyWith(
+            loadState: NetworkState.idle,
+          );
+        });
 
         return;
       }
 
       state = state.copyWith(
         loadState: NetworkState.error,
-        message: response.message,
+        // message: response.message,
       );
-      // log("account error ${response.data}");
+      log("account error ${response.data}");
 
       return;
     } catch (e) {
@@ -80,7 +73,7 @@ class RequestNotifier extends StateNotifier<RequestState> {
           requestData: response.data,
           // message: response.message,
         );
-        log("get getRiderRequest success ${state.requestData}");
+        // log("get getRiderRequest success ${state.requestData}");
 
         return true;
       }

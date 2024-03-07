@@ -46,12 +46,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
       ref.listen<SigninState>(signinNotifier, (prev, state) {
         if (state.loadState == NetworkState.error) {
-          // flushBar(
-          //   context,
-          //   message: state.message.toString(),
-          //   color: Colors.red,
-          // );
-
+       
           Util.showSnackBar(
             context,
             state.message != "" ? state.message.toString() : "Server error",
