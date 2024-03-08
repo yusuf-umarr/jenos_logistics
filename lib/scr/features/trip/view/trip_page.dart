@@ -62,7 +62,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
 
     // print("width:$width");
     return Scaffold(
-      appBar: CustomWidget.customAppbar(context, title: "My trips"),
+      appBar: CustomWidget.customAppbar(context, title: "My deliveries"),
       body: Padding(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         child: Column(
@@ -91,7 +91,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "My trips",
+            "My deliveries",
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

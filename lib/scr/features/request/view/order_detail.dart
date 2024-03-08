@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
@@ -329,7 +328,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               padding: const EdgeInsets.all(20).copyWith(top: 40),
               height: MediaQuery.of(context).viewInsets.bottom == 0
                   ? size.height * 0.47
-                  : size.height * 0.75,
+                  : size.height * 0.78,
               child: Stack(
                 children: [
                   Column(

@@ -98,7 +98,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       // },
       {
         "id": 2,
-        "name": "Trips",
+        "name": "Deliveries",
         "icon": Assets.trips,
       },
       {
