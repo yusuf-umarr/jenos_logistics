@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/models/user_merchant_model.dart';
 
-/// This class defines the PersonalInformationState
+/// This class defines the ProfileState
 /// @author  Yusuf umar
 /// @version 1.0
 /// @since   2023-12-19
 ///
 
 /// Represents the state of the signin process.
-class PersonalInformationState {
+class ProfileState {
   /// The network state of the signin process.
   final NetworkState loadState;
 
@@ -21,11 +21,10 @@ class PersonalInformationState {
 
   /// uses to store message related to the signin state.
   final String? message;
-    String? imagePath;
-      List? appNotificationList;
+  String? imagePath;
+  List? appNotificationList;
 
-
-  PersonalInformationState({
+  ProfileState({
     required this.loadState,
     required this.message,
     required this.imagePath,
@@ -38,8 +37,8 @@ class PersonalInformationState {
   });
 
   /// Factory method to create the initial signin state.
-  factory PersonalInformationState.initial() {
-    return PersonalInformationState(
+  factory ProfileState.initial() {
+    return ProfileState(
       nameController: TextEditingController(),
       emailController: TextEditingController(),
       phoneController: TextEditingController(),
@@ -48,12 +47,12 @@ class PersonalInformationState {
       loadState: NetworkState.idle,
       message: null,
       imagePath: null,
-      appNotificationList:[],
+      appNotificationList: [],
     );
   }
 
-  /// Method to create a new PersonalInformationState by copying the current state and applying changes to specified properties.
-  PersonalInformationState copyWith({
+  /// Method to create a new ProfileState by copying the current state and applying changes to specified properties.
+  ProfileState copyWith({
     NetworkState? loadState,
     String? message,
     String? imagePath,
@@ -64,7 +63,7 @@ class PersonalInformationState {
     CACRegController,
     appNotificationList,
   }) {
-    return PersonalInformationState(
+    return ProfileState(
       loadState: loadState ?? this.loadState,
       message: message ?? this.message,
       imagePath: imagePath ?? this.imagePath,

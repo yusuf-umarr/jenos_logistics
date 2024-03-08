@@ -1,9 +1,0 @@
-[
-  {
-    trackingInfo: {
-      pickUpAddress: Imo State, dropOffAddress: Ikeja, Lagos, dateTime: 2024-02-28T00:00:00.000Z, paymentMethod: onlinePayment, amountPaid: 0
-      }, _id: 65e987084d64bbd1bf4635fa, requestId: {
-        _id: 65e87f680ff50f68ae3b3ecf, userType: Customer, createdBy: 65e826da3c1ac24ff16a9f30, receiverName: yusuf receiver, senderName: yusuf sender, itemImage: https://res.cloudinary.com/zillight/image/upload/v1709735784/Jenosway/itemImage/fulstcceeonzi5o7md9q.jpg, receiverPhone: 08078654567, deliveryAddress: Ikeja, Lagos, pickUpAddress: Imo State, pickUpDate: 2024-02-28T00:00:00.000Z, pickUpTime: 05:00pm, paymentMethod: onlinePayment, paymentType: bankTransfer, requestType: standardDelivery, status: accepted, isPublic: false, isDelete: false, createdAt: 2024-03-06T14:36:24.804Z, updatedAt: 2024-03-07T09:21:12.750Z, __v: 0, amount: 0, assignedTo: 65d88026e17c676b8d272565, assignedUserType: Rider
-        }, 
-        assignedRider: {
-          _id: 65d88026e17c676b8d272565, email: rider1@gmail.com, userName: yusuf Rider1, phoneNumber: 07036456047, riderId: DIS64471, password: $2b$10$FQ6e65Oh5hBA2oSpM3GATO3n9Hk1Av7mQKkdyEhyjzQ8Z./80Hr4i, status: pending, approved: false, isDelete: false, createdAt: 2024-02-23T11:23:18.905Z, updatedAt: 2024-03-01T10:15:46.153Z, __v: 0, address: Ikeja lagos, availability: off}, status: ongoing, assignedUserType: Rider, assignedTo: 65d88026e17c676b8d272565, startTrip: true, endTrip: false, userType: Customer, requester: {_id: 65e826da3c1ac24ff16a9f30, fullName: yusuf, phoneNumber: 0804681563, email: customer33@gmail.com, password: $2b$10$KoIZGDwXjvbeCbWk5VgkSu43yntu6U/xaM48UGyz2ycYKQB7Poksy, address: Lekki State, Nigeria, isDelete: false, createdAt: 2024-03-06T08:18:34.664Z, updatedAt: 2024-03-06T08:18:34.664Z, __v: 0}, isDelete: false, createdAt: 2024-03-07T09:21:12.956Z, updatedAt: 2024-03-07T10:49:30.113Z, __v: 0, token: 1084}]

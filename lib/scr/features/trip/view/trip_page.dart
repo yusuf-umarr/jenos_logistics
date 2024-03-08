@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:jenos/scr/common_widgets/appbbutton.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/my_trips_card.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
@@ -23,6 +24,9 @@ class TripsPage extends ConsumerStatefulWidget {
 }
 
 class _TripsPageState extends ConsumerState<TripsPage> {
+  final TextEditingController otpController = TextEditingController();
+  final _rkey = GlobalKey<FormState>();
+
   List tripType = [
     {"id": 0, "name": "Active"},
     {"id": 1, "name": "Completed"},
@@ -36,6 +40,12 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     // getAccountType();
     ref.read(tripController.notifier).getTrips();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    otpController.dispose();
+    super.dispose();
   }
 
   // String accountType = "";
@@ -173,9 +183,18 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                     if (trip['startTrip']) {
                       //end trip
 
-                      ref
-                          .read(tripController.notifier)
-                          .endTrip(trip['_id'], context);
+                      showModalBottomSheet<void>(
+                        isScrollControlled: true,
+                        context: context,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                        ),
+                        builder: (BuildContext context) {
+                          return showModal(context, trip);
+                        },
+                      );
                     } else {
                       //start trip
                       ref
@@ -203,40 +222,24 @@ class _TripsPageState extends ConsumerState<TripsPage> {
               if (trip['endTrip']) {
                 //completed trip
                 return MyTripsCard(
-                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
-                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
-                  price: trip['requestId']['amount'].toString(),
-                  startTrip: trip['startTrip'],
-                  endTrip: trip['endTrip'],
-                  itemImage: trip['requestId']['itemImage'],
-                  tripText: tripsProvider.loadState == NetworkState.loading
-                      ? "Loading..."
-                      : trip['startTrip']
-                          ? "End trip"
-                          : "Start trip",
-                  date:
-                      Util.showFormattedTimeString(trip['createdAt'], context),
-                  viewDetailTap: () {
-                    navigate(context,
-                        OrderDetailsPage(request: trip, isFromTrip: true));
-                  },
-                  startTripTap: () {
-                    if (trip['startTrip']) {
-                      //end trip
-
-                      ref
-                          .read(tripController.notifier)
-                          .endTrip(trip['_id'], context);
-                    } else {
-                      //start trip
-                      ref
-                          .read(tripController.notifier)
-                          .startTrip(trip['_id'], context);
-                    }
-
-                    // navigate(context, const StatusUpdatePage());
-                  },
-                );
+                    pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                    dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                    price: trip['requestId']['amount'].toString(),
+                    startTrip: trip['startTrip'],
+                    endTrip: trip['endTrip'],
+                    itemImage: trip['requestId']['itemImage'],
+                    tripText: tripsProvider.loadState == NetworkState.loading
+                        ? "Loading..."
+                        : trip['startTrip']
+                            ? "End trip"
+                            : "Start trip",
+                    date: Util.showFormattedTimeString(
+                        trip['createdAt'], context),
+                    viewDetailTap: () {
+                      navigate(context,
+                          OrderDetailsPage(request: trip, isFromTrip: true));
+                    },
+                    startTripTap: () {});
               }
               return const SizedBox();
             }),
@@ -293,5 +296,89 @@ class _TripsPageState extends ConsumerState<TripsPage> {
             return const SizedBox();
           }),
     );
+  }
+
+  showModal(context, trip) {
+    final Size size = MediaQuery.of(context).size;
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+      return Form(
+        key: _rkey,
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20).copyWith(top: 40),
+              height: MediaQuery.of(context).viewInsets.bottom == 0
+                  ? size.height * 0.47
+                  : size.height * 0.75,
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "End trip",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Enter the 4-digit OTP code sent to the receiver to end the trip",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: Colors.black),
+                        textAlign: TextAlign.start,
+                      ),
+                      const SizedBox(height: 20),
+                      Util.inputField2(
+                        externalText: "Otp code",
+                        hint: "****",
+                        inputType: TextInputType.number,
+                        controller: otpController,
+                        validator: Util.validateName,
+                      ),
+                      const SizedBox(height: 40),
+                      AppButton(
+                          height: 55,
+                          isIcon: true,
+                          text: 'Proceed',
+                          onPressed: () async {
+                            FocusScope.of(context).unfocus();
+
+                            if (_rkey.currentState!.validate()) {
+                              ref.read(tripController.notifier).endTrip(
+                                  trip['_id'], otpController.text, context);
+                            }
+                          },
+                          color: AppColors.primaryColor,
+                          textColor: Colors.white),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              right: 10,
+              top: 5,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.cancel,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }

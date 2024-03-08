@@ -18,7 +18,8 @@ abstract class TripsRepository {
   //get customers added by the merchant
   Future<ApiResponse<dynamic>> getTrips();
   Future<ApiResponse<dynamic>> startTrip(String tripId);
-  Future<ApiResponse<dynamic>> endTrip(String tripId);
+  Future<ApiResponse<dynamic>> updateRiderAvailability(String update);
+  Future<ApiResponse<dynamic>> endTrip(String tripId, String otp);
   Future<ApiResponse<dynamic>> getRiderAnalysis();
 }
 
@@ -31,7 +32,6 @@ class TripsRepositoryImpl implements TripsRepository {
   Future<ApiResponse<dynamic>> getTrips() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
-    //     String accountType = prefs.getString('accountType') ?? "";
 
     try {
       final response = await _dio.get(
@@ -44,7 +44,6 @@ class TripsRepositoryImpl implements TripsRepository {
         message: " successful",
       );
     } on DioException catch (e) {
-      // log("get rider request error$e");
       return AppException.handleError(
         e,
       );
@@ -73,11 +72,43 @@ class TripsRepositoryImpl implements TripsRepository {
 
 //
   @override
-  Future<ApiResponse<dynamic>> endTrip(String tripId) async {
-    //https://jenosway-backend.onrender.com/api/v1/trips/end-trip/65e8aae30d799bf9baf7d4b5
+  Future<ApiResponse<dynamic>> updateRiderAvailability(String update) async {
+    log("update:$update");
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String userId = prefs.getString('userId') ?? "";
+
+      log("userId:$userId");
+
+
+      final response = await _dio.post(
+        "https://jenosway-backend.onrender.com/api/v1/rider/availability",
+        // "${Endpoint.baseUrl}/rider/availability",
+        data: {"riderId": "65d88026e17c676b8d272565", "availability": "on"},
+      );
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data['data'],
+        message: " successful",
+      );
+    } on DioException catch (e) {
+      log("update error$e");
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+
+//
+  @override
+  Future<ApiResponse<dynamic>> endTrip(String tripId, String otp) async {
+    try {
+      var body = {"token": otp};
+
       final response = await _dio.put(
         "${Endpoint.baseUrl}/trips/end-trip/$tripId",
+        data: body,
       );
 
       return ApiResponse<dynamic>(

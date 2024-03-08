@@ -101,19 +101,10 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                       height: size.height * 0.02,
                     ),
                     Util.inputField2(
-                      isExternalLabel: true,
-                      useExternalText: true,
-                      isPrefix: false,
-                      isCompulsory: false,
-                      fontSizeExternal: 14,
-                      borderRadius: 5,
-                      borderColor: AppColors.greyColor,
-                      bgColor: Colors.white,
+                  
                       externalText: "Email",
                       hint: "john@gmail.com",
-                      hintColor: Colors.grey,
-                      externalTextColor: Colors.black,
-                      prefixIconColor: AppColors.primaryColor,
+                    
                       controller: _emailController,
                       validator: signinState.validateEmail,
                     ),
@@ -124,20 +115,11 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                       final isVisibility =
                           ref.watch(passwordNotifier).visibility;
                       return Util.inputField2(
-                        isExternalLabel: true,
                         isPassword: isVisibility,
-                        useExternalText: true,
-                        isPrefix: false,
-                        isCompulsory: false,
-                        fontSizeExternal: 14,
-                        borderRadius: 5,
-                        externalTextColor: Colors.black,
-                        borderColor: AppColors.greyColor,
-                        bgColor: Colors.white,
+                     
                         externalText: "Password",
                         hint: "******",
-                        hintColor: Colors.grey,
-                        prefixIconColor: AppColors.primaryColor,
+                   
                         controller: _passwordController,
                         validator: signinState.validatePassword,
                         suffixWidget: IconButton(

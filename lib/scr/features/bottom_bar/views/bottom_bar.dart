@@ -16,7 +16,7 @@ import 'package:jenos/scr/features/home/controller/home_controller.dart';
 import 'package:jenos/scr/features/home/view/home_page.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
-import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
 import 'package:jenos/scr/features/request/controller/request_notifier.dart';
 import 'package:jenos/scr/features/request/view/request_page.dart';
@@ -43,7 +43,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     super.initState();
   }
 
-
   //   getAccountType() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //   accountType = prefs.getString('accountType') ?? "individual";
@@ -56,7 +55,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     if (mounted) {
       await ref.read(onboardController.notifier).getAccountType();
       ref.read(homeController.notifier).getShowPop();
-      await ref.read(personalInfoNotifier.notifier).getUserData();
+      await ref.read(profileController.notifier).getUserData();
       ref.read(requestNotifier.notifier).getRiderRequest();
       ref.read(tripController.notifier).getTrips();
       ref.read(tripController.notifier).getRiderAnalysis();
@@ -68,11 +67,11 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
     pages = [
       const HomePage(),
-         accountType == AccountType.individual
+      accountType == AccountType.individual
           ? const RequestPage()
           : const NotificationPage(isArrowBack: false),
       // const RequestPage(),
-       TripsPage(accountType: accountType),
+      TripsPage(accountType: accountType),
       accountType == AccountType.individual
           ? const WalletPage()
           : const ProfilePage(),
@@ -84,11 +83,13 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         "name": "Home",
         "icon": Assets.home,
       },
-        {
+      {
         "id": 1,
-        "name": accountType == AccountType.individual ? "Request" : "Notification",
-        "icon":
-            accountType == AccountType.individual ? Assets.requests : Assets.bell,
+        "name":
+            accountType == AccountType.individual ? "Request" : "Notification",
+        "icon": accountType == AccountType.individual
+            ? Assets.requests
+            : Assets.bell,
       },
       // {
       //   "id": 1,

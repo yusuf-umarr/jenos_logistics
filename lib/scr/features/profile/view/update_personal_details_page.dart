@@ -12,8 +12,8 @@ import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/flush_bar.dart';
 import 'package:jenos/scr/core/util/util.dart';
-import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
-import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_state.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_state.dart';
 import 'package:jenos/scr/features/profile/widget/profile_picture_widget.dart';
 
 class UpdatePersonalDetailPage extends ConsumerStatefulWidget {
@@ -30,7 +30,7 @@ class _UpdatePersonalDetailPageState
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
-      ref.listen<PersonalInformationState>(personalInfoNotifier, (prev, state) {
+      ref.listen<ProfileState>(profileController, (prev, state) {
         if (state.loadState == NetworkState.error) {
           Util.showSnackBar(
             context,
@@ -45,7 +45,7 @@ class _UpdatePersonalDetailPageState
           );
 
           Timer(const Duration(seconds: 3), () {
-            ref.read(personalInfoNotifier.notifier).getUserData();
+            ref.read(profileController.notifier).getUserData();
 
             Navigator.of(context).pop();
           });
@@ -104,7 +104,7 @@ class _UpdatePersonalDetailPageState
               hintColor: Colors.grey,
               externalTextColor: Colors.black,
               prefixIconColor: AppColors.primaryColor,
-              controller: ref.watch(personalInfoNotifier).nameController,
+              controller: ref.watch(profileController).nameController,
             ),
             const SizedBox(
               height: AppSize.defaultPadding * 1.5,
@@ -123,7 +123,7 @@ class _UpdatePersonalDetailPageState
               hintColor: Colors.grey,
               externalTextColor: Colors.black,
               prefixIconColor: AppColors.primaryColor,
-              controller: ref.watch(personalInfoNotifier).phoneController,
+              controller: ref.watch(profileController).phoneController,
               // controller: _auth.firstName,
             ),
             const SizedBox(
@@ -143,22 +143,22 @@ class _UpdatePersonalDetailPageState
               hintColor: Colors.grey,
               externalTextColor: Colors.black,
               prefixIconColor: AppColors.primaryColor,
-              controller: ref.watch(personalInfoNotifier).addrController,
+              controller: ref.watch(profileController).addrController,
               // controller: _auth.firstName,
             ),
             const SizedBox(
               height: AppSize.defaultPadding * 3,
             ),
             Consumer(builder: (context, ref, _) {
-              final loadState = ref.watch(personalInfoNotifier).loadState;
+              final loadState = ref.watch(profileController).loadState;
               return AppButton(
                 isLoading: loadState == NetworkState.loading,
                 text: 'Update profile ',
                 onPressed: () async {
-                  ref.read(personalInfoNotifier.notifier).updateProfile(
-                        ref.watch(personalInfoNotifier).nameController.text,
-                        ref.watch(personalInfoNotifier).phoneController.text,
-                        ref.watch(personalInfoNotifier).addrController.text,
+                  ref.read(profileController.notifier).updateProfile(
+                        ref.watch(profileController).nameController.text,
+                        ref.watch(profileController).phoneController.text,
+                        ref.watch(profileController).addrController.text,
                       );
                 },
               );

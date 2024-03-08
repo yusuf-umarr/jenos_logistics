@@ -103,48 +103,18 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         height: size.height * 0.02,
                       ),
                       Util.inputField2(
-                        isExternalLabel: true,
-                        useExternalText: true,
-                        isPrefix: false,
-                        isCompulsory: false,
-                        fontSizeExternal: 14,
-                        borderRadius: 5,
-                        borderColor: AppColors.greyColor,
-                        bgColor: Colors.white,
                         externalText: "Username",
                         hint: "example: john",
-                        hintColor: Colors.grey,
-                        externalTextColor: Colors.black,
-                        prefixIconColor: AppColors.primaryColor,
                         controller: _nameController,
                         validator: signupState.validateName,
-
-                        // validator: (val) {
-                        //   if (val!.isEmpty) {
-                        //     return '*This field is required';
-                        //   }
-
-                        //   return null;
-                        // },
                       ),
                       SizedBox(
                         height: size.height * 0.025,
                       ),
                       Util.inputField2(
-                        isExternalLabel: true,
-                        useExternalText: true,
-                        isPrefix: false,
-                        isCompulsory: false,
-                        fontSizeExternal: 14,
-                        borderRadius: 5,
-                        borderColor: AppColors.greyColor,
-                        bgColor: Colors.white,
                         externalText: "Phone number",
                         hint: "example: 08012345678",
                         inputType: TextInputType.number,
-                        hintColor: Colors.grey,
-                        externalTextColor: Colors.black,
-                        prefixIconColor: AppColors.primaryColor,
                         controller: _phoneController,
                         validator: signupState.validatePhone,
                       ),
@@ -152,19 +122,8 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         height: size.height * 0.025,
                       ),
                       Util.inputField2(
-                        isExternalLabel: true,
-                        useExternalText: true,
-                        isPrefix: false,
-                        isCompulsory: false,
-                        fontSizeExternal: 14,
-                        borderRadius: 5,
-                        borderColor: AppColors.greyColor,
-                        bgColor: Colors.white,
                         externalText: "Email address",
                         hint: "example: john@gmail.com",
-                        hintColor: Colors.grey,
-                        externalTextColor: Colors.black,
-                        prefixIconColor: AppColors.primaryColor,
                         controller: _emailController,
                         validator: signupState.validateEmail,
                       ),
@@ -175,20 +134,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         final isVisibility =
                             ref.watch(passwordNotifier).visibility;
                         return Util.inputField2(
-                          isExternalLabel: true,
                           isPassword: isVisibility,
-                          useExternalText: true,
-                          isPrefix: false,
-                          isCompulsory: false,
-                          fontSizeExternal: 14,
-                          borderRadius: 5,
-                          externalTextColor: Colors.black,
-                          borderColor: AppColors.greyColor,
-                          bgColor: Colors.white,
                           externalText: "Password",
                           hint: "******",
-                          hintColor: Colors.grey,
-                          prefixIconColor: AppColors.primaryColor,
                           controller: _passwordController,
                           validator: (val) {
                             if (val!.isEmpty) {
@@ -219,20 +167,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         final isVisible =
                             ref.watch(passwordNotifier).confirmVisibility;
                         return Util.inputField2(
-                          isExternalLabel: true,
                           isPassword: isVisible,
-                          useExternalText: true,
-                          isPrefix: false,
-                          isCompulsory: false,
-                          fontSizeExternal: 14,
-                          borderRadius: 5,
-                          externalTextColor: Colors.black,
-                          borderColor: AppColors.greyColor,
-                          bgColor: Colors.white,
                           externalText: "Retype password",
                           hint: "******",
-                          hintColor: Colors.grey,
-                          prefixIconColor: AppColors.primaryColor,
                           controller: _confirmPasswordController,
                           validator: (val) {
                             if (val!.isEmpty) {
@@ -262,10 +199,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                       Consumer(builder: (context, ref, _) {
                         final loadState = ref.watch(signupNotifier).loadState;
 
-                        final accountType =
-                            ref.watch(onboardController).accountType;
-
-                        //loadState: NetworkState.loading
                         return AppButton(
                           isIcon: true,
                           isLoading: loadState == NetworkState.loading,

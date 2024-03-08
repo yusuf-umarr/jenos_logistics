@@ -268,4 +268,5 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
       );
     });
   }
+
 }

@@ -1,28 +1,26 @@
-/// This class defines the PersonalInfoNotifier
+/// This class defines the ProfileController
 /// @author  Yusuf umar
 /// @version 1.0
 /// @since   2023-12-19
-
 
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/util/enums.dart';
-import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_state.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_state.dart';
 import 'package:jenos/scr/core/repository/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Notifier class for handling the Signin state.
-class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
-  PersonalInfoNotifier(this.profileRepository)
-      : super(PersonalInformationState.initial());
+class ProfileController extends StateNotifier<ProfileState> {
+  ProfileController(this.profileRepository) : super(ProfileState.initial());
 
   final ProfileRepository profileRepository;
 
   Future<void> getUserData() async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountType = prefs.getString('accountType') ?? ""; 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountType = prefs.getString('accountType') ?? "";
     //address
 
     log("get sritn accountType:$accountType");
@@ -30,16 +28,16 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
       final response = await profileRepository.getUserData();
 
       if (response.success) {
-
         // log("getUserData res:${response.data}");
         state = state.copyWith(
-          nameController:
-              TextEditingController(text: accountType == "individual"? response.data["userName"]: response.data["fullName"]),
+          nameController: TextEditingController(
+              text: accountType == "individual"
+                  ? response.data["userName"]
+                  : response.data["fullName"]),
           emailController: TextEditingController(text: response.data["email"]),
           phoneController:
               TextEditingController(text: response.data["phoneNumber"]),
-          addrController: TextEditingController(
-              text: response.data["address"]),
+          addrController: TextEditingController(text: response.data["address"]),
           imagePath: response.data["image"],
           // CACRegController: TextEditingController(text: accountType != "individual"? response.data["CACReg"]: ""),
         );
@@ -66,10 +64,9 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
       phoneController: state.phoneController = TextEditingController(),
       addrController: state.addrController = TextEditingController(),
     );
-
   }
 
-    Future<void> getNotifications() async {
+  Future<void> getNotifications() async {
     try {
       final response = await profileRepository.getNotifications();
 
@@ -117,7 +114,7 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
         );
 
         // log("message:${state.message}");
-        // log("response.data:${response.data}");
+        // log("update response.data:${response.data}");
 
         return;
       }
@@ -182,7 +179,7 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInformationState> {
   }
 }
 
-/// Provider for the PersonalInfoNotifier class.
-final personalInfoNotifier =
-    StateNotifierProvider<PersonalInfoNotifier, PersonalInformationState>(
-        (ref) => PersonalInfoNotifier(ref.read(profileRepository)));
+/// Provider for the ProfileController class.
+final profileController =
+    StateNotifierProvider<ProfileController, ProfileState>(
+        (ref) => ProfileController(ref.read(profileRepository)));

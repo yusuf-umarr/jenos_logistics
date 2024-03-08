@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,8 +11,9 @@ import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
-import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
+import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 
 class HomeHeaderWidget extends ConsumerStatefulWidget {
   const HomeHeaderWidget({
@@ -25,7 +28,7 @@ class _HomeHeaderWidgetState extends ConsumerState<HomeHeaderWidget> {
   bool isOnline = true;
   @override
   Widget build(BuildContext context) {
-    final personalNotifier = ref.watch(personalInfoNotifier);
+    final personalNotifier = ref.watch(profileController);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,7 +50,7 @@ class _HomeHeaderWidgetState extends ConsumerState<HomeHeaderWidget> {
             ),
             Consumer(builder: (context, ref, _) {
               final accountType = ref.watch(onboardController).accountType;
-              final personalNotifier = ref.watch(personalInfoNotifier);
+              final personalNotifier = ref.watch(profileController);
               final Size size = MediaQuery.of(context).size;
 
               if (accountType == AccountType.individual) {
@@ -85,9 +88,24 @@ class _HomeHeaderWidgetState extends ConsumerState<HomeHeaderWidget> {
                             value: isOnline,
                             activeColor: AppColors.green,
                             onChanged: (val) {
+                              if (isOnline) {
+                                //off
+                                log("isOnline to Offff");
+                                ref
+                                    .read(tripController.notifier)
+                                    .updateRiderAvailability("off", context);
+                              } else {
+                                //on
+                                // log("isOnline to oNN");
+                                ref
+                                    .read(tripController.notifier)
+                                    .updateRiderAvailability("on", context);
+                              }
                               setState(() {
                                 isOnline = val;
                               });
+
+                              // log("isOnline:$isOnline");
                             },
                           ),
                         ),

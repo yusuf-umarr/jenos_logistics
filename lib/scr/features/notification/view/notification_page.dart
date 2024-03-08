@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/notification_card.dart';
 import 'package:jenos/scr/constant/app_size.dart';
-import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
 
 class NotificationPage extends ConsumerStatefulWidget {
   final bool isArrowBack;
@@ -16,7 +16,7 @@ class NotificationPage extends ConsumerStatefulWidget {
 class _NotificationPageState extends ConsumerState<NotificationPage> {
   @override
   void initState() {
-    ref.read(personalInfoNotifier.notifier).getNotifications();
+    ref.read(profileController.notifier).getNotifications();
 
     super.initState();
   }
@@ -25,7 +25,7 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final provider = ref.watch(personalInfoNotifier);
+    final provider = ref.watch(profileController);
     return Scaffold(
         appBar: CustomWidget.customAppbar(context,
             title: "Notification", isArrow: widget.isArrowBack),

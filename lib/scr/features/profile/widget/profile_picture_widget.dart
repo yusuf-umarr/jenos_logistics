@@ -8,7 +8,7 @@ import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
-import 'package:jenos/scr/features/profile/controller/personal_info/personal_info_notifier.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
 
 class ProfilePictureWidget extends ConsumerStatefulWidget {
   const ProfilePictureWidget({Key? key}) : super(key: key);
@@ -36,7 +36,7 @@ class _ProfilePictureWidgetState extends ConsumerState<ProfilePictureWidget> {
     if (imageFile != null) {
       // log("get called here-----======");
 
-      ref.read(personalInfoNotifier.notifier).uploadProfileImage(
+      ref.read(profileController.notifier).uploadProfileImage(
             imageUpload,
             isMerchant: accountType == AccountType.individual,
           );
@@ -52,7 +52,7 @@ class _ProfilePictureWidgetState extends ConsumerState<ProfilePictureWidget> {
     // final auth = context.watch<AuthProvider>();
     final accountType = ref.watch(onboardController).accountType;
 
-    final profile = ref.watch(personalInfoNotifier);
+    final profile = ref.watch(profileController);
 
     return Stack(
       children: [
@@ -69,8 +69,7 @@ class _ProfilePictureWidgetState extends ConsumerState<ProfilePictureWidget> {
                       ? Image.asset("assets/images/profileImg.jpg")
                       : Image.file(File(imageUpload.path),
                           // : Image.file(File(auth.imageUpload.path),
-                          fit: BoxFit.cover
-                          ),
+                          fit: BoxFit.cover),
             ),
           ),
         ),

@@ -232,6 +232,7 @@ class Util {
     );
   }
 
+//
   static showSnackBar(BuildContext context, String text,
       {color = AppColors.primaryColor}) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -413,5 +414,6 @@ class Util {
     static callNumber(number) async {
     bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
+
 
 }

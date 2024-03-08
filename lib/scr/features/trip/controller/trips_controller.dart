@@ -12,7 +12,6 @@ import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/trip/controller/trips_state.dart';
 
-/// Controller class for managing the navigation bar state.
 class TripController extends StateNotifier<TripState> {
   TripController(this.tripsRepository) : super(TripState.initial());
 
@@ -27,7 +26,7 @@ class TripController extends StateNotifier<TripState> {
           tripsData: response.data,
           // message: response.message,
         );
-        log("get getTrips() success ${state.tripsData}");
+        // log("get getTrips() success ${state.tripsData}");
 
         return true;
       }
@@ -84,12 +83,46 @@ class TripController extends StateNotifier<TripState> {
   }
 
 //
-  Future endTrip(String tripId, context) async {
+//
+  Future updateRiderAvailability(String update, context) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
     try {
-      final response = await tripsRepository.endTrip(tripId);
+      final response = await tripsRepository.updateRiderAvailability(update);
+
+      if (response.success) {
+        state = state.copyWith(
+          loadState: NetworkState.success,
+        );
+        log("rider availability : ${state.message}");
+        Util.showSnackBar(context, "Availability updated");
+
+        return true;
+      }
+
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+
+      return false;
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+    return false;
+  }
+
+//
+  Future endTrip(String tripId, String otp, context) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await tripsRepository.endTrip(tripId, otp);
 
       if (response.success) {
         state = state.copyWith(
@@ -160,5 +193,3 @@ class TripController extends StateNotifier<TripState> {
 /// Provider for accessing the [TripController] instance.
 final tripController = StateNotifierProvider<TripController, TripState>(
     (ref) => TripController(ref.read(tripsRepository)));
-
-//  (ref) => RequestNotifier(ref.read(requestRepository)

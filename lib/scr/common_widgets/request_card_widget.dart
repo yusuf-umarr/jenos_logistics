@@ -99,7 +99,7 @@ class RequestOrderCardWIdget extends StatelessWidget {
               width: AppSize.defaultPadding,
             ),
             Util.cardBtn(
-                title: "N 300${request['amount'] ?? 0}", //request['status'],
+                title: "NGN 300${request['amount'] ?? 0}", //request['status'],
                 bgColor: AppColors.white,
                 textColor: AppColors.primaryColor,
                 onTap: () {
