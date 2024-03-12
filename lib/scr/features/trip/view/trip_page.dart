@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -236,6 +238,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                     date: Util.showFormattedTimeString(
                         trip['createdAt'], context),
                     viewDetailTap: () {
+                      // log("trip:$trip");
                       navigate(context,
                           OrderDetailsPage(request: trip, isFromTrip: true));
                     },

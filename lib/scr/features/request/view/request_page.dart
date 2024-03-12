@@ -21,9 +21,7 @@ class _RequestPageState extends ConsumerState<RequestPage> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomWidget.customAppbar(context, title: "Request Order"),
       body: Padding(
@@ -32,13 +30,18 @@ class _RequestPageState extends ConsumerState<RequestPage> {
         ),
         child: Builder(builder: (context) {
           final requestNoti = ref.watch(requestNotifier);
+          // log("requestNoti.requestData:${requestNoti.requestData.length}");
 
           if (requestNoti.requestData.isNotEmpty) {
             return ListView.builder(
                 itemCount: requestNoti.requestData.length,
                 itemBuilder: (context, int index) {
                   final request = requestNoti.requestData[index];
-                  return RequestOrderCardWIdget(request: request);
+
+                  if (requestNoti.requestData[index]['createdBy'] != null) {
+                    return RequestOrderCardWIdget(request: request);
+                  }
+                  return const SizedBox();
                 });
           } else {
             return Center(

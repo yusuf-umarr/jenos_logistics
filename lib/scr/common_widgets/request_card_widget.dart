@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
@@ -46,17 +45,16 @@ class RequestOrderCardWIdget extends StatelessWidget {
                   width: AppSize.defaultPadding / 3,
                 ),
                 Text(
-                  request['status'],
+                  "Tv set",
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: request['status'] == "accepted"
-                          ? Colors.green
-                          : Colors.yellow),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        // color: request['status'] == "accepted"
+                        //     ? Colors.green
+                        //     : AppColors.primaryColor
+                      ),
                 ),
-                const SizedBox(
-                  width: AppSize.defaultPadding / 3,
-                ),
+
                 // Text(
                 //   "${Util.showFormattedDateString(request['createdAt'], context)} "
                 //   "||"
@@ -66,6 +64,16 @@ class RequestOrderCardWIdget extends StatelessWidget {
                 // ),
               ],
             ),
+            Text(
+              request['status'],
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: request['status'] == "accepted"
+                      ? Colors.green
+                      : AppColors.primaryColor),
+            ),
+
             // Text(
             //   Util.showFormattedDateString(request['createdAt'], context),
             //   style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -93,6 +101,7 @@ class RequestOrderCardWIdget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Util.cardBtn(onTap: () {
+              // log("request-detail:$request");
               navigate(context, OrderDetailsPage(request: request));
             }),
             const SizedBox(
