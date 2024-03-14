@@ -26,7 +26,7 @@ class TripController extends StateNotifier<TripState> {
           tripsData: response.data,
           // message: response.message,
         );
-        log("get getTrips() success ${state.tripsData}");
+        // log("get getTrips() success ${state.tripsData}");
 
         return true;
       }

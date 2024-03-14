@@ -30,6 +30,12 @@ class _RequestPageState extends ConsumerState<RequestPage> {
         ),
         child: Builder(builder: (context) {
           final requestNoti = ref.watch(requestNotifier);
+
+              requestNoti.requestData.sort((a, b) {
+            DateTime dateTimeA = DateTime.parse(a['createdAt']);
+            DateTime dateTimeB = DateTime.parse(b['createdAt']);
+            return dateTimeB.compareTo(dateTimeA); // Descending order
+          });
           // log("requestNoti.requestData:${requestNoti.requestData.length}");
 
           if (requestNoti.requestData.isNotEmpty) {
