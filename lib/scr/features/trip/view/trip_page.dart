@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -147,11 +145,16 @@ class _TripsPageState extends ConsumerState<TripsPage> {
   }
 
   tripsTypesBottomWidget(tripsProvider) {
+      tripsProvider.tripsData!.sort((a, b) {
+      DateTime dateTimeA = DateTime.parse(a['createdAt']);
+      DateTime dateTimeB = DateTime.parse(b['createdAt']);
+      return dateTimeB.compareTo(dateTimeA); // Descending order
+    });
     if ((tripsProvider.tripsData.isEmpty)) {
       return const Center(
         child: Padding(
           padding: EdgeInsets.only(top: 200),
-          child: Text("Opp! no active trip!!!"),
+          child: Text("Opp! no active trip!!!!!"),
         ),
       );
     }
@@ -165,6 +168,8 @@ class _TripsPageState extends ConsumerState<TripsPage> {
               if (!trip['endTrip']) {
                 //ongoing/active trip
                 return MyTripsCard(
+                  receiverName: trip['requestId']['receiverName'] ?? "",
+                  itemName: trip['requestId']['title'] ?? "",
                   pickUpAddress: trip['trackingInfo']['pickUpAddress'],
                   dropOffAddr: trip['trackingInfo']['dropOffAddress'],
                   price: trip['requestId']['amount'].toString(),
@@ -205,13 +210,9 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                     }
                   },
                 );
+              } else {
+                return const SizedBox();
               }
-              return const Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 200),
-                  child: Text("Opp! no active trip!!!"),
-                ),
-              );
             }),
       );
     } else if (selectedIndex == 1) {
@@ -224,6 +225,8 @@ class _TripsPageState extends ConsumerState<TripsPage> {
               if (trip['endTrip']) {
                 //completed trip
                 return MyTripsCard(
+                    receiverName: trip['requestId']['receiverName'] ?? "",
+                    itemName: trip['requestId']['title'] ?? "",
                     pickUpAddress: trip['trackingInfo']['pickUpAddress'],
                     dropOffAddr: trip['trackingInfo']['dropOffAddress'],
                     price: trip['requestId']['amount'].toString(),

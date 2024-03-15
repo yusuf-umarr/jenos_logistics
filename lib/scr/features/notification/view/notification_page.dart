@@ -23,9 +23,13 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-
     final provider = ref.watch(profileController);
+
+    provider.appNotificationList!.sort((a, b) {
+      DateTime dateTimeA = DateTime.parse(a['createdAt']);
+      DateTime dateTimeB = DateTime.parse(b['createdAt']);
+      return dateTimeB.compareTo(dateTimeA); // Descending order
+    });
     return Scaffold(
         appBar: CustomWidget.customAppbar(context,
             title: "Notification", isArrow: widget.isArrowBack),

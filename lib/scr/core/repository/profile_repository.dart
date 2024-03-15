@@ -86,7 +86,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<ApiResponse<dynamic>> getUserData() async {
 
 
-log("getUserData called");
+// log("getUserData called");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accountType = prefs.getString('accountType') ?? "individual";

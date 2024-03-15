@@ -15,7 +15,8 @@ class RequestOrderCardWIdget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("request:${request}");
+    final Size size = MediaQuery.of(context).size;
+    // log("====request:${request}");
     return Container(
       margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
       padding: const EdgeInsets.all(AppSize.defaultPadding).copyWith(
@@ -47,24 +48,19 @@ class RequestOrderCardWIdget extends StatelessWidget {
                 const SizedBox(
                   width: AppSize.defaultPadding / 3,
                 ),
-                Text(
-                  "Tv set",
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        // color: request['status'] == "accepted"
-                        //     ? Colors.green
-                        //     : AppColors.primaryColor
-                      ),
+                SizedBox(
+                  width: size.width * 0.35,
+                  child: Text(
+                    request['title'] ?? "Package",
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          // color: request['status'] == "accepted"
+                          //     ? Colors.green
+                          //     : AppColors.primaryColor
+                        ),
+                  ),
                 ),
-
-                // Text(
-                //   "${Util.showFormattedDateString(request['createdAt'], context)} "
-                //   "||"
-                //   " ${Util.showFormattedTimeVal(request['pickUpDate'], context)}",
-                //   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                //       fontWeight: FontWeight.w500, color: AppColors.grey),
-                // ),
               ],
             ),
             Text(

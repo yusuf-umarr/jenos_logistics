@@ -9,6 +9,7 @@ import 'package:jenos/scr/core/util/util.dart';
 class MyTripsCard extends StatelessWidget {
   final String date;
   final String? itemName;
+  final String? receiverName;
   final String? itemImage;
   final String? tripText;
   final String? price;
@@ -26,6 +27,7 @@ class MyTripsCard extends StatelessWidget {
       required this.pickUpAddress,
       required this.tripText,
       required this.dropOffAddr,
+      required this.receiverName,
       this.itemName,
       this.itemImage,
       this.viewDetailTap,
@@ -36,6 +38,7 @@ class MyTripsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -119,23 +122,34 @@ class MyTripsCard extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    itemName ?? "Pizza-Hut",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                  Text(
-                                    "Nweke Jonathan",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
+                                  SizedBox(
+                                    width: size.width * 0.4,
+                                    child: Text(
+                                      itemName ?? "Pizza-Hut",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
                                             fontWeight: FontWeight.bold,
-                                            color: AppColors.greyColor),
+                                          ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.4,
+                                    child: Text(
+                                      receiverName!,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.grey,
+                                          ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -180,18 +194,28 @@ class MyTripsCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    pickUpAddress!,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                  SizedBox(
+                                    width: size.width * 0.6,
+                                    child: Text(
+                                      pickUpAddress!,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
                                   ),
                                   const SizedBox(
                                     height: 40,
                                   ),
-                                  Text(
-                                    dropOffAddr!,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                  SizedBox(
+                                    width: size.width * 0.6,
+                                    child: Text(
+                                      dropOffAddr!,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
                                   ),
                                 ],
                               )

@@ -36,6 +36,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    log("request detail:${widget.request}");
     final Size size = MediaQuery.of(context).size;
     return Consumer(builder: (context, ref, _) {
       // final accountType = ref.watch(requestNotifier).accountType;
@@ -62,7 +63,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       return Scaffold(
         appBar: CustomWidget.customAppbar(
           context,
-          title: widget.isFromTrip ? "Trip details" : "Order details",
+          title: "Details",
           isArrow: true,
         ),
         body: ListView(
@@ -95,7 +96,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   : widget.request['createdBy']['email'] ?? "",
               phone: widget.isFromTrip
                   ? widget.request['requester']['phoneNumber']
-                  : widget.request['senderPhone'] ?? "",
+                  : widget.request['requesterPhone'] ?? "",
               onTap: () {
                 Util.callNumber(
                     " ${widget.isFromTrip ? widget.request['requester']['phoneNumber'] : widget.request['senderPhone'] ?? "0"}");
@@ -270,7 +271,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Item Image",
+            widget.isFromTrip
+                ? widget.request['requestId']['title']
+                : widget.request['title'] ?? "",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w600,
                 ),

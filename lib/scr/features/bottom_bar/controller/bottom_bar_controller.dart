@@ -34,7 +34,7 @@ class NavBarController extends StateNotifier<NavBarState> {
     String accountType = prefs.getString('accountType') ?? "individual";
 
     final dio = Dio();
-    dio.options.connectTimeout = const Duration(seconds: 5); // 5 seconds timeout
+    dio.options.connectTimeout = const Duration(seconds: 15); // 5 seconds timeout
 
     var headers = {
       'Content-Type': 'application/json; charset=UTF-8',

@@ -87,8 +87,6 @@ class AuthRepositoryImpl implements AuthRepository {
       });
       // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
 
-      log("response.data['data']['token']:${response.data['data']['token']}");
-      log("response.data['data']['_id']:${response.data['data']['_id']}");
       await prefs.setString('token', response.data['data']['token']!);
       await prefs.setString('userId', response.data['data']['_id']!);
 
