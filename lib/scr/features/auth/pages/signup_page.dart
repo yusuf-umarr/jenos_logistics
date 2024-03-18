@@ -11,7 +11,6 @@ import 'package:jenos/scr/features/auth/controller/signup/signup_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/features/auth/controller/signup/signup_state.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
-import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});

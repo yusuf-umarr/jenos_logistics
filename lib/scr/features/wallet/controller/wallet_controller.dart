@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/repository/request_repository.dart';
 import 'package:jenos/scr/core/repository/wallet_repository.dart';
 import 'package:jenos/scr/core/util/enums.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/request/controller/request_state.dart';
 import 'package:jenos/scr/features/wallet/controller/wallet_state.dart';
 
@@ -27,7 +29,6 @@ class WalletController extends StateNotifier<WalletState> {
       loadState: NetworkState.loading,
     );
     try {
-     
       final response = await walletRepository.withdrawFund(
         bankName,
         accountNumber,
@@ -40,13 +41,14 @@ class WalletController extends StateNotifier<WalletState> {
           loadState: NetworkState.success,
           message: response.message,
         );
-        log("success response ${response.data}");
+        log("success response========= ${response.data}");
 
-        // Future.delayed(Duration(seconds: 4), () {
-        //   state = state.copyWith(
-        //     loadState: NetworkState.idle,
-        //   );
-        // });
+        // Navigator.of(context).pop();
+
+        Future.delayed(Duration(seconds: 2), () {
+          // flush
+          Util.showSnackBar(context, "Request sent", color: Colors.green);
+        });
 
         return;
       }

@@ -689,8 +689,13 @@ class CustomWidget {
     );
   }
 
-  static Row seeAllWidget(BuildContext context,
-      {String title = "Recent Trip activity", String desc = "See all", onTap}) {
+  static Row seeAllWidget(
+    BuildContext context, {
+    String title = "Recent Trip activity",
+    String desc = "See all",
+    bool isArrow =true,
+    onTap,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -714,11 +719,12 @@ class CustomWidget {
                       fontSize: 12,
                     ),
               ),
+              isArrow?
               const Icon(
                 Icons.keyboard_arrow_right,
                 color: AppColors.primaryColor,
                 size: 15,
-              )
+              ):const SizedBox()
             ],
           ),
         ),

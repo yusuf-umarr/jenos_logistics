@@ -33,32 +33,28 @@ class WalletRepositoryImpl implements WalletRepository {
 
   @override
   Future<ApiResponse<dynamic>> withdrawFund(
-      String bankName,
+    String bankName,
     int accountNumber,
     String accountName,
     String amount,
   ) async {
     try {
       var body = {
-            "bankName": bankName,
+        "bankName": bankName,
         "accountNumber": accountNumber,
         "accountName": accountName,
         "amount": amount
       };
 
       final response = await _dio
-          .post("${Endpoint.baseUrl}/withdrawal-request/",
-          
-           data: body);
+          .post("${Endpoint.baseUrl}/withdrawal-request/", data: body);
       return ApiResponse<dynamic>(
         success: true,
         data: response.data,
         message: "done !",
       );
     } on DioException catch (e) {
-      return AppException.handleError(
-        e,
-      );
+      return AppException.handleError(e);
     }
   }
 
