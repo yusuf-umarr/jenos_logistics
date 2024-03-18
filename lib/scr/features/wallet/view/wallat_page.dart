@@ -14,6 +14,8 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
+  final _rkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,110 +87,80 @@ class _WalletPageState extends State<WalletPage> {
             padding: const EdgeInsets.all(20).copyWith(top: 40),
             height: size.height * 0.9,
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Request payout",
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 40),
-                  Util.inputField2(
-                    isExternalLabel: true,
-                    useExternalText: true,
-                    isPrefix: false,
-                    isCompulsory: false,
-                    fontSizeExternal: 14,
-                    borderRadius: 5,
-                    borderColor: AppColors.greyColor,
-                    bgColor: Colors.white,
-                    externalText: "Bank name",
-                    hint: "example: Union bank",
-                    hintColor: Colors.grey,
-                    externalTextColor: Colors.black,
-                    prefixIconColor: AppColors.primaryColor,
-                    // controller: _auth.firstName,
-                    onChanged: (val) {
-                      setState(() {
-                        // _auth.firstName.text = val;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Util.inputField2(
-                    isExternalLabel: true,
-                    useExternalText: true,
-                    isPrefix: false,
-                    isCompulsory: false,
-                    fontSizeExternal: 14,
-                    borderRadius: 5,
-                    borderColor: AppColors.greyColor,
-                    bgColor: Colors.white,
-                    externalText: "Account number",
-                    hint: "0013942345",
-                    hintColor: Colors.grey,
-                    externalTextColor: Colors.black,
-                    prefixIconColor: AppColors.primaryColor,
-                    // controller: _auth.firstName,
-                    onChanged: (val) {
-                      setState(() {
-                        // _auth.firstName.text = val;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Util.inputField2(
-                    isExternalLabel: true,
-                    useExternalText: true,
-                    isPrefix: false,
-                    isCompulsory: false,
-                    fontSizeExternal: 14,
-                    borderRadius: 5,
-                    borderColor: AppColors.greyColor,
-                    bgColor: Colors.white,
-                    externalText: "Account name",
-                    hint: "Kayode ade",
-                    hintColor: Colors.grey,
-                    externalTextColor: Colors.black,
-                    prefixIconColor: AppColors.primaryColor,
-                    // controller: _auth.firstName,
-                    onChanged: (val) {
-                      setState(() {
-                        // _auth.firstName.text = val;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Util.inputField2(
-                    isExternalLabel: true,
-                    useExternalText: true,
-                    isPrefix: false,
-                    isCompulsory: false,
-                    fontSizeExternal: 14,
-                    borderRadius: 5,
-                    borderColor: AppColors.greyColor,
-                    bgColor: Colors.white,
-                    externalText: "Account",
-                    hint: "1000",
-                    hintColor: Colors.grey,
-                    externalTextColor: Colors.black,
-                    prefixIconColor: AppColors.primaryColor,
-                    onChanged: (val) {
-                      setState(() {});
-                    },
-                  ),
-                  const SizedBox(height: 40),
-                  AppButton(
-                      height: 55,
-                      isIcon: false,
-                      text: 'Withdraw',
-                      onPressed: () async {},
-                      color: AppColors.primaryColor,
-                      textColor: Colors.white),
-                ],
+              child: Form(
+                key: _rkey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Request payout",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 40),
+                    Util.inputField2(
+                      externalText: "Bank name",
+                      hint: "example: Union bank",
+
+                      validator: Util.validateName,
+                      // controller: _auth.firstName,
+                      onChanged: (val) {
+                        setState(() {
+                          // _auth.firstName.text = val;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Util.inputField2(
+                      inputType: TextInputType.number,
+                      externalText: "Account number",
+                      hint: "0013942345",
+
+                      validator: Util.validateName,
+
+                      // controller: _auth.firstName,
+                      onChanged: (val) {
+                        setState(() {
+                          // _auth.firstName.text = val;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Util.inputField2(
+                      externalText: "Account name",
+                      hint: "Kayode ade",
+                      validator: Util.validateName,
+
+                      // controller: _auth.firstName,
+                      onChanged: (val) {
+                        setState(() {
+                          // _auth.firstName.text = val;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Util.inputField2(
+                      inputType: TextInputType.number,
+                      externalText: "Account",
+                      hint: "1000",
+                      validator: Util.validateName,
+                    ),
+                    const SizedBox(height: 40),
+                    AppButton(
+                        height: 55,
+                        isIcon: false,
+                        text: 'Withdraw',
+                        onPressed: () async {
+                          FocusScope.of(context).unfocus();
+
+                          if (_rkey.currentState!.validate()) {}
+                        },
+                        color: AppColors.primaryColor,
+                        textColor: Colors.white),
+                  ],
+                ),
               ),
             ),
           ),

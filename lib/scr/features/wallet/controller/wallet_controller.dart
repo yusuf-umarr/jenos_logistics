@@ -2,36 +2,38 @@ import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/repository/request_repository.dart';
+import 'package:jenos/scr/core/repository/wallet_repository.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/request/controller/request_state.dart';
+import 'package:jenos/scr/features/wallet/controller/wallet_state.dart';
 
-class RequestNotifier extends StateNotifier<RequestState> {
-  RequestNotifier(this.requestRepository) : super(RequestState.initial());
+class WalletController extends StateNotifier<WalletState> {
+  WalletController(this.walletRepository) : super(WalletState.initial());
 
-  final RequestRepository requestRepository;
+  final WalletRepository walletRepository;
 
   void setSelectedCustomer(String name) {
     state = state.copyWith(selectedCustomer: name);
   }
 
-  Future<void> updateRequest(
-    String request,
-    String requestId,
+  Future<void> withdrawFund(
+    String bankName,
+    int accountNumber,
+    String accountName,
+    String amount,
     context,
   ) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
     try {
-      // Future.delayed(Duration(seconds: 3), () {
-      //   state = state.copyWith(
-      //     loadState: NetworkState.success,
-      //     message: "request accepted!",
-      //   );
-      // });
-
-      final response =
-          await requestRepository.updateRequest(request, requestId);
+     
+      final response = await walletRepository.withdrawFund(
+        bankName,
+        accountNumber,
+        accountName,
+        amount,
+      );
 
       if (response.success) {
         state = state.copyWith(
@@ -40,11 +42,11 @@ class RequestNotifier extends StateNotifier<RequestState> {
         );
         log("success response ${response.data}");
 
-        Future.delayed(Duration(seconds: 4), () {
-          state = state.copyWith(
-            loadState: NetworkState.idle,
-          );
-        });
+        // Future.delayed(Duration(seconds: 4), () {
+        //   state = state.copyWith(
+        //     loadState: NetworkState.idle,
+        //   );
+        // });
 
         return;
       }
@@ -64,9 +66,11 @@ class RequestNotifier extends StateNotifier<RequestState> {
     }
   }
 
-  Future getRiderRequest() async {
+  //createdBy
+
+  Future getWithdrawer() async {
     try {
-      final response = await requestRepository.getRiderRequest();
+      final response = await walletRepository.getWithdrawer();
 
       if (response.success) {
         state = state.copyWith(
@@ -93,18 +97,6 @@ class RequestNotifier extends StateNotifier<RequestState> {
     }
   }
 
-  Future<void> updatePayMethod({String? method}) async {
-    state = state.copyWith(
-      paymentMethod: method,
-    );
-  }
-
-  Future<void> updatePayType({String? type}) async {
-    state = state.copyWith(
-      paymentType: type,
-    );
-  }
-
   Future<void> cleardata() async {
     state = state.copyWith(
       paymentType: state.paymentType = null,
@@ -113,5 +105,5 @@ class RequestNotifier extends StateNotifier<RequestState> {
   }
 }
 
-final requestNotifier = StateNotifierProvider<RequestNotifier, RequestState>(
-    (ref) => RequestNotifier(ref.read(requestRepository)));
+final walletController = StateNotifierProvider<WalletController, WalletState>(
+    (ref) => WalletController(ref.read(walletRepository)));

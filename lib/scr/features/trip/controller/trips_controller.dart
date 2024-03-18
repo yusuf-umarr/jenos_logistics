@@ -133,10 +133,13 @@ class TripController extends StateNotifier<TripState> {
         );
         log("end trip ${state.tripsData}");
         Util.showSnackBar(context, "Trip ended");
-        getTrips();
+        // getTrips();
 
         return true;
       }
+
+      log("end trip response ${response.data}");
+      log("end trip message ${response.message}");
 
       state = state.copyWith(
         loadState: NetworkState.error,

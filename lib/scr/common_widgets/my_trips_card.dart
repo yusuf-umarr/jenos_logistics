@@ -156,7 +156,7 @@ class MyTripsCard extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            "NGN $price",
+                            "# $price",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall!

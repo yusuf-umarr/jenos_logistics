@@ -62,14 +62,21 @@ class _TripsPageState extends ConsumerState<TripsPage> {
 
     // print("width:$width");
     return Scaffold(
-      appBar: CustomWidget.customAppbar(context, title: "My deliveries"),
+      appBar: CustomWidget.customAppbar(context, title: "Deliveries"),
       body: Padding(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            tripsHeaderWidget(context, width),
-            tripsTypesBottomWidget(tripsProvider),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                tripsHeaderWidget(context, width),
+                tripsTypesBottomWidget(tripsProvider),
+              ],
+            ),
+            tripsProvider.loadState == NetworkState.loading
+                ? const Center(child: CircularProgressIndicator())
+                : const SizedBox()
           ],
         ),
       ),
@@ -91,7 +98,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "My deliveries",
+            "Assigned deliveries",
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -134,7 +141,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
       return Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: Text(
-          "Assigned trips",
+          "Assigned deliveries",
           textAlign: TextAlign.start,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontWeight: FontWeight.bold,
@@ -145,7 +152,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
   }
 
   tripsTypesBottomWidget(tripsProvider) {
-      tripsProvider.tripsData!.sort((a, b) {
+    tripsProvider.tripsData!.sort((a, b) {
       DateTime dateTimeA = DateTime.parse(a['createdAt']);
       DateTime dateTimeB = DateTime.parse(b['createdAt']);
       return dateTimeB.compareTo(dateTimeA); // Descending order
@@ -175,11 +182,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                   price: trip['requestId']['amount'].toString(),
                   startTrip: trip['startTrip'],
                   itemImage: trip['requestId']['itemImage'],
-                  tripText: tripsProvider.loadState == NetworkState.loading
-                      ? "Loading..."
-                      : trip['startTrip']
-                          ? "End trip"
-                          : "Start trip",
+                  tripText: trip['startTrip'] ? "End trip" : "Start trip",
                   date:
                       Util.showFormattedTimeString(trip['createdAt'], context),
                   viewDetailTap: () {
@@ -188,6 +191,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                   },
                   startTripTap: () {
                     if (trip['startTrip']) {
+                      //if status is start trip, show end trip pop-up
                       //end trip
 
                       showModalBottomSheet<void>(
@@ -199,11 +203,11 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                               topRight: Radius.circular(50)),
                         ),
                         builder: (BuildContext context) {
-                          return showModal(context, trip);
+                          return endTripShowModal(context, trip);
                         },
                       );
                     } else {
-                      //start trip
+                      //else hit start trip
                       ref
                           .read(tripController.notifier)
                           .startTrip(trip['_id'], context);
@@ -233,11 +237,11 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                     startTrip: trip['startTrip'],
                     endTrip: trip['endTrip'],
                     itemImage: trip['requestId']['itemImage'],
-                    tripText: tripsProvider.loadState == NetworkState.loading
-                        ? "Loading..."
-                        : trip['startTrip']
-                            ? "End trip"
-                            : "Start trip",
+                    tripText:
+                        // tripsProvider.loadState == NetworkState.loading
+                        //     ? "Loading..."
+                        //     :
+                        trip['startTrip'] ? "End trip" : "Start trip",
                     date: Util.showFormattedTimeString(
                         trip['createdAt'], context),
                     viewDetailTap: () {
@@ -304,7 +308,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     );
   }
 
-  showModal(context, trip) {
+  endTripShowModal(context, trip) {
     final Size size = MediaQuery.of(context).size;
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
@@ -360,6 +364,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                             if (_rkey.currentState!.validate()) {
                               ref.read(tripController.notifier).endTrip(
                                   trip['_id'], otpController.text, context);
+                              Navigator.of(context).pop();
                             }
                           },
                           color: AppColors.primaryColor,

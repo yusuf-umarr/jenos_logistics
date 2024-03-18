@@ -1,4 +1,4 @@
-/// This class defines the RequestRepository
+/// This class defines the WalletRepository
 /// @author  Yusuf umar
 /// @version 1.0
 /// @since   2023-12-19
@@ -15,36 +15,45 @@ import 'package:jenos/scr/core/helper/app_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class representing the authentication repository.
-abstract class RequestRepository {
-  Future<ApiResponse<dynamic>> updateRequest(
-    String request,
-    String requestId,
+abstract class WalletRepository {
+  Future<ApiResponse<dynamic>> withdrawFund(
+    String bankName,
+    int accountNumber,
+    String accountName,
+    String amount,
   );
   //get customers added by the merchant
-  Future<ApiResponse<dynamic>> getRiderRequest();
+  Future<ApiResponse<dynamic>> getWithdrawer();
 }
 
-class RequestRepositoryImpl implements RequestRepository {
+class WalletRepositoryImpl implements WalletRepository {
   final Dio _dio;
 
-  RequestRepositoryImpl(this._dio);
+  WalletRepositoryImpl(this._dio);
 
   @override
-  Future<ApiResponse<dynamic>> updateRequest(
-    String request,
-    String requestId,
+  Future<ApiResponse<dynamic>> withdrawFund(
+      String bankName,
+    int accountNumber,
+    String accountName,
+    String amount,
   ) async {
     try {
-      var body = {"status": request};
+      var body = {
+            "bankName": bankName,
+        "accountNumber": accountNumber,
+        "accountName": accountName,
+        "amount": amount
+      };
 
       final response = await _dio
-          .put("${Endpoint.baseUrl}/request/accept/$requestId",
+          .post("${Endpoint.baseUrl}/withdrawal-request/",
           
            data: body);
       return ApiResponse<dynamic>(
         success: true,
         data: response.data,
-        message: "Request accepted!",
+        message: "done !",
       );
     } on DioException catch (e) {
       return AppException.handleError(
@@ -54,15 +63,15 @@ class RequestRepositoryImpl implements RequestRepository {
   }
 
   @override
-  Future<ApiResponse<dynamic>> getRiderRequest() async {
+  Future<ApiResponse<dynamic>> getWithdrawer() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId = prefs.getString('userId') ?? "";
+    // String userId = prefs.getString('userId') ?? "";
 
     try {
       //https://jenosway-backend.onrender.com/api/v1/request?assignRider=65d49a1b5c0de0b309e10ef5
 
       final response = await _dio.get(
-        "${Endpoint.baseUrl}/request?assignedTo=$userId",
+        "${Endpoint.baseUrl}/withdrawal-request/",
       );
 
       return ApiResponse<dynamic>(
@@ -79,8 +88,8 @@ class RequestRepositoryImpl implements RequestRepository {
   }
 }
 
-final requestRepository = Provider<RequestRepository>(
-  (ref) => RequestRepositoryImpl(
+final walletRepository = Provider<WalletRepository>(
+  (ref) => WalletRepositoryImpl(
     ref.read(dioProvider),
   ),
 );

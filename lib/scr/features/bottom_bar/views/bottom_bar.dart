@@ -18,7 +18,7 @@ import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
 import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
-import 'package:jenos/scr/features/request/controller/request_notifier.dart';
+import 'package:jenos/scr/features/request/controller/request_controller.dart';
 import 'package:jenos/scr/features/request/view/request_page.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 import 'package:jenos/scr/features/trip/view/trip_page.dart';
@@ -56,7 +56,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       await ref.read(onboardController.notifier).getAccountType();
       ref.read(homeController.notifier).getShowPop();
       await ref.read(profileController.notifier).getUserData();
-      ref.read(requestNotifier.notifier).getRiderRequest();
+      ref.read(requestController.notifier).getRiderRequest();
       ref.read(tripController.notifier).getTrips();
       ref.read(tripController.notifier).getRiderAnalysis();
     }

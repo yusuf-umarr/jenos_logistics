@@ -11,7 +11,7 @@ import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
-import 'package:jenos/scr/features/request/controller/request_notifier.dart';
+import 'package:jenos/scr/features/request/controller/request_controller.dart';
 import 'package:jenos/scr/features/request/controller/request_state.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 
@@ -36,12 +36,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    log("==========================:====================");
     log("request detail:${widget.request}");
     final Size size = MediaQuery.of(context).size;
     return Consumer(builder: (context, ref, _) {
-      // final accountType = ref.watch(requestNotifier).accountType;
+      // final accountType = ref.watch(requestController).accountType;
 
-      ref.listen<RequestState>(requestNotifier, (prev, state) {
+      ref.listen<RequestState>(requestController, (prev, state) {
         if (state.loadState == NetworkState.error) {
           Util.showSnackBar(
             context,
@@ -124,7 +125,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
             CustomWidget.deliveryCard(
               context,
-              headerText: "Delivery details",
+              headerText: "Addresses & Date details",
               pickUpLocation: widget.isFromTrip
                   ? widget.request['requestId']['pickUpAddress']
                   : widget.request['pickUpAddress'],
@@ -163,7 +164,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                           final loadState = ref.watch(tripController).loadState;
 
                           return AppButton(
-                              isIcon: loadState == NetworkState.loading,
+                              isLoading: loadState == NetworkState.loading,
                               text: widget.request['startTrip']
                                   ? "End trip"
                                   : "Start trip",
@@ -213,14 +214,14 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                             width: 130,
                             child: Consumer(builder: (context, ref, _) {
                               final state =
-                                  ref.watch(requestNotifier).loadState;
+                                  ref.watch(requestController).loadState;
 
                               return AppButton(
                                   isLoading: state == NetworkState.loading,
                                   text: "Accept",
                                   onPressed: () {
                                     ref
-                                        .read(requestNotifier.notifier)
+                                        .read(requestController.notifier)
                                         .updateRequest("accepted",
                                             widget.request['_id'], context);
                                   });
@@ -272,7 +273,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         children: [
           Text(
             widget.isFromTrip
-                ? widget.request['requestId']['title']
+                ? widget.request['requestId']['title'] ?? ""
                 : widget.request['title'] ?? "",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w600,
@@ -375,6 +376,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                             if (_rkey.currentState!.validate()) {
                               ref.read(tripController.notifier).endTrip(
                                   trip['_id'], otpController.text, context);
+                              Navigator.of(context).pop();
                             }
                           },
                           color: AppColors.primaryColor,

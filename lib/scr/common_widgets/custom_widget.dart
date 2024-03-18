@@ -501,7 +501,7 @@ class CustomWidget {
                     CustomWidget.detailCard(context,
                         title: "Payer", desc: "Receiver"),
                     CustomWidget.detailCard(context,
-                        title: "Amount", desc: "NGN $amount"),
+                        title: "Amount", desc: "# $amount"),
                   ],
                 ),
               ],
