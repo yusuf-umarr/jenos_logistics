@@ -19,7 +19,7 @@ abstract class TripsRepository {
   Future<ApiResponse<dynamic>> getTrips();
   Future<ApiResponse<dynamic>> startTrip(String tripId);
   Future<ApiResponse<dynamic>> updateRiderAvailability(String update);
-  Future<ApiResponse<dynamic>> endTrip(String tripId, String otp);
+  Future<ApiResponse<dynamic>> endTrip(String tripId, int otp);
   Future<ApiResponse<dynamic>> getRiderAnalysis();
 }
 
@@ -101,10 +101,10 @@ class TripsRepositoryImpl implements TripsRepository {
 
 //
   @override
-  Future<ApiResponse<dynamic>> endTrip(String tripId, String otp) async {
+  Future<ApiResponse<dynamic>> endTrip(String tripId, int otp) async {
     log("end trip tripId:$tripId");
     try {
-      var body = {"token": 4003};
+      var body = {"token": otp};
 
       final response = await _dio.put(
         "https://jenosway-backend.onrender.com/api/v1/trips/end-trip/$tripId",
@@ -113,7 +113,7 @@ class TripsRepositoryImpl implements TripsRepository {
         data: body,
       );
 
-      log("===========end trip success${response.data}");
+      // log("===========end trip success${response.data}");
 
       return ApiResponse<dynamic>(
         success: true,
@@ -121,7 +121,7 @@ class TripsRepositoryImpl implements TripsRepository {
         message: " successful",
       );
     } on DioException catch (e) {
-      log("===========end trip error$e");
+      // log("===========end trip error$e");
       return AppException.handleError(
         e,
       );

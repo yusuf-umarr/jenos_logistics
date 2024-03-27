@@ -1,8 +1,14 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
+import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/core/repository/request_repository.dart';
 import 'package:jenos/scr/core/util/enums.dart';
+import 'package:jenos/scr/core/util/util.dart';
+import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
+import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 import 'package:jenos/scr/features/request/controller/request_state.dart';
 
 class RequestController extends StateNotifier<RequestState> {
@@ -27,23 +33,15 @@ class RequestController extends StateNotifier<RequestState> {
   }
 
   Future<void> updateRequest(
-    String request,
-    String requestId,
-    context,
-  ) async {
+      String request, String requestId, context, ref) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
     try {
-      // Future.delayed(Duration(seconds: 3), () {
-      //   state = state.copyWith(
-      //     loadState: NetworkState.success,
-      //     message: "request accepted!",
-      //   );
-      // });
-
-      final response =
-          await requestRepository.updateRequest(request, requestId);
+      final response = await requestRepository.updateRequest(
+        request,
+        requestId,
+      );
 
       if (response.success) {
         state = state.copyWith(
@@ -51,6 +49,16 @@ class RequestController extends StateNotifier<RequestState> {
           message: response.message,
         );
         log("success response ${response.data}");
+
+        Util.showSnackBar(
+          context,
+          state.message.toString(),
+          color: AppColors.primaryColor,
+        );
+        Future.delayed(const Duration(seconds: 3), () {
+          navigate(context, const BottomBar());
+          ref.read(navBarController.notifier).setNavbarIndex(2);
+        });
 
         Future.delayed(Duration(seconds: 4), () {
           state = state.copyWith(
@@ -64,6 +72,11 @@ class RequestController extends StateNotifier<RequestState> {
       state = state.copyWith(
         loadState: NetworkState.error,
         // message: response.message,
+      );
+      Util.showSnackBar(
+        context,
+        state.message != "" ? state.message.toString() : "Server error",
+        color: Colors.red,
       );
       log("account error ${response.data}");
 

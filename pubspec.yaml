@@ -50,6 +50,7 @@ dependencies:
   image_picker: ^1.0.4
   intl: ^0.19.0
   flutter_phone_direct_caller: ^2.1.1
+  upgrader: ^10.0.0
 
 
 

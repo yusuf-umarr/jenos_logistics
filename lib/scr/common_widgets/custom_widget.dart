@@ -1,18 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
+import 'package:jenos/scr/core/util/util.dart';
 
 class CustomWidget {
-  static AppBar customAppbar(
-    BuildContext context, {
-    String title = "",
-    bool isArrow = false,
-  }) {
+  static AppBar customAppbar(BuildContext context,
+      {String title = "", bool isArrow = false, bool isOntap = false, onTap}) {
     return AppBar(
       automaticallyImplyLeading: false,
       title: Row(
@@ -20,9 +16,11 @@ class CustomWidget {
         children: [
           isArrow
               ? InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
+                  onTap: isOntap
+                      ? onTap
+                      : () {
+                          Navigator.of(context).pop();
+                        },
                   child: SvgPicture.asset(Assets.arrowBack))
               : const SizedBox(
                   width: 40,
@@ -342,6 +340,7 @@ class CustomWidget {
     String title = "",
     String desc = "",
     bool isWidget = false,
+    bool isRoboto = false,
     widget,
   }) {
     return Column(
@@ -356,12 +355,19 @@ class CustomWidget {
         const SizedBox(
           height: 5,
         ),
+
         Text(
           desc,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall!
-              .copyWith(fontWeight: FontWeight.w500, color: AppColors.grey),
+          style: isRoboto
+              ? GoogleFonts.roboto(
+                  fontWeight: FontWeight.w500,
+                  // fontSize: 30,
+                  // fontWeight: FontWeight.w600,
+                  color: AppColors.grey)
+              : Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(fontWeight: FontWeight.w500, color: AppColors.grey),
         ),
         // Row(
         //   children: [
@@ -500,8 +506,13 @@ class CustomWidget {
                   children: [
                     CustomWidget.detailCard(context,
                         title: "Payer", desc: "Receiver"),
-                    CustomWidget.detailCard(context,
-                        title: "Amount", desc: "# $amount"),
+                    CustomWidget.detailCard(
+                      context,
+                      title: "Amount",
+                      desc: "${Util.getCurrencySymbol(context)} $amount",
+                      isRoboto: true,
+                    ),
+                    //"${Util.getCurrencySymbol(context)}
                   ],
                 ),
               ],
@@ -693,7 +704,7 @@ class CustomWidget {
     BuildContext context, {
     String title = "Recent Trip activity",
     String desc = "See all",
-    bool isArrow =true,
+    bool isArrow = true,
     onTap,
   }) {
     return Row(
@@ -719,12 +730,13 @@ class CustomWidget {
                       fontSize: 12,
                     ),
               ),
-              isArrow?
-              const Icon(
-                Icons.keyboard_arrow_right,
-                color: AppColors.primaryColor,
-                size: 15,
-              ):const SizedBox()
+              isArrow
+                  ? const Icon(
+                      Icons.keyboard_arrow_right,
+                      color: AppColors.primaryColor,
+                      size: 15,
+                    )
+                  : const SizedBox()
             ],
           ),
         ),

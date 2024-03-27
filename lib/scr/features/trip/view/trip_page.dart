@@ -28,9 +28,9 @@ class _TripsPageState extends ConsumerState<TripsPage> {
   final _rkey = GlobalKey<FormState>();
 
   List tripType = [
-    {"id": 0, "name": "Active"},
-    {"id": 1, "name": "Completed"},
-    {"id": 2, "name": "Declined"},
+    {"id": 0, "name": "Pending"},
+    {"id": 1, "name": "Ongoing"},
+    {"id": 2, "name": "Completed"},
   ];
 
   int selectedIndex = 0;
@@ -114,21 +114,24 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                 itemBuilder: (context, int index) {
                   final trip = tripType[index];
                   return Container(
-                    margin: const EdgeInsets.only(right: 15),
-                    child: CustomWidget.commonBtn(
-                        horizontalPadding: width > 400 ? 25 : 17,
-                        title: trip['name'],
-                        bgColor: selectedIndex == trip['id']
-                            ? AppColors.primaryColor
-                            : AppColors.white,
-                        textColor: selectedIndex == trip['id']
-                            ? AppColors.white
-                            : AppColors.primaryColor,
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = trip['id'];
-                          });
-                        }),
+                    margin: const EdgeInsets.only(right: 12),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CustomWidget.commonBtn(
+                          horizontalPadding: width > 400 ? 25 : 17,
+                          title: trip['name'],
+                          bgColor: selectedIndex == trip['id']
+                              ? AppColors.primaryColor
+                              : AppColors.white,
+                          textColor: selectedIndex == trip['id']
+                              ? AppColors.white
+                              : AppColors.primaryColor,
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = trip['id'];
+                            });
+                          }),
+                    ),
                   );
                 }),
           ),
@@ -172,16 +175,19 @@ class _TripsPageState extends ConsumerState<TripsPage> {
             itemBuilder: (context, int index) {
               final trip = tripsProvider.tripsData[index];
 
-              if (!trip['endTrip']) {
+              if (trip['status'] == "pending") {
                 //ongoing/active trip
                 return MyTripsCard(
-                  receiverName: trip['requestId']['receiverName'] ?? "",
-                  itemName: trip['requestId']['title'] ?? "",
+                  receiverName: trip['requestDetails'][0]['receiverName'],
+                  itemName: trip['requestDetails'][0]['title'] ?? "",
                   pickUpAddress: trip['trackingInfo']['pickUpAddress'],
                   dropOffAddr: trip['trackingInfo']['dropOffAddress'],
-                  price: trip['requestId']['amount'].toString(),
+                  //['requestDetails'][0]['deliveryPrice']
+                  price: trip['requestDetails'][0]['deliveryPrice'] != null
+                      ? trip['requestDetails'][0]['deliveryPrice'].toString()
+                      : "0",
                   startTrip: trip['startTrip'],
-                  itemImage: trip['requestId']['itemImage'],
+                  itemImage: trip['requestDetails'][0]['itemImage'],
                   tripText: trip['startTrip'] ? "End trip" : "Start trip",
                   date:
                       Util.showFormattedTimeString(trip['createdAt'], context),
@@ -210,7 +216,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                       //else hit start trip
                       ref
                           .read(tripController.notifier)
-                          .startTrip(trip['_id'], context);
+                          .startTrip(trip['_id'], context, ref);
                     }
                   },
                 );
@@ -220,23 +226,27 @@ class _TripsPageState extends ConsumerState<TripsPage> {
             }),
       );
     } else if (selectedIndex == 1) {
+      //ongoing trip
       return Expanded(
         child: ListView.builder(
             itemCount: tripsProvider.tripsData.length,
             itemBuilder: (context, int index) {
               final trip = tripsProvider.tripsData[index];
 
-              if (trip['endTrip']) {
-                //completed trip
+              if (trip['status'] == 'ongoing') {
                 return MyTripsCard(
-                    receiverName: trip['requestId']['receiverName'] ?? "",
-                    itemName: trip['requestId']['title'] ?? "",
+                    receiverName:
+                        trip['requestDetails'][0]['receiverName'] ?? "",
+                    itemName: trip['requestDetails'][0]['title'] ?? "",
                     pickUpAddress: trip['trackingInfo']['pickUpAddress'],
                     dropOffAddr: trip['trackingInfo']['dropOffAddress'],
-                    price: trip['requestId']['amount'].toString(),
+                    // price: "hh",
+                    price: trip['requestDetails'][0]['deliveryPrice'] != null
+                        ? trip['requestDetails'][0]['deliveryPrice'].toString()
+                        : "0",
                     startTrip: trip['startTrip'],
                     endTrip: trip['endTrip'],
-                    itemImage: trip['requestId']['itemImage'],
+                    itemImage: trip['requestDetails'][0]['itemImage'],
                     tripText:
                         // tripsProvider.loadState == NetworkState.loading
                         //     ? "Loading..."
@@ -254,7 +264,10 @@ class _TripsPageState extends ConsumerState<TripsPage> {
               return const SizedBox();
             }),
       );
+      ///////////
     }
+
+    //completed trips
 
     return Expanded(
       child: ListView.builder(
@@ -262,50 +275,38 @@ class _TripsPageState extends ConsumerState<TripsPage> {
           itemBuilder: (context, int index) {
             final trip = tripsProvider.tripsData[index];
 
-            // if (!trip['endTrip']) {
-            //   return
-
-            //   MyTripsCard(
-            //     pickUpAddress: trip['trackingInfo']['pickUpAddress'],
-            //     dropOffAddr: trip['trackingInfo']['dropOffAddress'],
-            //     price: trip['requestId']['amount'].toString(),
-            //     startTrip: trip['startTrip'],
-            //     itemImage: trip['requestId']['itemImage'],
-            //     tripText:
-            //         tripsProvider.loadState == NetworkState.loading
-            //             ? "Loading..."
-            //             : trip['startTrip']
-            //                 ? "End trip"
-            //                 : "Start trip",
-            //     date: Util.showFormattedTimeString(
-            //         trip['createdAt'], context),
-            //     viewDetailTap: () {
-            //       navigate(
-            //           context,
-            //           OrderDetailsPage(
-            //               request: trip, isFromTrip: true));
-            //     },
-            //     startTripTap: () {
-            //       if (trip['startTrip']) {
-            //         //end trip
-
-            //         ref
-            //             .read(tripController.notifier)
-            //             .endTrip(trip['_id'], context);
-            //       } else {
-            //         //start trip
-            //         ref
-            //             .read(tripController.notifier)
-            //             .startTrip(trip['_id'], context);
-            //       }
-
-            //       // navigate(context, const StatusUpdatePage());
-            //     },
-            //   );
-            // }
+            if (trip['endTrip']) {
+              //completed trip
+              return MyTripsCard(
+                  receiverName: trip['requestDetails'][0]['receiverName'] ?? "",
+                  itemName: trip['requestDetails'][0]['title'] ?? "",
+                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                  // price: "hh",
+                  price: trip['requestDetails'][0]['deliveryPrice'] != null
+                      ? trip['requestDetails'][0]['deliveryPrice'].toString()
+                      : "0",
+                  startTrip: trip['startTrip'],
+                  endTrip: trip['endTrip'],
+                  itemImage: trip['requestDetails'][0]['itemImage'],
+                  tripText:
+                      // tripsProvider.loadState == NetworkState.loading
+                      //     ? "Loading..."
+                      //     :
+                      trip['startTrip'] ? "End trip" : "Start trip",
+                  date:
+                      Util.showFormattedTimeString(trip['createdAt'], context),
+                  viewDetailTap: () {
+                    // log("trip:$trip");
+                    navigate(context,
+                        OrderDetailsPage(request: trip, isFromTrip: true));
+                  },
+                  startTripTap: () {});
+            }
             return const SizedBox();
           }),
     );
+    ///////////
   }
 
   endTripShowModal(context, trip) {
@@ -363,7 +364,9 @@ class _TripsPageState extends ConsumerState<TripsPage> {
 
                             if (_rkey.currentState!.validate()) {
                               ref.read(tripController.notifier).endTrip(
-                                  trip['_id'], otpController.text, context);
+                                  trip['_id'],
+                                  int.parse(otpController.text),
+                                  context);
                               Navigator.of(context).pop();
                             }
                           },

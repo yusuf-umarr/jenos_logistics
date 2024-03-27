@@ -6,10 +6,14 @@
 
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/core/repository/trips_repository.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
+import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
+import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 import 'package:jenos/scr/features/trip/controller/trips_state.dart';
 
 class TripController extends StateNotifier<TripState> {
@@ -47,7 +51,7 @@ class TripController extends StateNotifier<TripState> {
   }
 
 //
-  Future startTrip(String tripId, context) async {
+  Future startTrip(String tripId, context, ref) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
@@ -60,8 +64,18 @@ class TripController extends StateNotifier<TripState> {
           // message: response.message,
           loadState: NetworkState.success,
         );
-        log("start trip ${state.tripsData}");
+        // log("start trip ${state.tripsData}");
         Util.showSnackBar(context, "Trip started");
+        Future.delayed(const Duration(seconds: 3), () {
+          navigate(context, const BottomBar());
+          // ref.read(navBarController.notifier).setNavbarIndex(2);
+        });
+
+        Future.delayed(const Duration(seconds: 4), () {
+          state = state.copyWith(
+            loadState: NetworkState.idle,
+          );
+        });
         getTrips();
 
         return true;
@@ -117,7 +131,7 @@ class TripController extends StateNotifier<TripState> {
   }
 
 //
-  Future endTrip(String tripId, String otp, context) async {
+  Future endTrip(String tripId, int otp, context) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
@@ -133,12 +147,17 @@ class TripController extends StateNotifier<TripState> {
         );
         log("end trip ${state.tripsData}");
         Util.showSnackBar(context, "Trip ended");
+        Future.delayed(const Duration(seconds: 2), () {
+          navigate(context, const BottomBar());
+        });
         // getTrips();
 
         return true;
       }
 
-      log("end trip response ${response.data}");
+      Util.showSnackBar(context, "Error ending trip", color: Colors.red);
+
+      // log("end trip response ${response.data}");
       log("end trip message ${response.message}");
 
       state = state.copyWith(

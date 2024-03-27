@@ -34,39 +34,23 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     super.dispose();
   }
 
+  var prices;
+
   @override
   Widget build(BuildContext context) {
-    log("==========================:====================");
-    log("request detail:${widget.request}");
+    log("request detail:${widget.request['token']}");
     final Size size = MediaQuery.of(context).size;
-    return Consumer(builder: (context, ref, _) {
-      // final accountType = ref.watch(requestController).accountType;
 
-      ref.listen<RequestState>(requestController, (prev, state) {
-        if (state.loadState == NetworkState.error) {
-          Util.showSnackBar(
-            context,
-            state.message != "" ? state.message.toString() : "Server error",
-            color: Colors.red,
-          );
-        } else if (state.loadState == NetworkState.success) {
-          Util.showSnackBar(
-            context,
-            state.message.toString(),
-            color: Colors.green,
-          );
-          Future.delayed(const Duration(seconds: 3), () {
-            navigate(context, const BottomBar());
-            ref.read(navBarController.notifier).setNavbarIndex(2);
-          });
-        }
-      });
-      return Scaffold(
-        appBar: CustomWidget.customAppbar(
-          context,
-          title: "Details",
-          isArrow: true,
-        ),
+    return WillPopScope(
+      onWillPop: () async {
+        navigate(context, const BottomBar());
+        return false;
+      },
+      child: Scaffold(
+        appBar: CustomWidget.customAppbar(context,
+            title: "Details", isArrow: true, isOntap: true, onTap: () {
+          navigate(context, const BottomBar());
+        }),
         body: ListView(
           padding: const EdgeInsets.all(AppSize.defaultPadding),
           children: [
@@ -90,17 +74,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               context,
               headerText: "Requester's particulars",
               name: widget.isFromTrip
-                  ? widget.request['requestId']['senderName']
+                  ? widget.request['requestDetails'][0]['senderName']
                   : widget.request['senderName'],
               email: widget.isFromTrip
                   ? ""
                   : widget.request['createdBy']['email'] ?? "",
               phone: widget.isFromTrip
-                  ? widget.request['requester']['phoneNumber']
+                  ? widget.request['requestDetails'][0]['requesterPhone']
+                      .toString()
                   : widget.request['requesterPhone'] ?? "",
               onTap: () {
                 Util.callNumber(
-                    " ${widget.isFromTrip ? widget.request['requester']['phoneNumber'] : widget.request['senderPhone'] ?? "0"}");
+                    " ${widget.isFromTrip ? widget.request['requestDetails'][0]['requesterPhone'] : widget.request['senderPhone'] ?? "0"}");
               },
               isWidget: true,
             ),
@@ -109,15 +94,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               context,
               headerText: "Receiver's particulars",
               name: widget.isFromTrip
-                  ? widget.request['requestId']['receiverName']
+                  ? widget.request['requestDetails'][0]['receiverName']
                   : widget.request['receiverName'],
               email: widget.request['receiverEmail'] ?? "",
               phone: widget.isFromTrip
-                  ? widget.request['requestId']['receiverPhone']
+                  ? widget.request['requestDetails'][0]['receiverPhone']
                   : widget.request['receiverPhone'],
               onTap: () {
                 Util.callNumber(
-                    " ${widget.isFromTrip ? widget.request['requester']['receiverPhone'] : widget.request['receiverPhone'] ?? "0"}");
+                    " ${widget.isFromTrip ? widget.request['requestDetails'][0]['receiverPhone'] : widget.request['receiverPhone'] ?? "0"}");
               },
               isWidget: true,
             ),
@@ -127,20 +112,20 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               context,
               headerText: "Addresses & Date details",
               pickUpLocation: widget.isFromTrip
-                  ? widget.request['requestId']['pickUpAddress']
+                  ? widget.request['requestDetails'][0]['pickUpAddress']
                   : widget.request['pickUpAddress'],
               pickUptime: widget.isFromTrip
-                  ? widget.request['requestId']['pickUpTime']
+                  ? widget.request['requestDetails'][0]['pickUpTime']
                   : widget.request['pickUpTime'],
               pickUpDate: widget.isFromTrip
-                  ? "${Util.showFormattedDateString(widget.request['requestId']['pickUpDate'], context)}"
-                  // widget.request['requestId']['pickUpDate']
+                  ? "${Util.showFormattedDateString(widget.request['requestDetails'][0]['pickUpDate'], context)}"
+                  // widget.request['requestDetails']['pickUpDate']
                   : "${Util.showFormattedDateString(widget.request['pickUpDate'], context)}",
               dropOffDate: widget.isFromTrip
-                  ? widget.request['requestId']['requestType']
+                  ? widget.request['requestDetails'][0]['requestType']
                   : widget.request['requestType'],
               dropOffLocation: widget.isFromTrip
-                  ? widget.request['requestId']['deliveryAddress']
+                  ? widget.request['requestDetails'][0]['deliveryAddress']
                   : widget.request['deliveryAddress'],
               packageSize: "Medium size",
             ),
@@ -150,10 +135,14 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             CustomWidget.paymentMethodCard(context,
                 headerText: "Payment method",
                 amount: widget.isFromTrip
-                    ? widget.request['requestId']['amount'].toString()
-                    : widget.request['amount'].toString(),
+                    ? widget.request['requestDetails'][0]['deliveryPrice'] !=
+                            null
+                        ? widget.request['requestDetails'][0]['deliveryPrice']
+                            .toString()
+                        : "0".toString()
+                    : widget.request['deliveryPrice'].toString(),
                 paymentType: widget.isFromTrip
-                    ? widget.request['requestId']['paymentType']
+                    ? widget.request['requestDetails'][0]['paymentType']
                     : widget.request['paymentType']),
 
             if (widget.isFromTrip)
@@ -169,7 +158,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                   ? "End trip"
                                   : "Start trip",
                               onPressed: () {
-                                log("trip id:${widget.request['_id']}");
+                                // log("trip id:${widget.request['_id']}");
                                 if (widget.request['startTrip']) {
                                   //end trip
 
@@ -187,19 +176,20 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                     },
                                   );
                                 } else {
+                                  // log("end trip called============");
                                   //start trip
                                   ref.read(tripController.notifier).startTrip(
-                                      widget.request['_id'], context);
+                                      widget.request['_id'], context, ref);
                                 }
 
                                 //
 
-                                Future.delayed(const Duration(seconds: 3), () {
-                                  navigate(context, const BottomBar());
-                                  ref
-                                      .read(navBarController.notifier)
-                                      .setNavbarIndex(2);
-                                });
+                                // Future.delayed(const Duration(seconds: 3), () {
+                                //   navigate(context, const BottomBar());
+                                //   ref
+                                //       .read(navBarController.notifier)
+                                //       .setNavbarIndex(2);
+                                // });
                               });
                         })
                       : const SizedBox(),
@@ -222,8 +212,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                   onPressed: () {
                                     ref
                                         .read(requestController.notifier)
-                                        .updateRequest("accepted",
-                                            widget.request['_id'], context);
+                                        .updateRequest(
+                                            "accepted",
+                                            widget.request['_id'],
+                                            context,
+                                            ref);
                                   });
                             }),
                           ),
@@ -259,8 +252,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             )
           ],
         ),
-      );
-    });
+      ),
+    );
+    // });
   }
 
   Container imageCard(BuildContext context, Size size) {
@@ -273,7 +267,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         children: [
           Text(
             widget.isFromTrip
-                ? widget.request['requestId']['title'] ?? ""
+                ? widget.request['requestDetails'][0]['title'] ?? ""
                 : widget.request['title'] ?? "",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w600,
@@ -286,17 +280,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
           widget.isFromTrip
               ? SizedBox(
                   height: size.height * 0.15,
-                  child: widget.request['requestId']['itemImage'] != null
-                      ? Image.network(
-                          widget.request['requestId']['itemImage']!,
-                          fit: BoxFit.cover,
-                          width: size.width,
-                        )
-                      : Image.asset(
-                          "assets/images/pixelBg.jpeg",
-                          fit: BoxFit.cover,
-                          width: size.width,
-                        ),
+                  child:
+                      widget.request['requestDetails'][0]['itemImage'] != null
+                          ? Image.network(
+                              widget.request['requestDetails'][0]['itemImage']!,
+                              fit: BoxFit.cover,
+                              width: size.width,
+                            )
+                          : Image.asset(
+                              "assets/images/pixelBg.jpeg",
+                              fit: BoxFit.cover,
+                              width: size.width,
+                            ),
                 )
               : SizedBox(
                   height: size.height * 0.15,
@@ -371,12 +366,23 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                           isIcon: true,
                           text: 'Proceed',
                           onPressed: () async {
-                            FocusScope.of(context).unfocus();
+                            // FocusScope.of(context).unfocus();
 
                             if (_rkey.currentState!.validate()) {
                               ref.read(tripController.notifier).endTrip(
-                                  trip['_id'], otpController.text, context);
-                              Navigator.of(context).pop();
+                                  trip['_id'],
+                                  int.parse(otpController.text),
+                                  context);
+                              // Navigator.of(context).pop();
+
+                              Future.delayed(const Duration(seconds: 1), () {
+                                navigate(
+                                    context,
+                                    OrderDetailsPage(
+                                      request: widget.request,
+                                      isFromTrip: true,
+                                    ));
+                              });
                             }
                           },
                           color: AppColors.primaryColor,

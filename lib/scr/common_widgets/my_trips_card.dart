@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
@@ -60,7 +61,7 @@ class MyTripsCard extends StatelessWidget {
         Stack(
           children: [
             Container(
-              margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
+              margin: const EdgeInsets.only(bottom: AppSize.defaultPadding / 2),
               padding:
                   const EdgeInsets.symmetric(vertical: AppSize.defaultPadding),
               decoration: BoxDecoration(
@@ -74,7 +75,7 @@ class MyTripsCard extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: AppSize.defaultPadding),
+                          horizontal: AppSize.defaultPadding / 2),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -123,7 +124,7 @@ class MyTripsCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    width: size.width * 0.4,
+                                    width: size.width * 0.3,
                                     child: Text(
                                       itemName ?? "Pizza-Hut",
                                       overflow: TextOverflow.ellipsis,
@@ -137,7 +138,7 @@ class MyTripsCard extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: size.width * 0.4,
+                                    width: size.width * 0.3,
                                     child: Text(
                                       receiverName!,
                                       overflow: TextOverflow.ellipsis,
@@ -156,13 +157,10 @@ class MyTripsCard extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            "# $price",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.primaryColor),
+                            "${Util.getCurrencySymbol(context)} ${price != null ? price : 0} ",
+                            style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryColor),
                           ),
                         ],
                       ),

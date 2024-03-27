@@ -24,6 +24,7 @@ import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 import 'package:jenos/scr/features/trip/view/trip_page.dart';
 import 'package:jenos/scr/features/wallet/view/wallat_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upgrader/upgrader.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({super.key, this.accountType});
@@ -91,11 +92,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
             ? Assets.requests
             : Assets.bell,
       },
-      // {
-      //   "id": 1,
-      //   "name": "Request",
-      //   "icon": Assets.requests,
-      // },
       {
         "id": 2,
         "name": "Deliveries",
@@ -110,36 +106,6 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     ];
   }
 
-  // List<Widget> pages = [
-  //   const HomePage(),
-  //   const RequestPage(),
-  //   const TripsPage(),
-  //   const WalletPage(),
-  // ];
-
-  // List iconList = [
-  //   {
-  //     "id": 0,
-  //     "name": "Home",
-  //     "icon": Assets.home,
-  //   },
-  //   {
-  //     "id": 1,
-  //     "name": "Request",
-  //     "icon": Assets.requests,
-  //   },
-  //   {
-  //     "id": 2,
-  //     "name": "Trips",
-  //     "icon": Assets.trips,
-  //   },
-  //   {
-  //     "id": 3,
-  //     "name": "Wallet",
-  //     "icon": Assets.wallet,
-  //   },
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -148,35 +114,37 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
           return false;
         },
-        child: Scaffold(
-          body: pages[ref.watch(navBarController).currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              currentIndex: ref.watch(navBarController).currentIndex,
-              selectedItemColor: AppColors.primaryColor,
-              unselectedItemColor: Colors.black54,
-              backgroundColor: Colors.white,
-              showUnselectedLabels: true,
-              selectedFontSize: 10.0,
-              unselectedFontSize: 10.0,
-              elevation: 5,
-              onTap: (index) {
-                ref.read(navBarController.notifier).setNavbarIndex(index);
-              },
-              items: iconList.map<BottomNavigationBarItem>((e) {
-                return BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                    e['icon'],
-                    colorFilter: ColorFilter.mode(
-                      ref.watch(navBarController).currentIndex == e["id"]
-                          ? AppColors.primaryColor
-                          : Colors.black54,
-                      BlendMode.srcIn,
+        child: UpgradeAlert(
+          child: Scaffold(
+            body: pages[ref.watch(navBarController).currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: ref.watch(navBarController).currentIndex,
+                selectedItemColor: AppColors.primaryColor,
+                unselectedItemColor: Colors.black54,
+                backgroundColor: Colors.white,
+                showUnselectedLabels: true,
+                selectedFontSize: 10.0,
+                unselectedFontSize: 10.0,
+                elevation: 5,
+                onTap: (index) {
+                  ref.read(navBarController.notifier).setNavbarIndex(index);
+                },
+                items: iconList.map<BottomNavigationBarItem>((e) {
+                  return BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      e['icon'],
+                      colorFilter: ColorFilter.mode(
+                        ref.watch(navBarController).currentIndex == e["id"]
+                            ? AppColors.primaryColor
+                            : Colors.black54,
+                        BlendMode.srcIn,
+                      ),
                     ),
-                  ),
-                  label: e['name'],
-                );
-              }).toList()),
+                    label: e['name'],
+                  );
+                }).toList()),
+          ),
         ));
   }
 

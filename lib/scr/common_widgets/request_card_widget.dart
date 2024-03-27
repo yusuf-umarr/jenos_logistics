@@ -107,7 +107,8 @@ class RequestOrderCardWIdget extends StatelessWidget {
               width: AppSize.defaultPadding,
             ),
             Util.cardBtn(
-                title: "NGN${request['amount'] ?? 0}", //request['status'],
+                title:
+                    "${Util.getCurrencySymbol(context)}${request['deliveryPrice'] ?? 0}", //request['status'],
                 bgColor: AppColors.white,
                 textColor: AppColors.primaryColor,
                 onTap: () {

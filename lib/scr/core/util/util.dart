@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
@@ -362,7 +363,10 @@ class Util {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(color: textColor),
+            style: GoogleFonts.roboto(
+                // fontSize: 30,
+                // fontWeight: FontWeight.w600,
+                color: textColor),
           ),
         ),
       ),
@@ -389,7 +393,7 @@ class Util {
     );
   }
 
-    static formatTimeAgo(time) {
+  static formatTimeAgo(time) {
     DateTime dateTime = DateTime.parse(time);
 
     DateTime now = DateTime.now();
@@ -411,9 +415,14 @@ class Util {
     }
   }
 
-    static callNumber(number) async {
+  static callNumber(number) async {
     bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
+  static getCurrencySymbol(context) {
+    var format =
+        NumberFormat.simpleCurrency(locale: Platform.localeName, name: "NGN");
 
+    return format.currencySymbol;
+  }
 }
