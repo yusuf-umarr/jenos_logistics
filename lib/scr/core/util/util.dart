@@ -425,4 +425,12 @@ class Util {
 
     return format.currencySymbol;
   }
+  static String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) {
+      return text; // If the text is empty, return it as is.
+    } else {
+      // Capitalize the first letter and concatenate it with the rest of the string.
+      return text[0].toUpperCase() + text.substring(1);
+    }
+  }
 }

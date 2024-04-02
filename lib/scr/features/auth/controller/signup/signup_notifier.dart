@@ -3,13 +3,17 @@
 /// @version 1.0
 /// @since   2023-12-19
 
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/core/util/enums.dart';
-import 'package:jenos/scr/core/models/user_merchant_model.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/auth/controller/signup/signup_state.dart';
 import 'package:jenos/scr/core/repository/auth_repository.dart';
+import 'package:jenos/scr/features/auth/pages/signin_page.dart';
 
 /// Notifier class for handling the Signup state.
 class SignupNotifier extends StateNotifier<SignupState> {
@@ -22,9 +26,12 @@ class SignupNotifier extends StateNotifier<SignupState> {
     String email,
     String password,
     String userName,
-    String phoneNumber, {
+    String phoneNumber, 
+      context,
+    {
     bool isMerchant = false,
-  }) async {
+  
+  } ) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
     );
@@ -35,7 +42,6 @@ class SignupNotifier extends StateNotifier<SignupState> {
         userName,
         phoneNumber,
       );
-      log("account1 response ${state.message}");
 
       if (response.success) {
         state = state.copyWith(
@@ -43,7 +49,13 @@ class SignupNotifier extends StateNotifier<SignupState> {
           loadState: NetworkState.success,
           message: response.message,
         );
-        log("account2 success ${state.message}");
+           Util.showSnackBar(
+          context,
+          state.message.toString(),
+        );
+        Timer(const Duration(seconds: 4), () {
+          navigate(context, const SignInPage());
+        });
 
         return;
       }
@@ -52,6 +64,11 @@ class SignupNotifier extends StateNotifier<SignupState> {
       state = state.copyWith(
         loadState: NetworkState.error,
         message: response.message,
+      );
+         Util.showSnackBar(
+        context,
+        state.message != "" ? state.message.toString() : "Server error",
+        color: Colors.red,
       );
       // log("account error ${response.data}");
 

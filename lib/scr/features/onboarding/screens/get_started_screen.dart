@@ -46,15 +46,13 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
     log("selectedValue:$selectedValue");
 
     if (usedApp == null) {
-
       log("=========usedApp: is null");
       ref
           .read(onboardController.notifier)
           .setAccountType(AccountType.individual);
-          prefs.setString("accountType", "individual");
-    }else{
-            log("=========usedApp: is not null");
-
+      prefs.setString("accountType", "individual");
+    } else {
+      log("=========usedApp: is not null");
     }
 
     log("selectedValue:$selectedValue");
@@ -63,7 +61,7 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
   }
 
   int selectedValue = 0;
-  List<String> accountType = ['Individual Driver', 'Enterprise Driver'];
+  List<String> accountType = ['Individual Rider', 'Enterprise Rider'];
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -181,7 +179,7 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                           child: ListTile(
                             onTap: () {
                               setState(() {
-                                if (option == "Individual Driver") {
+                                if (option == "Individual Rider") {
                                   selectedValue = 0;
                                   ref
                                       .read(onboardController.notifier)
@@ -211,7 +209,7 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
                               groupValue: selectedValue,
                               onChanged: (int? value) {
                                 setState(() {
-                                  if (option == "Individual Driver") {
+                                  if (option == "Individual Rider") {
                                     selectedValue = 0;
                                     ref
                                         .read(onboardController.notifier)
@@ -268,5 +266,4 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
       );
     });
   }
-
 }

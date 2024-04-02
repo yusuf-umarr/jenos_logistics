@@ -12,6 +12,10 @@ class TripState {
   final NetworkState? loadState;
   final String? message;
   final Map<String, dynamic> riderAnalysis;
+    int selectedIndex;
+
+    bool isEndtripLoading =false;
+
 
   /// Constructs a [TripState] instance.
   TripState({
@@ -19,6 +23,8 @@ class TripState {
     required this.riderAnalysis,
     this.loadState,
     this.message,
+   required this.selectedIndex,
+   required this.isEndtripLoading,
   });
 
   /// Constructs an initial [TripState] with default values.
@@ -28,6 +34,8 @@ class TripState {
       loadState: NetworkState.idle,
       message: null,
       riderAnalysis: {},
+      selectedIndex: 0,
+      isEndtripLoading: false,
     );
   }
 
@@ -35,6 +43,8 @@ class TripState {
     NetworkState? loadState,
     List? tripsData,
     String? message,
+    int? selectedIndex,
+    bool? isEndtripLoading,
     Map<String, dynamic>? riderAnalysis,
   }) {
     return TripState(
@@ -42,6 +52,8 @@ class TripState {
       loadState: loadState ?? this.loadState,
       message: message ?? this.message,
       riderAnalysis: riderAnalysis ?? this.riderAnalysis,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
+      isEndtripLoading: isEndtripLoading ?? this.isEndtripLoading,
     );
   }
 }

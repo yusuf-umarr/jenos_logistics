@@ -21,8 +21,16 @@ abstract class ProfileRepository {
     String phoneNumber,
     String address,
   );
+    Future<ApiResponse<dynamic>> conatctSerivce(
+    String name,
+    String email,
+    String message,
+  );
     Future<ApiResponse<dynamic>> getNotifications();
-
+  Future<ApiResponse<dynamic>> changePassword(
+    String oldPass,
+    String newPass,
+  );
 
   // Future<ApiResponse<dynamic>> signIn(String email, String password);
   Future<ApiResponse<dynamic>> getUserData();
@@ -113,6 +121,68 @@ class ProfileRepositoryImpl implements ProfileRepository {
     }
   }
 
+  @override
+  Future<ApiResponse<dynamic>> changePassword(
+      String oldPass, String newPass) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String accountType = prefs.getString('accountType') ?? "";
+
+    // String userId = prefs.getString('userId') ?? "";
+
+    // final pathUrl = accountType == "individual"
+    //     ? "/merchant/password/$userId"
+    //     : "/customer/change-password/$userId";
+
+    try {
+      final response = await _dio.put(
+        "${Endpoint.baseUrl}""",
+        data: {
+          "oldPassword": oldPass,
+          "newPassword": newPass,
+          "confirmPassword": newPass
+        },
+      );
+
+      log("password changed successul $response");
+
+      // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data,
+        message: "update successful",
+      );
+    } on DioException catch (e) {
+      log("password error$e");
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+
+//
+  @override
+  Future<ApiResponse<dynamic>> conatctSerivce(
+      String name, String email, String message) async {
+    try {
+      final response = await _dio.post(
+        "${Endpoint.baseUrl}/support",
+        data: {"name": name, "email": email, "message": message},
+      );
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data,
+        message: " successful",
+      );
+    } on DioException catch (e) {
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+
+//
   @override
   Future<ApiResponse> uploadImage(
     // BuildContext? context,

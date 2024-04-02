@@ -41,7 +41,6 @@ class _UpdatePersonalDetailPageState
           Util.showSnackBar(
             context,
             state.message.toString(),
-            color: Colors.green,
           );
 
           Timer(const Duration(seconds: 3), () {

@@ -47,7 +47,7 @@ class WalletController extends StateNotifier<WalletState> {
 
         Future.delayed(Duration(seconds: 2), () {
           // flush
-          Util.showSnackBar(context, "Request sent", color: Colors.green);
+          Util.showSnackBar(context, "Request sent");
         });
 
         return;

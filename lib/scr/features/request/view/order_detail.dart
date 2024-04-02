@@ -34,11 +34,12 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     super.dispose();
   }
 
-  var prices;
+  // bool  = false;
 
   @override
   Widget build(BuildContext context) {
     log("request detail:${widget.request['token']}");
+    log("request detail:${widget.request['_id']}");
     final Size size = MediaQuery.of(context).size;
 
     return WillPopScope(
@@ -51,205 +52,224 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             title: "Details", isArrow: true, isOntap: true, onTap: () {
           navigate(context, const BottomBar());
         }),
-        body: ListView(
-          padding: const EdgeInsets.all(AppSize.defaultPadding),
+        body: Stack(
           children: [
-            !widget.isFromTrip
-                ? Text(
-                    "${Util.showFormattedDateString(widget.request['createdAt'], context)}| ${Util.showFormattedTimeVal(widget.request['pickUpDate'], context)}",
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.w500, color: AppColors.grey),
-                  )
-                : const SizedBox(),
-            const SizedBox(
-              height: AppSize.defaultPadding,
-            ),
-            //image card
-            imageCard(context, size),
-            const SizedBox(
-              height: AppSize.defaultPadding,
-            ),
-            //Requester particular
-            CustomWidget.particularCard(
-              context,
-              headerText: "Requester's particulars",
-              name: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['senderName']
-                  : widget.request['senderName'],
-              email: widget.isFromTrip
-                  ? ""
-                  : widget.request['createdBy']['email'] ?? "",
-              phone: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['requesterPhone']
-                      .toString()
-                  : widget.request['requesterPhone'] ?? "",
-              onTap: () {
-                Util.callNumber(
-                    " ${widget.isFromTrip ? widget.request['requestDetails'][0]['requesterPhone'] : widget.request['senderPhone'] ?? "0"}");
-              },
-              isWidget: true,
-            ),
-            //Receiver particular
-            CustomWidget.particularCard(
-              context,
-              headerText: "Receiver's particulars",
-              name: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['receiverName']
-                  : widget.request['receiverName'],
-              email: widget.request['receiverEmail'] ?? "",
-              phone: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['receiverPhone']
-                  : widget.request['receiverPhone'],
-              onTap: () {
-                Util.callNumber(
-                    " ${widget.isFromTrip ? widget.request['requestDetails'][0]['receiverPhone'] : widget.request['receiverPhone'] ?? "0"}");
-              },
-              isWidget: true,
-            ),
-            //delievry detail
+            ListView(
+              padding: const EdgeInsets.all(AppSize.defaultPadding),
+              children: [
+                !widget.isFromTrip
+                    ? Text(
+                        "${Util.showFormattedDateString(widget.request['createdAt'], context)}| ${Util.showFormattedTimeVal(widget.request['pickUpDate'], context)}",
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500, color: AppColors.grey),
+                      )
+                    : const SizedBox(),
+                const SizedBox(
+                  height: AppSize.defaultPadding,
+                ),
+                //image card
+                imageCard(context, size),
+                const SizedBox(
+                  height: AppSize.defaultPadding,
+                ),
+                //Requester particular
+                CustomWidget.particularCard(
+                  context,
+                  headerText: "Requester's particulars",
+                  name: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['senderName']
+                      : widget.request['senderName'],
+                  email: widget.isFromTrip
+                      ? ""
+                      : widget.request['createdBy']['email'] ?? "",
+                  phone: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['requesterPhone']
+                          .toString()
+                      : widget.request['requesterPhone'] ?? "",
+                  onTap: () {
+                    Util.callNumber(
+                        " ${widget.isFromTrip ? widget.request['requestDetails'][0]['requesterPhone'] : widget.request['senderPhone'] ?? "0"}");
+                  },
+                  isWidget: true,
+                ),
+                //Receiver particular
+                CustomWidget.particularCard(
+                  context,
+                  headerText: "Receiver's particulars",
+                  name: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['receiverName']
+                      : widget.request['receiverName'],
+                  email: widget.request['receiverEmail'] ?? "",
+                  phone: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['receiverPhone']
+                      : widget.request['receiverPhone'],
+                  onTap: () {
+                    Util.callNumber(
+                        " ${widget.isFromTrip ? widget.request['requestDetails'][0]['receiverPhone'] : widget.request['receiverPhone'] ?? "0"}");
+                  },
+                  isWidget: true,
+                ),
+                //delievry detail
 
-            CustomWidget.deliveryCard(
-              context,
-              headerText: "Addresses & Date details",
-              pickUpLocation: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['pickUpAddress']
-                  : widget.request['pickUpAddress'],
-              pickUptime: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['pickUpTime']
-                  : widget.request['pickUpTime'],
-              pickUpDate: widget.isFromTrip
-                  ? "${Util.showFormattedDateString(widget.request['requestDetails'][0]['pickUpDate'], context)}"
-                  // widget.request['requestDetails']['pickUpDate']
-                  : "${Util.showFormattedDateString(widget.request['pickUpDate'], context)}",
-              dropOffDate: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['requestType']
-                  : widget.request['requestType'],
-              dropOffLocation: widget.isFromTrip
-                  ? widget.request['requestDetails'][0]['deliveryAddress']
-                  : widget.request['deliveryAddress'],
-              packageSize: "Medium size",
-            ),
+                CustomWidget.deliveryCard(
+                  context,
+                  headerText: "Addresses & Date details",
+                  pickUpLocation: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['pickUpAddress']
+                      : widget.request['pickUpAddress'],
+                  pickUptime: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['pickUpTime']
+                      : widget.request['pickUpTime'],
+                  pickUpDate: widget.isFromTrip
+                      ? "${Util.showFormattedDateString(widget.request['requestDetails'][0]['pickUpDate'], context)}"
+                      // widget.request['requestDetails']['pickUpDate']
+                      : "${Util.showFormattedDateString(widget.request['pickUpDate'], context)}",
+                  dropOffDate: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['requestType']
+                      : widget.request['requestType'],
+                  dropOffLocation: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['deliveryAddress']
+                      : widget.request['deliveryAddress'],
+                  packageSize: "Medium size",
+                ),
 
-            //payment method
+                //payment method
 
-            CustomWidget.paymentMethodCard(context,
-                headerText: "Payment method",
-                amount: widget.isFromTrip
-                    ? widget.request['requestDetails'][0]['deliveryPrice'] !=
-                            null
-                        ? widget.request['requestDetails'][0]['deliveryPrice']
-                            .toString()
-                        : "0".toString()
-                    : widget.request['deliveryPrice'].toString(),
-                paymentType: widget.isFromTrip
-                    ? widget.request['requestDetails'][0]['paymentType']
-                    : widget.request['paymentType']),
+                CustomWidget.paymentMethodCard(context,
+                    headerText: "Payment method",
+                    amount: widget.isFromTrip
+                        ? widget.request['requestDetails'][0]
+                                    ['deliveryPrice'] !=
+                                null
+                            ? widget.request['requestDetails'][0]
+                                    ['deliveryPrice']
+                                .toString()
+                            : "0".toString()
+                        : widget.request['deliveryPrice'].toString(),
+                    paymentType: widget.isFromTrip
+                        ? widget.request['requestDetails'][0]['paymentType']
+                        : widget.request['paymentType']),
 
-            if (widget.isFromTrip)
-              Column(
-                children: [
-                  !widget.request['endTrip']
-                      ? Consumer(builder: (context, ref, _) {
-                          final loadState = ref.watch(tripController).loadState;
-
-                          return AppButton(
-                              isLoading: loadState == NetworkState.loading,
-                              text: widget.request['startTrip']
-                                  ? "End trip"
-                                  : "Start trip",
-                              onPressed: () {
-                                // log("trip id:${widget.request['_id']}");
-                                if (widget.request['startTrip']) {
-                                  //end trip
-
-                                  showModalBottomSheet<void>(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(50),
-                                          topRight: Radius.circular(50)),
-                                    ),
-                                    builder: (BuildContext context) {
-                                      return showModal(
-                                          context, widget.request, size);
-                                    },
-                                  );
-                                } else {
-                                  // log("end trip called============");
-                                  //start trip
-                                  ref.read(tripController.notifier).startTrip(
-                                      widget.request['_id'], context, ref);
-                                }
-
-                                //
-
-                                // Future.delayed(const Duration(seconds: 3), () {
-                                //   navigate(context, const BottomBar());
-                                //   ref
-                                //       .read(navBarController.notifier)
-                                //       .setNavbarIndex(2);
-                                // });
-                              });
-                        })
-                      : const SizedBox(),
-                ],
-              )
-            else
-              widget.request['status'] == "pending"
-                  ? Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            width: 130,
-                            child: Consumer(builder: (context, ref, _) {
-                              final state =
-                                  ref.watch(requestController).loadState;
+                if (widget.isFromTrip)
+                  Column(
+                    children: [
+                      !widget.request['endTrip']
+                          ? Consumer(builder: (context, ref, _) {
+                              final loadState =
+                                  ref.watch(tripController).loadState;
 
                               return AppButton(
-                                  isLoading: state == NetworkState.loading,
-                                  text: "Accept",
+                                  isLoading: loadState == NetworkState.loading,
+                                  text: widget.request['startTrip']
+                                      ? "End trip"
+                                      : "Start trip",
                                   onPressed: () {
-                                    ref
-                                        .read(requestController.notifier)
-                                        .updateRequest(
-                                            "accepted",
-                                            widget.request['_id'],
-                                            context,
-                                            ref);
-                                  });
-                            }),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: AppSize.defaultPadding * 3,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            width: 130,
-                            child: AppButton(
-                              text: "Decline",
-                              onPressed: () {
-                                log("widget.request:${widget.request['_id']}");
-                              },
-                              color: AppColors.white,
-                              textColor: AppColors.primaryColor,
-                              borderColor: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : AppButton(
-                      text: "Go to trips",
-                      onPressed: () {
-                        navigate(context, const BottomBar());
-                        ref.read(navBarController.notifier).setNavbarIndex(2);
-                      }),
+                                    // log("trip id:${widget.request['_id']}");
+                                    if (widget.request['startTrip']) {
+                                      //end trip
 
-            const SizedBox(
-              height: AppSize.defaultPadding * 4,
-            )
+                                      showModalBottomSheet<void>(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(50),
+                                              topRight: Radius.circular(50)),
+                                        ),
+                                        builder: (BuildContext context) {
+                                          return showModal(
+                                              context, widget.request, size);
+                                        },
+                                      );
+                                    } else {
+                                      // log("end trip called============");
+                                      //start trip
+                                      ref
+                                          .read(tripController.notifier)
+                                          .startTrip(widget.request['_id'],
+                                              context, ref);
+                                    }
+
+                                    //
+
+                                    // Future.delayed(const Duration(seconds: 3), () {
+                                    //   navigate(context, const BottomBar());
+                                    //   ref
+                                    //       .read(navBarController.notifier)
+                                    //       .setNavbarIndex(2);
+                                    // });
+                                  });
+                            })
+                          : const SizedBox(),
+                    ],
+                  )
+                else
+                  widget.request['status'] == "pending"
+                      ? Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                width: 130,
+                                child: Consumer(builder: (context, ref, _) {
+                                  final state =
+                                      ref.watch(requestController).loadState;
+
+                                  return AppButton(
+                                      isLoading: state == NetworkState.loading,
+                                      text: "Accept",
+                                      onPressed: () {
+                                        ref
+                                            .read(requestController.notifier)
+                                            .updateRequest(
+                                                "accepted",
+                                                widget.request['_id'],
+                                                context,
+                                                ref);
+                                      });
+                                }),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: AppSize.defaultPadding * 3,
+                            ),
+                            Expanded(
+                              child: SizedBox(
+                                width: 130,
+                                child: AppButton(
+                                  text: "Decline",
+                                  onPressed: () {
+                                    log("widget.request:${widget.request['_id']}");
+                                  },
+                                  color: AppColors.white,
+                                  textColor: AppColors.primaryColor,
+                                  borderColor: AppColors.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : AppButton(
+                          text: "Go to trips",
+                          onPressed: () {
+                            navigate(context, const BottomBar());
+                            ref
+                                .read(navBarController.notifier)
+                                .setNavbarIndex(2);
+                          }),
+
+                const SizedBox(
+                  height: AppSize.defaultPadding * 4,
+                )
+              ],
+            ),
+            Consumer(builder: (context, ref, _) {
+              final isEndtripLoading =
+                  ref.watch(tripController).isEndtripLoading;
+              return Center(
+                  child: isEndtripLoading
+                      ? const CircularProgressIndicator()
+                      : const SizedBox());
+            })
           ],
         ),
       ),

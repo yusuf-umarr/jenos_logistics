@@ -268,73 +268,217 @@ class CustomWidget {
     );
   }
 
-  static Container recentTripCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              CustomWidget.imagAvatar(
-                isBorder: false,
-                image: "assets/images/pizza.png",
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Pizza-Hut",
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.dark,
-                          fontSize: 12,
-                        ),
+    static Widget recentRequestCard(
+    BuildContext context, {
+    String img = "",
+    String name = "Pizza-Hut",
+    Widget? date,
+    String time = "15.12.2023",
+    String requestText = "Active",
+    bool isRequest = false,
+    bool isActiveTrip = false,
+    onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                // CustomWidget.imagAvatar(
+                //   isBorder: false,
+                //   image: img,
+                // ),
+
+                Container(
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.grey),
+                  child: ClipOval(
+                    child: SizedBox.fromSize(
+                        size: const Size.fromRadius(25),
+                        child: img != ""
+                            ? Image.network(
+                                img,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                "assets/images/pixelBg.jpeg",
+                                fit: BoxFit.cover,
+                              )),
                   ),
-                  Text(
-                    "Today,7:10pm",
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.greyColor,
-                          fontSize: 10,
-                        ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Completed",
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.dark,
-                      fontSize: 12,
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: Text(
+                        name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.dark,
+                                  fontSize: 15,
+                                ),
+                      ),
                     ),
-              ),
-              Text(
-                "15.12.2023",
-                textAlign: TextAlign.end,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.greyColor,
-                      fontSize: 10,
+                    SizedBox(
+                      child: date,
+                    )
+                  ],
+                ),
+              ],
+            ),
+            isRequest
+                ? Container(
+                    //isActiveTrip
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: requestText == "completed"
+                          ? AppColors.green.withOpacity(0.3)
+                          : requestText == "ongoing"
+                              ? AppColors.skyBlue
+                              : AppColors.primaryCol,
                     ),
-              ),
-            ],
-          ),
-        ],
+                    child: isActiveTrip
+                        ? Text(
+                           Util.capitalizeFirstLetter(requestText),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: requestText == "completed"
+                                          ? AppColors.green
+                                          : requestText == "ongoing"
+                                              ? AppColors.blue
+                                              : AppColors.primaryColor,
+                                      fontSize: 10,
+                                    ),
+                          )
+                        : Text(
+                            Util.capitalizeFirstLetter(requestText),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: requestText == "completed"
+                                          ? AppColors.green
+                                          : requestText == "ongoing"
+                                              ? AppColors.blue
+                                              : AppColors.primaryColor,
+                                      fontSize: 10,
+                                    ),
+                          ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Scheduled",
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.dark,
+                                  fontSize: 12,
+                                ),
+                      ),
+                      Text(
+                        time,
+                        textAlign: TextAlign.end,
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.greyColor,
+                                  fontSize: 10,
+                                ),
+                      ),
+                    ],
+                  )
+          ],
+        ),
       ),
     );
   }
+//
 
+//   static Container recentTripCard(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.all(12),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(15),
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Row(
+//             children: [
+//               CustomWidget.imagAvatar(
+//                 isBorder: false,
+//                 image: "assets/images/pizza.png",
+//               ),
+//               const SizedBox(width: 10),
+//               Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     "Pizza-Hut",
+//                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
+//                           fontWeight: FontWeight.w600,
+//                           color: AppColors.dark,
+//                           fontSize: 12,
+//                         ),
+//                   ),
+//                   Text(
+//                     "Today,7:10pm",
+//                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
+//                           fontWeight: FontWeight.w400,
+//                           color: AppColors.greyColor,
+//                           fontSize: 10,
+//                         ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//           Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 "Completed",
+//                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
+//                       fontWeight: FontWeight.w600,
+//                       color: AppColors.dark,
+//                       fontSize: 12,
+//                     ),
+//               ),
+//               Text(
+//                 "15.12.2023",
+//                 textAlign: TextAlign.end,
+//                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
+//                       fontWeight: FontWeight.w400,
+//                       color: AppColors.greyColor,
+//                       fontSize: 10,
+//                     ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// //
   static Column detailCard(
     BuildContext context, {
     String title = "",

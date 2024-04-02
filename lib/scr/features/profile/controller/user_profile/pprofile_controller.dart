@@ -89,8 +89,81 @@ class ProfileController extends StateNotifier<ProfileState> {
     }
   }
 
+
+  Future<void> changePassword(
+    String oldPass,
+    String newPass,
+  ) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await profileRepository.changePassword(
+        oldPass,
+        newPass,
+      );
+
+      if (response.success) {
+        state = state.copyWith(
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+
+        // log("message:${state.message}");
+        // log("response.data:${response.data}");
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+//
 //
 
+  Future<void> conatctSerivce(String message) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await profileRepository.conatctSerivce(
+        state.nameController.text,
+        state.emailController.text,
+        message,
+      );
+
+      if (response.success) {
+        state = state.copyWith(
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+
+        // log("message:${state.message}");
+        // log("response.data:${response.data}");
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+//
   Future<void> updateProfile(
       String fullName, String phoneNumber, String address,
       {bool isMerchant = true}) async {
@@ -98,9 +171,7 @@ class ProfileController extends StateNotifier<ProfileState> {
       loadState: NetworkState.loading,
     );
     try {
-      // print("update profile =fullName=${fullName}");
-      // print("update profile =phoneNumber=${phoneNumber}");
-      // print("update profile =address=${address}");
+    
       final response = await profileRepository.updateProfile(
         fullName,
         phoneNumber,

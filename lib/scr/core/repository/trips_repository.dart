@@ -103,6 +103,7 @@ class TripsRepositoryImpl implements TripsRepository {
   @override
   Future<ApiResponse<dynamic>> endTrip(String tripId, int otp) async {
     log("end trip tripId:$tripId");
+    log("end trip tripId:$otp");
     try {
       var body = {"token": otp};
 
@@ -113,7 +114,7 @@ class TripsRepositoryImpl implements TripsRepository {
         data: body,
       );
 
-      // log("===========end trip success${response.data}");
+      log("===========1end trip success${response.data}");
 
       return ApiResponse<dynamic>(
         success: true,
@@ -121,7 +122,7 @@ class TripsRepositoryImpl implements TripsRepository {
         message: " successful",
       );
     } on DioException catch (e) {
-      // log("===========end trip error$e");
+      log("===========end trip error$e");
       return AppException.handleError(
         e,
       );

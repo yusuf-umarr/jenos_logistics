@@ -33,7 +33,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     {"id": 2, "name": "Completed"},
   ];
 
-  int selectedIndex = 0;
+  // int selectedIndex = 0;
 
   @override
   void initState() {
@@ -48,17 +48,11 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     super.dispose();
   }
 
-  // String accountType = "";
-
-  // getAccountType() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   accountType = prefs.getString('accountType') ?? "individual";
-  // }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     final tripsProvider = ref.watch(tripController);
+
 
     // print("width:$width");
     return Scaffold(
@@ -113,25 +107,29 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                 itemCount: tripType.length,
                 itemBuilder: (context, int index) {
                   final trip = tripType[index];
-                  return Container(
-                    margin: const EdgeInsets.only(right: 12),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: CustomWidget.commonBtn(
-                          horizontalPadding: width > 400 ? 25 : 17,
-                          title: trip['name'],
-                          bgColor: selectedIndex == trip['id']
-                              ? AppColors.primaryColor
-                              : AppColors.white,
-                          textColor: selectedIndex == trip['id']
-                              ? AppColors.white
-                              : AppColors.primaryColor,
-                          onTap: () {
-                            setState(() {
-                              selectedIndex = trip['id'];
-                            });
-                          }),
-                    ),
+                  return Consumer(
+                    builder: (context, ref, _) {
+                      final tripProvider = ref.watch(tripController);
+                      return Container(
+                        margin: const EdgeInsets.only(right: 12),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: CustomWidget.commonBtn(
+                              horizontalPadding: width > 400 ? 25 : 17,
+                              title: trip['name'],
+                              bgColor: tripProvider.selectedIndex == trip['id']
+                                  ? AppColors.primaryColor
+                                  : AppColors.white,
+                              textColor: tripProvider.selectedIndex == trip['id']
+                                  ? AppColors.white
+                                  : AppColors.primaryColor,
+                              onTap: () {
+                                ref.read(tripController.notifier).updateTripTabs(trip['id']);
+                              
+                              }),
+                        ),
+                      );
+                    }
                   );
                 }),
           ),
@@ -168,7 +166,8 @@ class _TripsPageState extends ConsumerState<TripsPage> {
         ),
       );
     }
-    if (selectedIndex == 0) {
+    if (tripsProvider.selectedIndex == 0) {
+      // =============pending trips=============================
       return Expanded(
         child: ListView.builder(
             itemCount: tripsProvider.tripsData.length,
@@ -225,8 +224,8 @@ class _TripsPageState extends ConsumerState<TripsPage> {
               }
             }),
       );
-    } else if (selectedIndex == 1) {
-      //ongoing trip
+    } else if (tripsProvider.selectedIndex == 1) {
+      //====================ongoing trip======================
       return Expanded(
         child: ListView.builder(
             itemCount: tripsProvider.tripsData.length,
@@ -267,8 +266,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
       ///////////
     }
 
-    //completed trips
-
+    //==========completed trips ======================================
     return Expanded(
       child: ListView.builder(
           itemCount: tripsProvider.tripsData.length,

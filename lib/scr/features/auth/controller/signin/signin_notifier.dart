@@ -5,9 +5,11 @@
 
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/models/user_merchant_model.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/auth/controller/signin/signin_state.dart';
 import 'package:jenos/scr/core/repository/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +21,7 @@ class SigninNotifier extends StateNotifier<SigninState> {
   final AuthRepository authRepository;
 
   /// Method to sign in with the provided [model].
-  Future<void> signIn(String email, String password,
+  Future<void> signIn(String email, String password, context,
       ) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
@@ -34,7 +36,6 @@ class SigninNotifier extends StateNotifier<SigninState> {
           message: response.message,
         );
 
-        log("response.message success:${response.message}");
 
         return;
       }
@@ -42,7 +43,12 @@ class SigninNotifier extends StateNotifier<SigninState> {
         loadState: NetworkState.error,
         message: response.message,
       );
-      log("response.message erro 1:${response.message}");
+        Util.showSnackBar(
+        context,
+        state.message != "" ? state.message.toString() : "Server error",
+        color: Colors.red,
+      );
+      return;
     } catch (e) {
       state = state.copyWith(
         loadState: NetworkState.error,

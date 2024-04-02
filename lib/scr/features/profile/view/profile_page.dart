@@ -12,6 +12,7 @@ import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart
 import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
 import 'package:jenos/scr/features/profile/view/account_details.dart';
 import 'package:jenos/scr/features/profile/view/change_password.dart';
+import 'package:jenos/scr/features/profile/view/contact_service.dart';
 import 'package:jenos/scr/features/profile/view/update_personal_details_page.dart';
 import 'package:jenos/scr/features/profile/view/verification_page.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
@@ -179,6 +180,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       },
                     ),
                   ),
+                ),
+                const Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: AppSize.defaultPadding),
+                  child: Divider(
+                    color: AppColors.grey,
+                  ),
+                ),
+                CustomWidget.profileTile(
+                  context,
+                  img: Assets.cash,
+                  title: "Contact",
+                  desc: "Contact service",
+                  onTap: () {
+                    navigate(context, const ContactService());
+                  },
                 ),
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
@@ -9,6 +10,8 @@ import 'package:jenos/scr/common_widgets/home_header_widget.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/home/controller/home_controller.dart';
+import 'package:jenos/scr/features/request/controller/request_controller.dart';
+import 'package:jenos/scr/features/request/view/order_detail.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -227,7 +230,47 @@ class _HomePageState extends ConsumerState<HomePage> {
               height: size.height * 0.05,
             ),
 
-            CustomWidget.recentTripCard(context)
+            // CustomWidget.recentTripCard(context)
+
+            Consumer(builder: (context, ref, _) {
+              final List request = ref.watch(requestController).requestData;
+              // log("=====request lenght:${request.length}");
+              if (request.isNotEmpty) {
+                request.sort((a, b) {
+                  DateTime dateTimeA = DateTime.parse(a['createdAt']);
+                  DateTime dateTimeB = DateTime.parse(b['createdAt']);
+                  return dateTimeB.compareTo(dateTimeA); // Descending order
+                });
+                return Column(
+                  children: [
+                    CustomWidget.seeAllWidget(context, onTap: () {
+                      ref.read(navBarController.notifier).setNavbarIndex(1);
+                    }),
+                    SizedBox(
+                      height: size.height * 0.05,
+                    ),
+                    CustomWidget.recentRequestCard(
+                      context,
+                      name: request.first['title'] ?? "Package",
+                      img: request.first['itemImage'] ?? "",
+                      date: Util.showFormattedTime(
+                          request.first['createdAt'], context),
+                      requestText: request.first['status'],
+                      isRequest: true,
+                      onTap: () {
+                        navigate(
+                            context,
+                            // RequestDetailsPage(request: request.first)
+
+                            OrderDetailsPage(request: request.first));
+                      },
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox();
+            }),
+            //
 
             //
           ],

@@ -66,6 +66,8 @@ class TripController extends StateNotifier<TripState> {
         );
         // log("start trip ${state.tripsData}");
         Util.showSnackBar(context, "Trip started");
+        updateTripTabs(1);
+
         Future.delayed(const Duration(seconds: 3), () {
           navigate(context, const BottomBar());
           // ref.read(navBarController.notifier).setNavbarIndex(2);
@@ -134,6 +136,7 @@ class TripController extends StateNotifier<TripState> {
   Future endTrip(String tripId, int otp, context) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
+      isEndtripLoading: true,
     );
     try {
       final response = await tripsRepository.endTrip(tripId, otp);
@@ -141,11 +144,12 @@ class TripController extends StateNotifier<TripState> {
       if (response.success) {
         state = state.copyWith(
           loadState: NetworkState.success,
-
           tripsData: response.data,
-          // message: response.message,
+          isEndtripLoading: false,
         );
-        log("end trip ${state.tripsData}");
+        updateTripTabs(2);
+
+        // log("end trip success res ${state.tripsData}");
         Util.showSnackBar(context, "Trip ended");
         Future.delayed(const Duration(seconds: 2), () {
           navigate(context, const BottomBar());
@@ -163,6 +167,7 @@ class TripController extends StateNotifier<TripState> {
       state = state.copyWith(
         loadState: NetworkState.error,
         message: response.message,
+        isEndtripLoading: false,
       );
 
       return false;
@@ -170,6 +175,7 @@ class TripController extends StateNotifier<TripState> {
       state = state.copyWith(
         loadState: NetworkState.error,
         message: e.toString(),
+        isEndtripLoading: false,
       );
     }
     return false;
@@ -203,6 +209,14 @@ class TripController extends StateNotifier<TripState> {
       );
       return false;
     }
+  }
+
+  void updateTripTabs(int index) {
+    state = state.copyWith(selectedIndex: index);
+  }
+
+  void updateIsEndtripLoading(bool update) {
+    state = state.copyWith(isEndtripLoading: update);
   }
 
   void clearData() {

@@ -49,19 +49,19 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     return Consumer(builder: (context, ref, _) {
       ref.listen<SignupState>(signupNotifier, (prev, state) {
         if (state.loadState == NetworkState.error) {
-          Util.showSnackBar(
-            context,
-            state.message != "" ? state.message.toString() : "Server error",
-            color: Colors.red,
-          );
+          // Util.showSnackBar(
+          //   context,
+          //   state.message != "" ? state.message.toString() : "Server error",
+          //   color: Colors.red,
+          // );
         } else if (state.loadState == NetworkState.success) {
-          Util.showSnackBar(
-            context,
-            state.message.toString(),
-          );
-          Timer(const Duration(seconds: 4), () {
-            navigate(context, const SignInPage());
-          });
+          // Util.showSnackBar(
+          //   context,
+          //   state.message.toString(),
+          // );
+          // Timer(const Duration(seconds: 4), () {
+          //   navigate(context, const SignInPage());
+          // });
         }
       });
       return Scaffold(
@@ -211,6 +211,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                 _passwordController.text,
                                 _nameController.text,
                                 _phoneController.text,
+                                context
                               );
 
                               _passwordController.clear();

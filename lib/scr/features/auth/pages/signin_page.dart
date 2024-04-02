@@ -47,11 +47,11 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       ref.listen<SigninState>(signinNotifier, (prev, state) {
         if (state.loadState == NetworkState.error) {
        
-          Util.showSnackBar(
-            context,
-            state.message != "" ? state.message.toString() : "Server error",
-            color: Colors.red,
-          );
+          // Util.showSnackBar(
+          //   context,
+          //   state.message != "" ? state.message.toString() : "Server error",
+          //   color: Colors.red,
+          // );
         } else if (state.loadState == NetworkState.success) {
           Timer(const Duration(seconds: 1), () {
             // ref.read(userDataNotifier.notifier).getUserData();
@@ -172,6 +172,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                             signinState.signIn(
                               _emailController.text,
                               _passwordController.text,
+                              context,
                             );
 
                             _passwordController.clear();
