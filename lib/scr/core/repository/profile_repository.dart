@@ -21,12 +21,15 @@ abstract class ProfileRepository {
     String phoneNumber,
     String address,
   );
-    Future<ApiResponse<dynamic>> conatctSerivce(
+  Future<ApiResponse<dynamic>> updateFCMToken(
+    String fcmToken,
+  );
+  Future<ApiResponse<dynamic>> conatctSerivce(
     String name,
     String email,
     String message,
   );
-    Future<ApiResponse<dynamic>> getNotifications();
+  Future<ApiResponse<dynamic>> getNotifications();
   Future<ApiResponse<dynamic>> changePassword(
     String oldPass,
     String newPass,
@@ -92,8 +95,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<ApiResponse<dynamic>> getUserData() async {
-
-
 // log("getUserData called");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -125,17 +126,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<ApiResponse<dynamic>> changePassword(
       String oldPass, String newPass) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String accountType = prefs.getString('accountType') ?? "";
-
-    // String userId = prefs.getString('userId') ?? "";
-
-    // final pathUrl = accountType == "individual"
-    //     ? "/merchant/password/$userId"
-    //     : "/customer/change-password/$userId";
 
     try {
       final response = await _dio.put(
-        "${Endpoint.baseUrl}""",
+        "${Endpoint.baseUrl}" "",
         data: {
           "oldPassword": oldPass,
           "newPassword": newPass,
@@ -184,8 +178,40 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
 //
   @override
+  Future<ApiResponse<dynamic>> updateFCMToken(String fcmToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountType = prefs.getString('accountType') ?? "";
+
+    String userId = prefs.getString('userId') ?? "";
+
+    /*
+       final body = jsonEncode({
+      'firebaseId': fcmToken,
+    });
+   */
+    try {
+      var body = {
+        'firebaseId': fcmToken,
+      };
+
+      final response = await _dio.put("${Endpoint.baseUrl}", data: body);
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data,
+        message: "update successful",
+      );
+    } on DioException catch (e) {
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+
+//
+
+  @override
   Future<ApiResponse> uploadImage(
-    // BuildContext? context,
     file,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -244,7 +270,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return AppException.handleError(e);
     }
   }
-
 }
 
 final profileRepository = Provider<ProfileRepository>(

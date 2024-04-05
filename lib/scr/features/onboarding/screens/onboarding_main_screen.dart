@@ -1,31 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
 import 'package:jenos/scr/features/onboarding/screens/get_started_screen.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../widgets/onboarding_widget.dart';
 
-class OnboardingMainScreen extends StatefulWidget {
-  const OnboardingMainScreen({Key? key}) : super(key: key);
+class OnboardingMainScreen extends ConsumerStatefulWidget {
+  final String? fcmToken;
+  const OnboardingMainScreen({Key? key, this.fcmToken}) : super(key: key);
 
   @override
-  State<OnboardingMainScreen> createState() => _OnboardingMainScreenState();
+  ConsumerState<OnboardingMainScreen> createState() => _OnboardingMainScreenState();
 }
 
-class _OnboardingMainScreenState extends State<OnboardingMainScreen> {
+class _OnboardingMainScreenState extends ConsumerState<OnboardingMainScreen> {
   final controller = PageController(initialPage: 0);
   int currentIndex = 0;
   bool isLastPage = false;
+
+  @override
+  void initState() {
+    updateFcmToken();
+    super.initState();
+  }
 
   @override
   void dispose() {
     controller.dispose();
 
     super.dispose();
+  }
+
+  void updateFcmToken() {
+    if (widget.fcmToken != null) {
+      ref.read(profileController.notifier).updateFCMToken(widget.fcmToken!);
+    }
   }
 
   @override

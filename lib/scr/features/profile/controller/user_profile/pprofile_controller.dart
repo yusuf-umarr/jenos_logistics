@@ -89,7 +89,6 @@ class ProfileController extends StateNotifier<ProfileState> {
     }
   }
 
-
   Future<void> changePassword(
     String oldPass,
     String newPass,
@@ -163,6 +162,32 @@ class ProfileController extends StateNotifier<ProfileState> {
     }
   }
 
+  Future<void> updateFCMToken(String fcmToken) async {
+    try {
+      final response = await profileRepository.updateFCMToken(fcmToken);
+
+      if (response.success) {
+        state = state.copyWith(
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+//
+
 //
   Future<void> updateProfile(
       String fullName, String phoneNumber, String address,
@@ -171,7 +196,6 @@ class ProfileController extends StateNotifier<ProfileState> {
       loadState: NetworkState.loading,
     );
     try {
-    
       final response = await profileRepository.updateProfile(
         fullName,
         phoneNumber,
