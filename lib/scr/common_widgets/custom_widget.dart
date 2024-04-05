@@ -268,7 +268,7 @@ class CustomWidget {
     );
   }
 
-    static Widget recentRequestCard(
+  static Widget recentRequestCard(
     BuildContext context, {
     String img = "",
     String name = "Pizza-Hut",
@@ -355,7 +355,7 @@ class CustomWidget {
                     ),
                     child: isActiveTrip
                         ? Text(
-                           Util.capitalizeFirstLetter(requestText),
+                            Util.capitalizeFirstLetter(requestText),
                             style:
                                 Theme.of(context).textTheme.bodySmall!.copyWith(
                                       fontWeight: FontWeight.w600,
@@ -603,6 +603,7 @@ class CustomWidget {
     String headerText = "",
     String amount = "",
     String paymentType = "",
+    String paymentMethod = "",
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
@@ -649,7 +650,7 @@ class CustomWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomWidget.detailCard(context,
-                        title: "Payer", desc: "Receiver"),
+                        title: "Payment method", desc: paymentMethod,),
                     CustomWidget.detailCard(
                       context,
                       title: "Amount",

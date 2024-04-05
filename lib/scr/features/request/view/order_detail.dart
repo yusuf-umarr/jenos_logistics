@@ -135,20 +135,29 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
                 //payment method
 
-                CustomWidget.paymentMethodCard(context,
-                    headerText: "Payment method",
-                    amount: widget.isFromTrip
-                        ? widget.request['requestDetails'][0]
-                                    ['deliveryPrice'] !=
-                                null
-                            ? widget.request['requestDetails'][0]
-                                    ['deliveryPrice']
-                                .toString()
-                            : "0".toString()
-                        : widget.request['deliveryPrice'].toString(),
-                    paymentType: widget.isFromTrip
-                        ? widget.request['requestDetails'][0]['paymentType']
-                        : widget.request['paymentType']),
+                CustomWidget.paymentMethodCard(
+                  context,
+                  headerText: "Payment method",
+                  amount: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['deliveryPrice'] !=
+                              null
+                          ? widget.request['requestDetails'][0]['deliveryPrice']
+                              .toString()
+                          : "0".toString()
+                      : widget.request['deliveryPrice'].toString(),
+                  paymentType: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['paymentType'] ==
+                              "bankTransfer"
+                          ? "Bank transfer"
+                          : "POS"
+                      : widget.request['paymentType'],
+                  paymentMethod: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['paymentMethod'] ==
+                              "onlinePayment"
+                          ? "Online payment"
+                          : "Pay on delivery"
+                      : widget.request['paymentMethod'],
+                ),
 
                 if (widget.isFromTrip)
                   Column(
