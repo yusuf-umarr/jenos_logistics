@@ -146,17 +146,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                           : "0".toString()
                       : widget.request['deliveryPrice'].toString(),
                   paymentType: widget.isFromTrip
-                      ? widget.request['requestDetails'][0]['paymentType'] ==
-                              "bankTransfer"
-                          ? "Bank transfer"
-                          : "POS"
-                      : widget.request['paymentType'],
+                      ? Util.formatStringCap(
+                          widget.request['requestDetails'][0]['paymentType'])
+                      : Util.formatStringCap(widget.request['paymentType']),
                   paymentMethod: widget.isFromTrip
-                      ? widget.request['requestDetails'][0]['paymentMethod'] ==
-                              "onlinePayment"
-                          ? "Online payment"
-                          : "Pay on delivery"
-                      : widget.request['paymentMethod'],
+                      ? Util.formatStringCap(
+                          widget.request['requestDetails'][0]['paymentMethod'])
+                      : Util.formatStringCap(widget.request['paymentMethod']),
                 ),
 
                 if (widget.isFromTrip)

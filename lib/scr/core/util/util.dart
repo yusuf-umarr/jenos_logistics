@@ -425,6 +425,7 @@ class Util {
 
     return format.currencySymbol;
   }
+
   static String capitalizeFirstLetter(String text) {
     if (text.isEmpty) {
       return text; // If the text is empty, return it as is.
@@ -433,4 +434,23 @@ class Util {
       return text[0].toUpperCase() + text.substring(1);
     }
   }
+
+  static String formatStringCap(String input) {
+    // Check if input string is empty
+    if (input.isEmpty) return '';
+
+    // Split the string by capital letters and join with space
+    String formattedString =
+        input.replaceAllMapped(RegExp(r'([A-Z])'), (match) {
+      return ' ${match.group(0)}';
+    });
+
+    // Capitalize the first letter and remove leading space
+    formattedString = formattedString.trimLeft();
+    formattedString =
+        formattedString[0].toUpperCase() + formattedString.substring(1);
+
+    return formattedString;
+  }
+//
 }
