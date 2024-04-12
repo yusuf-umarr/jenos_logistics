@@ -40,21 +40,21 @@ void main() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String usedApp = prefs.getString("usedApp") ?? "";
+  await prefs.setString("fcmToken", fcmToken!);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     ProviderScope(
-      child: MyApp(usedApp: usedApp, fcmToken: fcmToken),
+      child: MyApp(usedApp: usedApp),
     ),
   );
 }
 
 class MyApp extends ConsumerStatefulWidget {
   final String? usedApp;
-  final String? fcmToken;
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  const MyApp({super.key, this.usedApp, this.fcmToken});
+  const MyApp({super.key, this.usedApp});
 
   @override
   ConsumerState<MyApp> createState() => _MyAppState();
@@ -102,8 +102,6 @@ class _MyAppState extends ConsumerState<MyApp> {
 //
   @override
   Widget build(BuildContext context) {
-    log("fcm token:${widget.fcmToken}");
-
     return MaterialApp(
       navigatorKey: MyApp.navigatorKey,
       title: 'Jenos rider',
@@ -113,11 +111,8 @@ class _MyAppState extends ConsumerState<MyApp> {
       home: (widget.usedApp != "")
           ? AuthCheckScreen(
               accountType: accountType,
-              fcmToken: widget.fcmToken,
             )
-          : OnboardingMainScreen(
-              fcmToken: widget.fcmToken,
-            ),
+          : const OnboardingMainScreen(),
       // home: SignInPage(),
     );
   }

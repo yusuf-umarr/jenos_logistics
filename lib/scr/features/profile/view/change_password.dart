@@ -10,7 +10,7 @@ import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/auth/controller/password_visibility/password_notifier.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 import 'package:jenos/scr/features/profile/controller/user_profile/profile_state.dart';
 
 class ChangePassword extends StatefulWidget {

@@ -17,7 +17,11 @@ class ProfileState {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController addrController = TextEditingController();
+  TextEditingController entAddrController = TextEditingController();
   TextEditingController CACRegController = TextEditingController();
+  TextEditingController bankNameController = TextEditingController();
+  TextEditingController acctNameController = TextEditingController();
+  TextEditingController acctNumberController = TextEditingController();
 
   /// uses to store message related to the signin state.
   final String? message;
@@ -32,7 +36,11 @@ class ProfileState {
     required this.emailController,
     required this.phoneController,
     required this.addrController,
+    required this.entAddrController,
     required this.CACRegController,
+    required this.bankNameController,
+    required this.acctNameController,
+    required this.acctNumberController,
     this.appNotificationList,
   });
 
@@ -44,6 +52,10 @@ class ProfileState {
       phoneController: TextEditingController(),
       addrController: TextEditingController(),
       CACRegController: TextEditingController(),
+      entAddrController: TextEditingController(),
+      bankNameController: TextEditingController(),
+      acctNameController: TextEditingController(),
+      acctNumberController: TextEditingController(),
       loadState: NetworkState.idle,
       message: null,
       imagePath: null,
@@ -60,7 +72,11 @@ class ProfileState {
     emailController,
     phoneController,
     addrController,
+    entAddrController,
     CACRegController,
+    bankNameController,
+    acctNameController,
+    acctNumberController,
     appNotificationList,
   }) {
     return ProfileState(
@@ -73,6 +89,10 @@ class ProfileState {
       addrController: addrController ?? this.addrController,
       CACRegController: CACRegController ?? this.CACRegController,
       appNotificationList: appNotificationList ?? this.appNotificationList,
+      entAddrController: entAddrController ?? this.entAddrController,
+      bankNameController: bankNameController ?? this.bankNameController,
+      acctNameController: acctNameController ?? this.acctNameController,
+      acctNumberController: acctNumberController ?? this.acctNumberController,
     );
   }
 }

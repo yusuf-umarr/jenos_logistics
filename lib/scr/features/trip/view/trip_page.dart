@@ -53,7 +53,6 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     double width = MediaQuery.of(context).size.width;
     final tripsProvider = ref.watch(tripController);
 
-
     // print("width:$width");
     return Scaffold(
       appBar: CustomWidget.customAppbar(context, title: "Deliveries"),
@@ -107,30 +106,29 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                 itemCount: tripType.length,
                 itemBuilder: (context, int index) {
                   final trip = tripType[index];
-                  return Consumer(
-                    builder: (context, ref, _) {
-                      final tripProvider = ref.watch(tripController);
-                      return Container(
-                        margin: const EdgeInsets.only(right: 12),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: CustomWidget.commonBtn(
-                              horizontalPadding: width > 400 ? 25 : 17,
-                              title: trip['name'],
-                              bgColor: tripProvider.selectedIndex == trip['id']
-                                  ? AppColors.primaryColor
-                                  : AppColors.white,
-                              textColor: tripProvider.selectedIndex == trip['id']
-                                  ? AppColors.white
-                                  : AppColors.primaryColor,
-                              onTap: () {
-                                ref.read(tripController.notifier).updateTripTabs(trip['id']);
-                              
-                              }),
-                        ),
-                      );
-                    }
-                  );
+                  return Consumer(builder: (context, ref, _) {
+                    final tripProvider = ref.watch(tripController);
+                    return Container(
+                      margin: const EdgeInsets.only(right: 12),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: CustomWidget.commonBtn(
+                            horizontalPadding: width > 400 ? 25 : 17,
+                            title: trip['name'],
+                            bgColor: tripProvider.selectedIndex == trip['id']
+                                ? AppColors.primaryColor
+                                : AppColors.white,
+                            textColor: tripProvider.selectedIndex == trip['id']
+                                ? AppColors.white
+                                : AppColors.primaryColor,
+                            onTap: () {
+                              ref
+                                  .read(tripController.notifier)
+                                  .updateTripTabs(trip['id']);
+                            }),
+                      ),
+                    );
+                  });
                 }),
           ),
           const SizedBox(
@@ -234,31 +232,56 @@ class _TripsPageState extends ConsumerState<TripsPage> {
 
               if (trip['status'] == 'ongoing') {
                 return MyTripsCard(
-                    receiverName:
-                        trip['requestDetails'][0]['receiverName'] ?? "",
-                    itemName: trip['requestDetails'][0]['title'] ?? "",
-                    pickUpAddress: trip['trackingInfo']['pickUpAddress'],
-                    dropOffAddr: trip['trackingInfo']['dropOffAddress'],
-                    // price: "hh",
-                    price: trip['requestDetails'][0]['deliveryPrice'] != null
-                        ? trip['requestDetails'][0]['deliveryPrice'].toString()
-                        : "0",
-                    startTrip: trip['startTrip'],
-                    endTrip: trip['endTrip'],
-                    itemImage: trip['requestDetails'][0]['itemImage'],
-                    tripText:
-                        // tripsProvider.loadState == NetworkState.loading
-                        //     ? "Loading..."
-                        //     :
-                        trip['startTrip'] ? "End trip" : "Start trip",
-                    date: Util.showFormattedTimeString(
-                        trip['createdAt'], context),
-                    viewDetailTap: () {
-                      // log("trip:$trip");
-                      navigate(context,
-                          OrderDetailsPage(request: trip, isFromTrip: true));
-                    },
-                    startTripTap: () {});
+                  receiverName: trip['requestDetails'][0]['receiverName'] ?? "",
+                  itemName: trip['requestDetails'][0]['title'] ?? "",
+                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                  // price: "hh",
+                  price: trip['requestDetails'][0]['deliveryPrice'] != null
+                      ? trip['requestDetails'][0]['deliveryPrice'].toString()
+                      : "0",
+                  startTrip: trip['startTrip'],
+                  endTrip: trip['endTrip'],
+                  itemImage: trip['requestDetails'][0]['itemImage'],
+                  tripText:
+                      // tripsProvider.loadState == NetworkState.loading
+                      //     ? "Loading..."
+                      //     :
+                      trip['startTrip'] ? "End trip" : "Start trip",
+                  date:
+                      Util.showFormattedTimeString(trip['createdAt'], context),
+                  viewDetailTap: () {
+                    // log("trip:$trip");
+                    navigate(context,
+                        OrderDetailsPage(request: trip, isFromTrip: true));
+                  },
+                  // startTripTap: () {}
+
+                  startTripTap: () {
+                    if (trip['startTrip']) {
+                      //if status is start trip, show end trip pop-up
+                      //end trip
+
+                      showModalBottomSheet<void>(
+                        isScrollControlled: true,
+                        context: context,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                        ),
+                        builder: (BuildContext context) {
+                          return endTripShowModal(context, trip);
+                        },
+                      );
+                    } else {
+                      //else hit start trip
+                      ref
+                          .read(tripController.notifier)
+                          .startTrip(trip['_id'], context, ref);
+                    }
+                  },
+                );
               }
               return const SizedBox();
             }),

@@ -9,13 +9,14 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 import 'package:jenos/scr/features/profile/view/account_details.dart';
 import 'package:jenos/scr/features/profile/view/change_password.dart';
 import 'package:jenos/scr/features/profile/view/contact_service.dart';
 import 'package:jenos/scr/features/profile/view/update_personal_details_page.dart';
 import 'package:jenos/scr/features/profile/view/verification_page.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -89,57 +90,67 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       color: AppColors.grey,
                     ),
                   ),
+
                   CustomWidget.profileTile(
                     context,
-                    img: Assets.userIcon,
-                    title: "KYC/ Verification",
-                    desc: "Confirm your identity",
+                    img: Assets.cash,
+                    title: "Account details",
+                    desc: "Update your bank details",
                     onTap: () {
-                      navigate(context, const VerificationPage());
+                      navigate(context, const AccountDetails());
                     },
                   ),
+                  // CustomWidget.profileTile(
+                  //   context,
+                  //   img: Assets.userIcon,
+                  //   title: "KYC/ Verification",
+                  //   desc: "Confirm your identity",
+                  //   onTap: () {
+                  //     navigate(context, const VerificationPage());
+                  //   },
+                  // ),
                 ],
               ),
             );
           }),
           //
-          Container(
-            margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
-            width: double.infinity,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.white),
-            child: Column(
-              children: [
-                CustomWidget.profileTile(
-                  context,
-                  img: Assets.cash,
-                  title: "Account details",
-                  desc: "Update your bank details",
-                  onTap: () {
-                    navigate(context, const AccountDetails());
-                  },
-                ),
-                const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: AppSize.defaultPadding),
-                  child: Divider(
-                    color: AppColors.grey,
-                  ),
-                ),
-                CustomWidget.profileTile(
-                  context,
-                  img: Assets.lockClosed,
-                  title: "Security",
-                  desc: "Secure your account",
-                  onTap: () {
-                    navigate(context, const ChangePassword());
-                  },
-                ),
-              ],
-            ),
-          ),
-          //
+          // Container(
+          //   margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
+          //   width: double.infinity,
+          //   decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(20),
+          //       color: AppColors.white),
+          //   child: Column(
+          //     children: [
+          //       CustomWidget.profileTile(
+          //         context,
+          //         img: Assets.cash,
+          //         title: "Account details",
+          //         desc: "Update your bank details",
+          //         onTap: () {
+          //           navigate(context, const AccountDetails());
+          //         },
+          //       ),
+          //       const Padding(
+          //         padding:
+          //             EdgeInsets.symmetric(horizontal: AppSize.defaultPadding),
+          //         child: Divider(
+          //           color: AppColors.grey,
+          //         ),
+          //       ),
+          //       // CustomWidget.profileTile(
+          //       //   context,
+          //       //   img: Assets.lockClosed,
+          //       //   title: "Security",
+          //       //   desc: "Secure your account",
+          //       //   onTap: () {
+          //       //     navigate(context, const ChangePassword());
+          //       //   },
+          //       // ),
+          //     ],
+          //   ),
+          // ),
+          // //
           Container(
             margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
             width: double.infinity,
@@ -153,7 +164,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   img: Assets.share,
                   title: "Referral",
                   desc: "Invite your friends",
-                  onTap: () {},
+                  onTap: () {
+                    Share.share('Download Jenos-ways app for seamless delivery services https://example.com');
+                  },
                 ),
                 const Padding(
                   padding:
@@ -162,24 +175,35 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     color: AppColors.grey,
                   ),
                 ),
+                //   CustomWidget.profileTile(
+                //     context,
+                //     img: Assets.bell,
+                //     title: "Enable notification",
+                //     desc: "Stay in the loop",
+                //     onTap: () {},
+                //     icon: Transform.scale(
+                //       scale: 0.7,
+                //       child: CupertinoSwitch(
+                //         value: enableNotification,
+                //         activeColor: AppColors.primaryColor,
+                //         onChanged: (val) {
+                //           setState(() {
+                //             enableNotification = val;
+                //           });
+                //         },
+                //       ),
+                //     ),
+                //   ),
+                //  //
+
                 CustomWidget.profileTile(
                   context,
-                  img: Assets.bell,
-                  title: "Enable notification",
-                  desc: "Stay in the loop",
-                  onTap: () {},
-                  icon: Transform.scale(
-                    scale: 0.7,
-                    child: CupertinoSwitch(
-                      value: enableNotification,
-                      activeColor: AppColors.primaryColor,
-                      onChanged: (val) {
-                        setState(() {
-                          enableNotification = val;
-                        });
-                      },
-                    ),
-                  ),
+                  img: Assets.lockClosed,
+                  title: "Security",
+                  desc: "Secure your account",
+                  onTap: () {
+                    navigate(context, const ChangePassword());
+                  },
                 ),
                 const Padding(
                   padding:

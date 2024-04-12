@@ -3,11 +3,13 @@
 /// @version 1.0
 /// @since   2023-12-19
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/util/enums.dart';
+import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/profile/controller/user_profile/profile_state.dart';
 import 'package:jenos/scr/core/repository/profile_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,17 +30,22 @@ class ProfileController extends StateNotifier<ProfileState> {
       final response = await profileRepository.getUserData();
 
       if (response.success) {
-        // log("getUserData res:${response.data}");
+        log("getUserData res:${response.data}");
         state = state.copyWith(
           nameController: TextEditingController(
               text: accountType == "individual"
                   ? response.data["userName"]
                   : response.data["fullName"]),
+
+          addrController: TextEditingController(
+              text: accountType == "individual"
+                  ? response.data["address"]
+                  : response.data["businessAddress"]),
           emailController: TextEditingController(text: response.data["email"]),
           phoneController:
               TextEditingController(text: response.data["phoneNumber"]),
-          addrController: TextEditingController(text: response.data["address"]),
           imagePath: response.data["image"],
+
           // CACRegController: TextEditingController(text: accountType != "individual"? response.data["CACReg"]: ""),
         );
 
@@ -225,6 +232,53 @@ class ProfileController extends StateNotifier<ProfileState> {
     }
   }
 
+//
+  Future<void> updateBankDetails(String bankName, String accountNumber,
+      String accountName, context) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await profileRepository.updateBankDetails(
+        bankName,
+        accountNumber,
+        accountName,
+      );
+
+      if (response.success) {
+        getUserData();
+        state = state.copyWith(
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+
+        // log("message:${state.message}");
+        log("update banks response.data:${response.data}");
+
+        Util.showSnackBar(
+          context,
+          state.message.toString(),
+        );
+
+        Timer(const Duration(seconds: 3), () {
+          Navigator.of(context).pop();
+        });
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+//
   Future<void> uploadProfileImage(imagePath, {bool isMerchant = true}) async {
     state = state.copyWith();
     try {

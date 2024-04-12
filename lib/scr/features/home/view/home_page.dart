@@ -153,41 +153,80 @@ class _HomePageState extends ConsumerState<HomePage> {
 
             Builder(builder: (context) {
               final tripsAnalysis = ref.watch(tripController).riderAnalysis;
+              if (tripsAnalysis.isNotEmpty) {
+                assetsList = [
+                  {
+                    "name": "Total Assets",
+                    "price": "${tripsAnalysis['collection'] ?? 0}",
+                    "desc": "Generated",
+                    "icon": Assets.creditCard,
+                    "color": AppColors.cardOne,
+                    "iconColor": Colors.green,
+                  },
+                  {
+                    "name": "Completed Trips",
+                    "price": tripsAnalysis['completed'] ?? 0,
+                    "desc": "Trips",
+                    "icon": Assets.tripIcon,
+                    "color": AppColors.cardTwo,
+                    "iconColor": AppColors.dark,
+                  },
+                  {
+                    "name": "Pending Trips",
+                    "price": tripsAnalysis['pending'] ?? 0,
+                    "desc": "Trips",
+                    "icon": Assets.locationMarker,
+                    "color": AppColors.cardThree,
+                    "iconColor": AppColors.dark,
+                  },
+                  {
+                    "name": "Cancelled Trips",
+                    "price": tripsAnalysis['cancelled'] ?? 0,
+                    "desc": "Trips",
+                    "icon": Assets.badgeCheck,
+                    "color": AppColors.cardFour,
+                    "iconColor": Colors.green,
+                  },
+                ];
+                //
+              } else {
+                assetsList = [
+                  {
+                    "name": "Total Assets",
+                    "price": "0",
+                    "desc": "Generated",
+                    "icon": Assets.creditCard,
+                    "color": AppColors.cardOne,
+                    "iconColor": Colors.green,
+                  },
+                  {
+                    "name": "Completed Trips",
+                    "price": "0",
+                    "desc": "Trips",
+                    "icon": Assets.tripIcon,
+                    "color": AppColors.cardTwo,
+                    "iconColor": AppColors.dark,
+                  },
+                  {
+                    "name": "Pending Trips",
+                    "price": "0",
+                    "desc": "Trips",
+                    "icon": Assets.locationMarker,
+                    "color": AppColors.cardThree,
+                    "iconColor": AppColors.dark,
+                  },
+                  {
+                    "name": "Cancelled Trips",
+                    "price": "0",
+                    "desc": "Trips",
+                    "icon": Assets.badgeCheck,
+                    "color": AppColors.cardFour,
+                    "iconColor": Colors.green,
+                  },
+                ];
+                //
+              }
 
-              assetsList = [
-                {
-                  "name": "Total Assets",
-                  "price": "${tripsAnalysis['collection'] ?? 0}",
-                  "desc": "Generated",
-                  "icon": Assets.creditCard,
-                  "color": AppColors.cardOne,
-                  "iconColor": Colors.green,
-                },
-                {
-                  "name": "Completed Trips",
-                  "price": tripsAnalysis['completed'] ?? 0,
-                  "desc": "Trips",
-                  "icon": Assets.tripIcon,
-                  "color": AppColors.cardTwo,
-                  "iconColor": AppColors.dark,
-                },
-                {
-                  "name": "Pending Trips",
-                  "price": tripsAnalysis['pending'] ?? 0,
-                  "desc": "Trips",
-                  "icon": Assets.locationMarker,
-                  "color": AppColors.cardThree,
-                  "iconColor": AppColors.dark,
-                },
-                {
-                  "name": "Cancelled Trips",
-                  "price": tripsAnalysis['cancelled'] ?? 0,
-                  "desc": "Trips",
-                  "icon": Assets.badgeCheck,
-                  "color": AppColors.cardFour,
-                  "iconColor": Colors.green,
-                },
-              ];
               return SizedBox(
                 height: 350,
                 child: GridView.builder(

@@ -11,7 +11,7 @@ import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 

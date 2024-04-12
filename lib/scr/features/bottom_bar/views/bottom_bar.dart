@@ -16,7 +16,7 @@ import 'package:jenos/scr/features/home/controller/home_controller.dart';
 import 'package:jenos/scr/features/home/view/home_page.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 import 'package:jenos/scr/features/profile/view/profile_page.dart';
 import 'package:jenos/scr/features/request/controller/request_controller.dart';
 import 'package:jenos/scr/features/request/view/request_page.dart';
@@ -39,15 +39,21 @@ class BottomBar extends ConsumerStatefulWidget {
 class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   void initState() {
+    updateFcmToken();
+
     getData();
     setPages();
     super.initState();
   }
 
-  //   getAccountType() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   accountType = prefs.getString('accountType') ?? "individual";
-  // }
+  void updateFcmToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String fcmToken = await prefs.getString("fcmToken") ?? "";
+    //  log("fcmToken:${widget.fcmToken}");
+    if (fcmToken != "") {
+     await ref.read(profileController.notifier).updateFCMToken(fcmToken);
+    }
+  }
 
   List<Widget> pages = [];
   List iconList = [];

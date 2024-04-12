@@ -21,6 +21,11 @@ abstract class ProfileRepository {
     String phoneNumber,
     String address,
   );
+  Future<ApiResponse<dynamic>> updateBankDetails(
+     String bankName,
+    String accountNumber,
+    String accountName,
+  );
   Future<ApiResponse<dynamic>> updateFCMToken(
     String fcmToken,
   );
@@ -72,7 +77,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     var enterpriseriseBody = {
       "userName": fullName,
       "phoneNumber": phoneNumber,
-      "address": address,
+      "businessAddress": address,
     };
 
     try {
@@ -92,7 +97,52 @@ class ProfileRepositoryImpl implements ProfileRepository {
       );
     }
   }
+//
+  @override
+  Future<ApiResponse<dynamic>> updateBankDetails(
+    String bankName,
+    String accountNumber,
+    String accountName,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountType = prefs.getString('accountType') ?? "";
+    String userId = prefs.getString('userId') ?? "";
 
+    final pathUrl =
+        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+
+    //userName
+
+    var body = {
+     "bankName": bankName,
+      "accountNumber": accountNumber,
+      "accountName": accountName,
+    };
+
+    // var enterpriseriseBody = {
+    //   "userName": fullName,
+    //   "phoneNumber": phoneNumber,
+    //   "businessAddress": address,
+    // };
+
+    try {
+      final response = await _dio.put("${Endpoint.baseUrl}$pathUrl",
+          data: body);
+
+      // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data,
+        message: "update successful",
+      );
+    } on DioException catch (e) {
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+//
   @override
   Future<ApiResponse<dynamic>> getUserData() async {
 // log("getUserData called");
@@ -179,22 +229,32 @@ class ProfileRepositoryImpl implements ProfileRepository {
 //
   @override
   Future<ApiResponse<dynamic>> updateFCMToken(String fcmToken) async {
+    log("updateFCMToken called");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accountType = prefs.getString('accountType') ?? "";
 
     String userId = prefs.getString('userId') ?? "";
+
+    log("fcmToken:$fcmToken");
 
     /*
        final body = jsonEncode({
       'firebaseId': fcmToken,
     });
    */
+
+    final pathUrl =
+        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+
     try {
       var body = {
         'firebaseId': fcmToken,
       };
 
-      final response = await _dio.put("${Endpoint.baseUrl}", data: body);
+      final response =
+          await _dio.put("${Endpoint.baseUrl}$pathUrl", data: body);
+
+      log("response:${response.data}");
 
       return ApiResponse<dynamic>(
         success: true,
@@ -225,7 +285,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
       //customer/update-profile-image/65c1f348773198d5bd5baff8
 
-      final pathUrl = accountType == "merchant"
+      final pathUrl = accountType == "individual"
           ? "/merchant/image/$userId"
           : "/customer/update-profile-image/$userId";
 

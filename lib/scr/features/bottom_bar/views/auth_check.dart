@@ -6,7 +6,7 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 import 'package:jenos/scr/features/onboarding/screens/get_started_screen.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 
 class AuthCheckScreen extends ConsumerStatefulWidget {
   final accountType;
@@ -19,14 +19,7 @@ class AuthCheckScreen extends ConsumerStatefulWidget {
 class _AuthCheckScreenState extends ConsumerState<AuthCheckScreen> {
   @override
   void initState() {
-    updateFcmToken();
     super.initState();
-  }
-
-   void updateFcmToken() {
-    if (widget.fcmToken != null) {
-      ref.read(profileController.notifier).updateFCMToken(widget.fcmToken!);
-    }
   }
 
   @override

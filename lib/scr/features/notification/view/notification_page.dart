@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/notification_card.dart';
 import 'package:jenos/scr/constant/app_size.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 
 class NotificationPage extends ConsumerStatefulWidget {
   final bool isArrowBack;

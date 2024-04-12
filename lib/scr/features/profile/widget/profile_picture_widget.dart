@@ -8,7 +8,7 @@ import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/pprofile_controller.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 
 class ProfilePictureWidget extends ConsumerStatefulWidget {
   const ProfilePictureWidget({Key? key}) : super(key: key);
