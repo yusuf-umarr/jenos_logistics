@@ -5,9 +5,13 @@
 /// @since   2023-12-19
 ///
 
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/core/util/enums.dart';
@@ -23,6 +27,7 @@ import 'package:jenos/scr/features/request/view/request_page.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 import 'package:jenos/scr/features/trip/view/trip_page.dart';
 import 'package:jenos/scr/features/wallet/view/wallat_page.dart';
+import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -40,9 +45,9 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   @override
   void initState() {
     updateFcmToken();
-
     getData();
     setPages();
+    getCurrentLocation();
     super.initState();
   }
 
@@ -51,12 +56,57 @@ class _BottomBarState extends ConsumerState<BottomBar> {
     String fcmToken = await prefs.getString("fcmToken") ?? "";
     //  log("fcmToken:${widget.fcmToken}");
     if (fcmToken != "") {
-     await ref.read(profileController.notifier).updateFCMToken(fcmToken);
+      await ref.read(profileController.notifier).updateFCMToken(fcmToken);
     }
   }
 
+  Position? _currentPosition;
+
   List<Widget> pages = [];
   List iconList = [];
+
+  Location location =  Location();
+
+  void getCurrentLocation() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+    _currentPosition = position;
+
+    location.onLocationChanged.listen((LocationData currentLocation) {
+      // log("curent location========${currentLocation.latitude}");
+      // log("curent location========${currentLocation.longitude}");
+
+      ref.read(profileController.notifier).updateRiderLocation(
+            currentLocation.latitude.toString(),
+            currentLocation.longitude.toString(),
+          );
+      // Use current location
+    });
+
+    setState(() {});
+
+    log("------position.longitude.toString() ${_currentPosition!.latitude.toString()}");
+
+    // ref.read(profileController.notifier).updateRiderLocation(
+    //       position.latitude.toString(),
+    //       position.longitude.toString(),
+    //     );
+  }
 
   void getData() async {
     if (mounted) {

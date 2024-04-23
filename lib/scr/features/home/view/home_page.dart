@@ -155,14 +155,14 @@ class _HomePageState extends ConsumerState<HomePage> {
               final tripsAnalysis = ref.watch(tripController).riderAnalysis;
               if (tripsAnalysis.isNotEmpty) {
                 assetsList = [
-                  {
-                    "name": "Total Assets",
-                    "price": "${tripsAnalysis['collection'] ?? 0}",
-                    "desc": "Generated",
-                    "icon": Assets.creditCard,
-                    "color": AppColors.cardOne,
-                    "iconColor": Colors.green,
-                  },
+                  // {
+                  //   "name": "Total Assets",
+                  //   "price": "${tripsAnalysis['collection'] ?? 0}",
+                  //   "desc": "Generated",
+                  //   "icon": Assets.creditCard,
+                  //   "color": AppColors.cardOne,
+                  //   "iconColor": Colors.green,
+                  // },
                   {
                     "name": "Completed Trips",
                     "price": tripsAnalysis['completed'] ?? 0,
@@ -191,14 +191,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                 //
               } else {
                 assetsList = [
-                  {
-                    "name": "Total Assets",
-                    "price": "0",
-                    "desc": "Generated",
-                    "icon": Assets.creditCard,
-                    "color": AppColors.cardOne,
-                    "iconColor": Colors.green,
-                  },
+                  // {
+                  //   "name": "Total Assets",
+                  //   "price": "0",
+                  //   "desc": "Generated",
+                  //   "icon": Assets.creditCard,
+                  //   "color": AppColors.cardOne,
+                  //   "iconColor": Colors.green,
+                  // },
                   {
                     "name": "Completed Trips",
                     "price": "0",
@@ -261,9 +261,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
             // ),
 //
-            CustomWidget.seeAllWidget(context, onTap: () {
-              ref.read(navBarController.notifier).setNavbarIndex(1);
-            }),
+            // CustomWidget.seeAllWidget(context, onTap: () {
+            //   ref.read(navBarController.notifier).setNavbarIndex(1);
+            // }),
 
             SizedBox(
               height: size.height * 0.05,

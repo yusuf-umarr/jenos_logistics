@@ -233,6 +233,43 @@ class ProfileController extends StateNotifier<ProfileState> {
   }
 
 //
+  Future<void> updateRiderLocation(
+    String latitude,
+    String longitude,
+  ) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await profileRepository.updateRiderLocation(
+        latitude,
+        longitude,
+      );
+
+      if (response.success) {
+        state = state.copyWith(
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+
+        // log("message:${state.message}");
+        // log("update response.data:${response.data}");
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+//
   Future<void> updateBankDetails(String bankName, String accountNumber,
       String accountName, context) async {
     state = state.copyWith(

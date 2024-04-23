@@ -38,7 +38,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    log("request detail:${widget.request['token']}");
+    log("request detail:${widget.request}");
     log("request detail:${widget.request['_id']}");
     final Size size = MediaQuery.of(context).size;
 
@@ -80,7 +80,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ? widget.request['requestDetails'][0]['senderName']
                       : widget.request['senderName'],
                   email: widget.isFromTrip
-                      ? ""
+                      ? widget.request['requestDetails'][0]['senderEmail'] ?? ""
                       : widget.request['createdBy']['email'] ?? "",
                   phone: widget.isFromTrip
                       ? widget.request['requestDetails'][0]['requesterPhone']
@@ -99,7 +99,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   name: widget.isFromTrip
                       ? widget.request['requestDetails'][0]['receiverName']
                       : widget.request['receiverName'],
-                  email: widget.request['receiverEmail'] ?? "",
+                  email: widget.isFromTrip
+                      ? widget.request['requestDetails'][0]['receiverEmail']
+                      : widget.request['receiverEmail'] ?? "",
                   phone: widget.isFromTrip
                       ? widget.request['requestDetails'][0]['receiverPhone']
                       : widget.request['receiverPhone'],

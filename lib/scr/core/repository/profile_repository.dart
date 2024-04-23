@@ -21,6 +21,10 @@ abstract class ProfileRepository {
     String phoneNumber,
     String address,
   );
+  Future<ApiResponse<dynamic>> updateRiderLocation(
+    String latitude,
+    String longitude,
+  );
   Future<ApiResponse<dynamic>> updateBankDetails(
      String bankName,
     String accountNumber,
@@ -85,6 +89,50 @@ class ProfileRepositoryImpl implements ProfileRepository {
           data: accountType == "individual" ? riderBody : enterpriseriseBody);
 
       // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
+
+      return ApiResponse<dynamic>(
+        success: true,
+        data: response.data,
+        message: "update successful",
+      );
+    } on DioException catch (e) {
+      return AppException.handleError(
+        e,
+      );
+    }
+  }
+//
+  @override
+  Future<ApiResponse<dynamic>> updateRiderLocation(
+    String latitude,
+    String longitude,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String accountType = prefs.getString('accountType') ?? "";
+    String userId = prefs.getString('userId') ?? "";
+
+    final pathUrl =
+        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+
+    //userName
+
+    var riderBody = {
+      "latitude": latitude,
+      "longitude": longitude,
+    };
+
+    var enterpriseriseBody = {
+      "latitude": latitude,
+      "longitude": longitude,
+    };
+
+    try {
+      final response = await _dio.put("${Endpoint.baseUrl}$pathUrl",
+          data: accountType == "individual" ? riderBody : enterpriseriseBody);
+
+      // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
+
+      // log("longitude:${response.data}");
 
       return ApiResponse<dynamic>(
         success: true,
