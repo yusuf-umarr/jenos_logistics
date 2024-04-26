@@ -52,7 +52,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
               context,
               name: personalNotifier.nameController.text,
-              userName: "MrK",
               phone: personalNotifier.phoneController.text,
               logisticsName: personalNotifier.nameController.text,
             );
@@ -165,7 +164,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   title: "Referral",
                   desc: "Invite your friends",
                   onTap: () {
-                    Share.share('Download Jenos-ways app for seamless delivery services https://example.com');
+                    Share.share(
+                        'Download Jenos-ways app for seamless delivery services https://example.com');
                   },
                 ),
                 const Padding(

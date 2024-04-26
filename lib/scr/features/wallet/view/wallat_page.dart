@@ -9,6 +9,7 @@ import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
+import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 import 'package:jenos/scr/features/wallet/controller/wallet_controller.dart';
 
 class WalletPage extends ConsumerStatefulWidget {
@@ -43,7 +44,11 @@ class _WalletPageState extends ConsumerState<WalletPage> {
       body: ListView(
         padding: const EdgeInsets.all(AppSize.defaultPadding),
         children: [
-          CustomWidget.walletBalanceCard(context, balance: "0.00"),
+          Consumer(builder: (context, ref, _) {
+            final provider = ref.watch(profileController);
+            return CustomWidget.walletBalanceCard(context,
+                balance: provider.wallet!);
+          }),
           const SizedBox(
             height: AppSize.defaultPadding,
           ),

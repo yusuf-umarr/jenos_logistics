@@ -649,8 +649,11 @@ class CustomWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomWidget.detailCard(context,
-                        title: "Payment method", desc: paymentMethod,),
+                    CustomWidget.detailCard(
+                      context,
+                      title: "Payment method",
+                      desc: paymentMethod,
+                    ),
                     CustomWidget.detailCard(
                       context,
                       title: "Amount",
@@ -810,6 +813,14 @@ class CustomWidget {
               color: AppColors.white, borderRadius: BorderRadius.circular(20)),
           child: Column(
             children: [
+              /*
+                 Text(
+                            "${Util.getCurrencySymbol(context)} ${price != null ? price : 0} ",
+                            style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryColor),
+                          ),
+              */
               Text(
                 "Total balance",
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -820,8 +831,8 @@ class CustomWidget {
                 height: AppSize.defaultPadding / 2,
               ),
               Text(
-                "N $balance",
-                style: GoogleFonts.montserrat(
+                "${Util.getCurrencySymbol(context)} $balance",
+                style: GoogleFonts.roboto(
                     fontWeight: FontWeight.w900, fontSize: 30),
               ),
             ],
@@ -927,7 +938,6 @@ class CustomWidget {
     BuildContext context, {
     String img = Assets.profileCard,
     String name = "",
-    String userName = "",
     String phone = "",
     String logisticsName = "",
     Widget? profileImg,
@@ -973,15 +983,6 @@ class CustomWidget {
                                 .copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.white),
-                          ),
-                          Text(
-                            "@$userName",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
                           ),
                         ],
                       ),

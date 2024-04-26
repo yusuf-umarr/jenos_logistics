@@ -9,8 +9,7 @@ import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/notification/view/notification_detail.dart';
 
 class NotificationCard extends StatelessWidget {
-  final index;
-
+  final dynamic index;
   const NotificationCard({super.key, this.index});
 
   @override
@@ -32,7 +31,7 @@ class NotificationCard extends StatelessWidget {
                     height: 8,
                     width: 8,
                     decoration: const BoxDecoration(
-                        color: Colors.red, shape: BoxShape.circle),
+                        color: AppColors.primaryColor, shape: BoxShape.circle),
                   ),
                 ),
               ],

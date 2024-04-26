@@ -43,13 +43,13 @@ class NavBarController extends StateNotifier<NavBarState> {
 
     // print("token is called: $token");
 
-    log("=====accountType:$accountType");
+    // log("=====accountType:$accountType");
 
-    var pathUrl = accountType == "individual" ? "/rider/me" : "/enterprise/me";
+    // var pathUrl = accountType == "individual" ? "/rider/me" : "/enterprise/me";
 
     try {
       final response = await dio.get(
-        "${Endpoint.baseUrl}$pathUrl",
+        "${Endpoint.baseUrl}/rider/me",
         options: Options(headers: headers),
       );
       // print("success here: $response");

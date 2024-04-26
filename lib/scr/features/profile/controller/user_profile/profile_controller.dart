@@ -30,24 +30,22 @@ class ProfileController extends StateNotifier<ProfileState> {
       final response = await profileRepository.getUserData();
 
       if (response.success) {
-        log("getUserData res:${response.data}");
+        log("getUserData res:${response.data['wallet']}");
         state = state.copyWith(
-          nameController: TextEditingController(
-              text: accountType == "individual"
-                  ? response.data["userName"]
-                  : response.data["fullName"]),
-
-          addrController: TextEditingController(
-              text: accountType == "individual"
-                  ? response.data["address"]
-                  : response.data["businessAddress"]),
-          emailController: TextEditingController(text: response.data["email"]),
-          phoneController:
-              TextEditingController(text: response.data["phoneNumber"]),
-          imagePath: response.data["image"],
-
-          // CACRegController: TextEditingController(text: accountType != "individual"? response.data["CACReg"]: ""),
-        );
+            nameController:
+                TextEditingController(text: response.data["userName"]),
+            addrController:
+                TextEditingController(text: response.data["address"]),
+            emailController:
+                TextEditingController(text: response.data["email"]),
+            phoneController:
+                TextEditingController(text: response.data["phoneNumber"]),
+            imagePath: response.data["image"],
+            CACRegController: TextEditingController(
+                text: accountType != "individual"
+                    ? response.data["riderId"]
+                    : ""),
+            wallet: response.data['wallet'].toStringAsFixed(2));
 
         return;
       }
@@ -70,6 +68,7 @@ class ProfileController extends StateNotifier<ProfileState> {
       emailController: state.emailController = TextEditingController(),
       phoneController: state.phoneController = TextEditingController(),
       addrController: state.addrController = TextEditingController(),
+      appNotificationList: state.appNotificationList = [],
     );
   }
 
@@ -197,7 +196,7 @@ class ProfileController extends StateNotifier<ProfileState> {
 
 //
   Future<void> updateProfile(
-      String fullName, String phoneNumber, String address,
+      String fullName, String phoneNumber, String address, context,
       {bool isMerchant = true}) async {
     state = state.copyWith(
       loadState: NetworkState.loading,
@@ -215,6 +214,17 @@ class ProfileController extends StateNotifier<ProfileState> {
           message: response.message,
         );
 
+        Util.showSnackBar(
+          context,
+          state.message.toString(),
+        );
+
+        Timer(const Duration(seconds: 3), () {
+          getUserData();
+
+          Navigator.of(context).pop();
+        });
+
         // log("message:${state.message}");
         // log("update response.data:${response.data}");
 
@@ -223,6 +233,12 @@ class ProfileController extends StateNotifier<ProfileState> {
       state = state.copyWith(
         loadState: NetworkState.error,
         message: response.message,
+      );
+
+      Util.showSnackBar(
+        context,
+        state.message.toString(),
+        color: Colors.red,
       );
     } catch (e) {
       state = state.copyWith(
@@ -237,9 +253,6 @@ class ProfileController extends StateNotifier<ProfileState> {
     String latitude,
     String longitude,
   ) async {
-    state = state.copyWith(
-      loadState: NetworkState.loading,
-    );
     try {
       final response = await profileRepository.updateRiderLocation(
         latitude,
@@ -248,7 +261,6 @@ class ProfileController extends StateNotifier<ProfileState> {
 
       if (response.success) {
         state = state.copyWith(
-          loadState: NetworkState.success,
           message: response.message,
         );
 
@@ -258,12 +270,10 @@ class ProfileController extends StateNotifier<ProfileState> {
         return;
       }
       state = state.copyWith(
-        loadState: NetworkState.error,
         message: response.message,
       );
     } catch (e) {
       state = state.copyWith(
-        loadState: NetworkState.error,
         message: e.toString(),
       );
     }

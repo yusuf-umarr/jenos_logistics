@@ -28,22 +28,22 @@ class _UpdatePersonalDetailPageState
     return Consumer(builder: (context, ref, _) {
       ref.listen<ProfileState>(profileController, (prev, state) {
         if (state.loadState == NetworkState.error) {
-          Util.showSnackBar(
-            context,
-            state.message.toString(),
-            color: Colors.red,
-          );
+          // Util.showSnackBar(
+          //   context,
+          //   state.message.toString(),
+          //   color: Colors.red,
+          // );
         } else if (state.loadState == NetworkState.success) {
-          Util.showSnackBar(
-            context,
-            state.message.toString(),
-          );
+          // Util.showSnackBar(
+          //   context,
+          //   state.message.toString(),
+          // );
 
-          Timer(const Duration(seconds: 3), () {
-            ref.read(profileController.notifier).getUserData();
+          // Timer(const Duration(seconds: 3), () {
+          //   ref.read(profileController.notifier).getUserData();
 
-            Navigator.of(context).pop();
-          });
+          //   Navigator.of(context).pop();
+          // });
         }
       });
       return Scaffold(
@@ -120,10 +120,10 @@ class _UpdatePersonalDetailPageState
                 text: 'Update profile ',
                 onPressed: () async {
                   ref.read(profileController.notifier).updateProfile(
-                        ref.watch(profileController).nameController.text,
-                        ref.watch(profileController).phoneController.text,
-                        ref.watch(profileController).addrController.text,
-                      );
+                      ref.watch(profileController).nameController.text,
+                      ref.watch(profileController).phoneController.text,
+                      ref.watch(profileController).addrController.text,
+                      context);
                 },
               );
             }),

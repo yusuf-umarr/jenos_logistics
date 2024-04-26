@@ -26,6 +26,7 @@ class ProfileState {
   /// uses to store message related to the signin state.
   final String? message;
   String? imagePath;
+  String wallet;
   List? appNotificationList;
 
   ProfileState({
@@ -42,6 +43,7 @@ class ProfileState {
     required this.acctNameController,
     required this.acctNumberController,
     this.appNotificationList,
+    required this.wallet,
   });
 
   /// Factory method to create the initial signin state.
@@ -59,6 +61,7 @@ class ProfileState {
       loadState: NetworkState.idle,
       message: null,
       imagePath: null,
+      wallet: "0:00",
       appNotificationList: [],
     );
   }
@@ -78,6 +81,7 @@ class ProfileState {
     acctNameController,
     acctNumberController,
     appNotificationList,
+    wallet,
   }) {
     return ProfileState(
       loadState: loadState ?? this.loadState,
@@ -93,6 +97,7 @@ class ProfileState {
       bankNameController: bankNameController ?? this.bankNameController,
       acctNameController: acctNameController ?? this.acctNameController,
       acctNumberController: acctNumberController ?? this.acctNumberController,
+      wallet: wallet ?? this.wallet,
     );
   }
 }

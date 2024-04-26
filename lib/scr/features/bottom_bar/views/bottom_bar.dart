@@ -65,7 +65,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   List<Widget> pages = [];
   List iconList = [];
 
-  Location location =  Location();
+  Location location = Location();
 
   void getCurrentLocation() async {
     LocationPermission permission;
@@ -91,11 +91,12 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       // log("curent location========${currentLocation.latitude}");
       // log("curent location========${currentLocation.longitude}");
 
-      ref.read(profileController.notifier).updateRiderLocation(
-            currentLocation.latitude.toString(),
-            currentLocation.longitude.toString(),
-          );
-      // Use current location
+      if (mounted) {
+        ref.read(profileController.notifier).updateRiderLocation(
+              currentLocation.latitude.toString(),
+              currentLocation.longitude.toString(),
+            );
+      }
     });
 
     setState(() {});

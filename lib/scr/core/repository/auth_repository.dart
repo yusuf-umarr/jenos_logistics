@@ -79,9 +79,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
     var pathUrl =
         accountType == "enterprise" ? "/enterprise/login" : "/rider/login";
+        // accountType == "enterprise" ? "/enterprise/login" : "/rider/login";
 
     try {
-      final response = await _dio.post("${Endpoint.baseUrl}$pathUrl", data: {
+      final response = await _dio.post("${Endpoint.baseUrl}/rider/login", data: {
         "email": email.trim(),
         "password": password.trim(),
       });

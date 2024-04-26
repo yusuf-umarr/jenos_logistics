@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +13,7 @@ import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/request/view/order_detail.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TripsPage extends ConsumerStatefulWidget {
   final AccountType accountType;
@@ -34,12 +37,19 @@ class _TripsPageState extends ConsumerState<TripsPage> {
   ];
 
   // int selectedIndex = 0;
-
+  String? accountType;
   @override
   void initState() {
-    // getAccountType();
+    getAccountType();
     ref.read(tripController.notifier).getTrips();
     super.initState();
+  }
+
+  void getAccountType() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    accountType = prefs.getString('accountType') ?? "";
+
+    // log("=============xxxxxxxxx===============accountType:$accountType");
   }
 
   @override
@@ -64,7 +74,10 @@ class _TripsPageState extends ConsumerState<TripsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 tripsHeaderWidget(context, width),
-                tripsTypesBottomWidget(tripsProvider),
+                if (accountType == "individual")
+                  tripsTypesBottomWidgetIndividual(tripsProvider)
+                else
+                  tripsTypesBottomWidgetEnterpriseRider(tripsProvider),
               ],
             ),
             tripsProvider.loadState == NetworkState.loading
@@ -86,71 +99,73 @@ class _TripsPageState extends ConsumerState<TripsPage> {
   }
 
   tripsHeaderWidget(BuildContext context, double width) {
-    if (widget.accountType == AccountType.individual) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Assigned deliveries",
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            height: 40,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: tripType.length,
-                itemBuilder: (context, int index) {
-                  final trip = tripType[index];
-                  return Consumer(builder: (context, ref, _) {
-                    final tripProvider = ref.watch(tripController);
-                    return Container(
-                      margin: const EdgeInsets.only(right: 12),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: CustomWidget.commonBtn(
-                            horizontalPadding: width > 400 ? 25 : 17,
-                            title: trip['name'],
-                            bgColor: tripProvider.selectedIndex == trip['id']
-                                ? AppColors.primaryColor
-                                : AppColors.white,
-                            textColor: tripProvider.selectedIndex == trip['id']
-                                ? AppColors.white
-                                : AppColors.primaryColor,
-                            onTap: () {
-                              ref
-                                  .read(tripController.notifier)
-                                  .updateTripTabs(trip['id']);
-                            }),
-                      ),
-                    );
-                  });
-                }),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: Text(
+    // if (widget.accountType == AccountType.individual) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
           "Assigned deliveries",
-          textAlign: TextAlign.start,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
-      );
-    }
+        const SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          height: 40,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: tripType.length,
+              itemBuilder: (context, int index) {
+                final trip = tripType[index];
+                return Consumer(builder: (context, ref, _) {
+                  final tripProvider = ref.watch(tripController);
+                  return Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CustomWidget.commonBtn(
+                          horizontalPadding: width > 400 ? 25 : 17,
+                          title: trip['name'],
+                          bgColor: tripProvider.selectedIndex == trip['id']
+                              ? AppColors.primaryColor
+                              : AppColors.white,
+                          textColor: tripProvider.selectedIndex == trip['id']
+                              ? AppColors.white
+                              : AppColors.primaryColor,
+                          onTap: () {
+                            ref
+                                .read(tripController.notifier)
+                                .updateTripTabs(trip['id']);
+                          }),
+                    ),
+                  );
+                });
+              }),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
+    );
+    // }
+
+    // else {
+    //   return Padding(
+    //     padding: const EdgeInsets.only(bottom: 20),
+    //     child: Text(
+    //       "Assigned deliveries",
+    //       textAlign: TextAlign.start,
+    //       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+    //             fontWeight: FontWeight.bold,
+    //           ),
+    //     ),
+    //   );
+    // }
   }
 
-  tripsTypesBottomWidget(tripsProvider) {
+  tripsTypesBottomWidgetIndividual(tripsProvider) {
     tripsProvider.tripsData!.sort((a, b) {
       DateTime dateTimeA = DateTime.parse(a['createdAt']);
       DateTime dateTimeB = DateTime.parse(b['createdAt']);
@@ -243,11 +258,7 @@ class _TripsPageState extends ConsumerState<TripsPage> {
                   startTrip: trip['startTrip'],
                   endTrip: trip['endTrip'],
                   itemImage: trip['requestDetails'][0]['itemImage'],
-                  tripText:
-                      // tripsProvider.loadState == NetworkState.loading
-                      //     ? "Loading..."
-                      //     :
-                      trip['startTrip'] ? "End trip" : "Start trip",
+                  tripText: trip['startTrip'] ? "End trip" : "Start trip",
                   date:
                       Util.showFormattedTimeString(trip['createdAt'], context),
                   viewDetailTap: () {
@@ -329,6 +340,191 @@ class _TripsPageState extends ConsumerState<TripsPage> {
     );
     ///////////
   }
+
+//
+  tripsTypesBottomWidgetEnterpriseRider(tripsProvider) {
+    tripsProvider.tripsData!.sort((a, b) {
+      DateTime dateTimeA = DateTime.parse(a['createdAt']);
+      DateTime dateTimeB = DateTime.parse(b['createdAt']);
+      return dateTimeB.compareTo(dateTimeA); // Descending order
+    });
+    if ((tripsProvider.tripsData.isEmpty)) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: 200),
+          child: Text("Opp! no active trip!!!!!"),
+        ),
+      );
+    }
+    if (tripsProvider.selectedIndex == 0) {
+      log("tripsProvider.selectedIndex:${tripsProvider.selectedIndex}");
+      // =============pending trips=============================
+      return Expanded(
+        child: ListView.builder(
+            itemCount: tripsProvider.tripsData.length,
+            itemBuilder: (context, int index) {
+              final trip = tripsProvider.tripsData[index];
+
+              if (trip['status'] == "pending") {
+                //pending
+                return MyTripsCard(
+                  receiverName: trip['requestDetails'][0]['receiverName'],
+                  itemName: trip['requestDetails'][0]['title'] ?? "",
+                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                  //['requestDetails'][0]['deliveryPrice']
+                  price: trip['requestDetails'][0]['deliveryPrice'] != null
+                      ? trip['requestDetails'][0]['deliveryPrice'].toString()
+                      : "0",
+                  startTrip: trip['startTrip'],
+                  itemImage: trip['requestDetails'][0]['itemImage'],
+                  tripText: trip['startTrip'] ? "End trip" : "Start trip",
+                  date:
+                      Util.showFormattedTimeString(trip['createdAt'], context),
+                  viewDetailTap: () {
+                    navigate(context,
+                        OrderDetailsPage(request: trip, isFromTrip: true));
+                  },
+                  startTripTap: () {
+                    if (trip['startTrip']) {
+                      //if status is start trip, show end trip pop-up
+                      //end trip
+
+                      showModalBottomSheet<void>(
+                        isScrollControlled: true,
+                        context: context,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                        ),
+                        builder: (BuildContext context) {
+                          return endTripShowModal(context, trip);
+                        },
+                      );
+                    } else {
+                      //else hit start trip
+                      ref
+                          .read(tripController.notifier)
+                          .startTrip(trip['_id'], context, ref);
+                    }
+                  },
+                );
+              } else {
+                return const SizedBox();
+              }
+            }),
+      );
+    } else if (tripsProvider.selectedIndex == 1) {
+      log("tripsProvider.selectedIndex:${tripsProvider.selectedIndex}");
+
+      //====================ongoing trip======================
+      return Expanded(
+        child: ListView.builder(
+            itemCount: tripsProvider.tripsData.length,
+            itemBuilder: (context, int index) {
+              final trip = tripsProvider.tripsData[index];
+
+              if (trip['status'] == 'ongoing') {
+                return MyTripsCard(
+                  receiverName: trip['requestDetails'][0]['receiverName'] ?? "",
+                  itemName: trip['requestDetails'][0]['title'] ?? "",
+                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                  // price: "hh",
+                  price: trip['requestDetails'][0]['deliveryPrice'] != null
+                      ? trip['requestDetails'][0]['deliveryPrice'].toString()
+                      : "0",
+                  startTrip: trip['startTrip'],
+                  endTrip: trip['endTrip'],
+                  itemImage: trip['requestDetails'][0]['itemImage'],
+                  tripText:
+                      // tripsProvider.loadState == NetworkState.loading
+                      //     ? "Loading..."
+                      //     :
+                      trip['startTrip'] ? "End trip" : "Start trip",
+                  date:
+                      Util.showFormattedTimeString(trip['createdAt'], context),
+                  viewDetailTap: () {
+                    // log("trip:$trip");
+                    navigate(context,
+                        OrderDetailsPage(request: trip, isFromTrip: true));
+                  },
+                  // startTripTap: () {}
+
+                  startTripTap: () {
+                    if (trip['startTrip']) {
+                      //if status is start trip, show end trip pop-up
+                      //end trip
+
+                      showModalBottomSheet<void>(
+                        isScrollControlled: true,
+                        context: context,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50)),
+                        ),
+                        builder: (BuildContext context) {
+                          return endTripShowModal(context, trip);
+                        },
+                      );
+                    } else {
+                      //else hit start trip
+                      ref
+                          .read(tripController.notifier)
+                          .startTrip(trip['_id'], context, ref);
+                    }
+                  },
+                );
+              }
+              return const SizedBox();
+            }),
+      );
+      ///////////
+    }
+
+    //==========completed trips ======================================
+
+    return Expanded(
+      child: ListView.builder(
+          itemCount: tripsProvider.tripsData.length,
+          itemBuilder: (context, int index) {
+            final trip = tripsProvider.tripsData[index];
+
+            if (trip['status'] == "completed") {
+              //completed trip
+              return MyTripsCard(
+                  receiverName: trip['requestDetails'][0]['receiverName'] ?? "",
+                  itemName: trip['requestDetails'][0]['title'] ?? "",
+                  pickUpAddress: trip['trackingInfo']['pickUpAddress'],
+                  dropOffAddr: trip['trackingInfo']['dropOffAddress'],
+                  // price: "hh",
+                  price: trip['requestDetails'][0]['deliveryPrice'] != null
+                      ? trip['requestDetails'][0]['deliveryPrice'].toString()
+                      : "0",
+                  startTrip: trip['startTrip'],
+                  endTrip: true,
+                  itemImage: trip['requestDetails'][0]['itemImage'],
+                  tripText:
+                   
+                      trip['startTrip'] ? "End trip" : "Start trip",
+                  date:
+                      Util.showFormattedTimeString(trip['createdAt'], context),
+                  viewDetailTap: () {
+                    // log("trip:$trip");
+                    navigate(context,
+                        OrderDetailsPage(request: trip, isFromTrip: true, isCompleted:true));
+                  },
+                  startTripTap: () {});
+            }
+            return const SizedBox();
+          }),
+    );
+    ///////////
+  }
+
+//
 
   endTripShowModal(context, trip) {
     final Size size = MediaQuery.of(context).size;

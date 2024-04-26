@@ -41,14 +41,7 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
               return NotificationCard(index: noti);
             })
 
-        // ListView(
-        //   padding: const EdgeInsets.all(AppSize.defaultPadding),
-        //   children: [
-        //     NotificationCard(size: size),
-        //     NotificationCard(size: size),
-        //     NotificationCard(size: size),
-        //   ],
-        // ),
+       
         );
   }
 }

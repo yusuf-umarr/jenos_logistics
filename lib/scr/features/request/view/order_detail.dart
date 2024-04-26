@@ -18,7 +18,13 @@ import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 class OrderDetailsPage extends ConsumerStatefulWidget {
   final request;
   final bool isFromTrip;
-  const OrderDetailsPage({super.key, this.request, this.isFromTrip = false});
+  final bool isCompleted;
+  const OrderDetailsPage({
+    super.key,
+    this.request,
+    this.isFromTrip = false,
+    this.isCompleted = false,
+  });
 
   @override
   ConsumerState<OrderDetailsPage> createState() => _OrderDetailsPageState();
@@ -38,7 +44,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    log("request detail:${widget.request}");
+    log("request detail:${widget.request['token']}");
     log("request detail:${widget.request['_id']}");
     final Size size = MediaQuery.of(context).size;
 
@@ -160,54 +166,57 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                 if (widget.isFromTrip)
                   Column(
                     children: [
-                      !widget.request['endTrip']
-                          ? Consumer(builder: (context, ref, _) {
-                              final loadState =
-                                  ref.watch(tripController).loadState;
+                      if (!widget.isCompleted) ...[
+                        !widget.request['endTrip']
+                            ? Consumer(builder: (context, ref, _) {
+                                final loadState =
+                                    ref.watch(tripController).loadState;
 
-                              return AppButton(
-                                  isLoading: loadState == NetworkState.loading,
-                                  text: widget.request['startTrip']
-                                      ? "End trip"
-                                      : "Start trip",
-                                  onPressed: () {
-                                    // log("trip id:${widget.request['_id']}");
-                                    if (widget.request['startTrip']) {
-                                      //end trip
+                                return AppButton(
+                                    isLoading:
+                                        loadState == NetworkState.loading,
+                                    text: widget.request['startTrip']
+                                        ? "End trip"
+                                        : "Start trip",
+                                    onPressed: () {
+                                      // log("trip id:${widget.request['_id']}");
+                                      if (widget.request['startTrip']) {
+                                        //end trip
 
-                                      showModalBottomSheet<void>(
-                                        isScrollControlled: true,
-                                        context: context,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(50),
-                                              topRight: Radius.circular(50)),
-                                        ),
-                                        builder: (BuildContext context) {
-                                          return showModal(
-                                              context, widget.request, size);
-                                        },
-                                      );
-                                    } else {
-                                      // log("end trip called============");
-                                      //start trip
-                                      ref
-                                          .read(tripController.notifier)
-                                          .startTrip(widget.request['_id'],
-                                              context, ref);
-                                    }
+                                        showModalBottomSheet<void>(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(50),
+                                                topRight: Radius.circular(50)),
+                                          ),
+                                          builder: (BuildContext context) {
+                                            return showModal(
+                                                context, widget.request, size);
+                                          },
+                                        );
+                                      } else {
+                                        // log("end trip called============");
+                                        //start trip
+                                        ref
+                                            .read(tripController.notifier)
+                                            .startTrip(widget.request['_id'],
+                                                context, ref);
+                                      }
 
-                                    //
+                                      //
 
-                                    // Future.delayed(const Duration(seconds: 3), () {
-                                    //   navigate(context, const BottomBar());
-                                    //   ref
-                                    //       .read(navBarController.notifier)
-                                    //       .setNavbarIndex(2);
-                                    // });
-                                  });
-                            })
-                          : const SizedBox(),
+                                      // Future.delayed(const Duration(seconds: 3), () {
+                                      //   navigate(context, const BottomBar());
+                                      //   ref
+                                      //       .read(navBarController.notifier)
+                                      //       .setNavbarIndex(2);
+                                      // });
+                                    });
+                              })
+                            : const SizedBox(),
+                      ]
                     ],
                   )
                 else

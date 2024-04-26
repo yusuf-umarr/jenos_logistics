@@ -15,7 +15,6 @@ import 'package:jenos/scr/core/helper/app_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class TripsRepository {
-  //get customers added by the merchant
   Future<ApiResponse<dynamic>> getTrips();
   Future<ApiResponse<dynamic>> startTrip(String tripId);
   Future<ApiResponse<dynamic>> updateRiderAvailability(String update);

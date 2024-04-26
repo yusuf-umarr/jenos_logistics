@@ -26,7 +26,7 @@ abstract class ProfileRepository {
     String longitude,
   );
   Future<ApiResponse<dynamic>> updateBankDetails(
-     String bankName,
+    String bankName,
     String accountNumber,
     String accountName,
   );
@@ -67,26 +67,20 @@ class ProfileRepositoryImpl implements ProfileRepository {
     String accountType = prefs.getString('accountType') ?? "";
     String userId = prefs.getString('userId') ?? "";
 
-    final pathUrl =
-        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+    // final pathUrl =
+    //     accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
 
     //userName
 
-    var riderBody = {
+    var body = {
       "userName": fullName,
       "phoneNumber": phoneNumber,
       "address": address,
     };
 
-    var enterpriseriseBody = {
-      "userName": fullName,
-      "phoneNumber": phoneNumber,
-      "businessAddress": address,
-    };
-
     try {
-      final response = await _dio.put("${Endpoint.baseUrl}$pathUrl",
-          data: accountType == "individual" ? riderBody : enterpriseriseBody);
+      final response =
+          await _dio.put("${Endpoint.baseUrl}/rider/$userId", data: body);
 
       // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
 
@@ -101,6 +95,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       );
     }
   }
+
 //
   @override
   Future<ApiResponse<dynamic>> updateRiderLocation(
@@ -108,27 +103,27 @@ class ProfileRepositoryImpl implements ProfileRepository {
     String longitude,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountType = prefs.getString('accountType') ?? "";
+    // String accountType = prefs.getString('accountType') ?? "";
     String userId = prefs.getString('userId') ?? "";
 
-    final pathUrl =
-        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+    // final pathUrl =
+    //     accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
 
     //userName
 
-    var riderBody = {
-      "latitude": latitude,
-      "longitude": longitude,
-    };
+    // var riderBody = {
+    //   "latitude": latitude,
+    //   "longitude": longitude,
+    // };
 
-    var enterpriseriseBody = {
+    var body = {
       "latitude": latitude,
       "longitude": longitude,
     };
 
     try {
-      final response = await _dio.put("${Endpoint.baseUrl}$pathUrl",
-          data: accountType == "individual" ? riderBody : enterpriseriseBody);
+      final response =
+          await _dio.put("${Endpoint.baseUrl}/rider/$userId", data: body);
 
       // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
 
@@ -145,6 +140,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       );
     }
   }
+
 //
   @override
   Future<ApiResponse<dynamic>> updateBankDetails(
@@ -153,16 +149,16 @@ class ProfileRepositoryImpl implements ProfileRepository {
     String accountName,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountType = prefs.getString('accountType') ?? "";
+    // String accountType = prefs.getString('accountType') ?? "";
     String userId = prefs.getString('userId') ?? "";
 
-    final pathUrl =
-        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+    // final pathUrl =
+    //     accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
 
     //userName
 
     var body = {
-     "bankName": bankName,
+      "bankName": bankName,
       "accountNumber": accountNumber,
       "accountName": accountName,
     };
@@ -174,8 +170,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
     // };
 
     try {
-      final response = await _dio.put("${Endpoint.baseUrl}$pathUrl",
-          data: body);
+      final response =
+          await _dio.put("${Endpoint.baseUrl}/rider/$userId", data: body);
 
       // MerchantUserModel userModel = MerchantUserModel.fromJson(response.data);
 
@@ -190,21 +186,22 @@ class ProfileRepositoryImpl implements ProfileRepository {
       );
     }
   }
+
 //
   @override
   Future<ApiResponse<dynamic>> getUserData() async {
 // log("getUserData called");
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountType = prefs.getString('accountType') ?? "individual";
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String accountType = prefs.getString('accountType') ?? "individual";
 
-    log("accountType here:$accountType");
+    // log("accountType here:$accountType");
 
-    final pathUrl =
-        accountType == "individual" ? "/rider/me" : "/enterprise/me";
+    // final pathUrl =
+    //     accountType == "individual" ? "/rider/me" : "/enterprise/me";
     try {
       final response = await _dio.get(
-        "${Endpoint.baseUrl}$pathUrl",
+        "${Endpoint.baseUrl}/rider/me",
       );
 
       // log("getuser response:${response.data}");
@@ -279,7 +276,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<ApiResponse<dynamic>> updateFCMToken(String fcmToken) async {
     log("updateFCMToken called");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountType = prefs.getString('accountType') ?? "";
+    // String accountType = prefs.getString('accountType') ?? "";
 
     String userId = prefs.getString('userId') ?? "";
 
@@ -291,8 +288,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
     });
    */
 
-    final pathUrl =
-        accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
+    // final pathUrl =
+    //     accountType == "individual" ? "/rider/$userId" : "/enterprise/$userId";
 
     try {
       var body = {
@@ -300,7 +297,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       };
 
       final response =
-          await _dio.put("${Endpoint.baseUrl}$pathUrl", data: body);
+          await _dio.put("${Endpoint.baseUrl}/rider/$userId", data: body);
 
       log("response:${response.data}");
 
@@ -333,14 +330,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
       //customer/update-profile-image/65c1f348773198d5bd5baff8
 
-      final pathUrl = accountType == "individual"
-          ? "/merchant/image/$userId"
-          : "/customer/update-profile-image/$userId";
+      // final pathUrl = accountType == "individual"
+      //     ? "/merchant/image/$userId"
+      //     : "/customer/update-profile-image/$userId";
 
-      Response response = await _dio.put(
-        "${Endpoint.baseUrl}$pathUrl",
-        data: formData,
-      );
+      final response =
+          await _dio.put("${Endpoint.baseUrl}/rider/$userId", data: formData);
 
       log("response1: ${response.data}");
 
