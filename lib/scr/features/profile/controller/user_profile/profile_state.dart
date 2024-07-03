@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jenos/scr/core/util/enums.dart';
-import 'package:jenos/scr/core/models/user_merchant_model.dart';
 
 /// This class defines the ProfileState
 /// @author  Yusuf umar
@@ -18,7 +17,7 @@ class ProfileState {
   TextEditingController phoneController = TextEditingController();
   TextEditingController addrController = TextEditingController();
   TextEditingController entAddrController = TextEditingController();
-  TextEditingController CACRegController = TextEditingController();
+  TextEditingController cACRegController = TextEditingController();
   TextEditingController bankNameController = TextEditingController();
   TextEditingController acctNameController = TextEditingController();
   TextEditingController acctNumberController = TextEditingController();
@@ -38,7 +37,7 @@ class ProfileState {
     required this.phoneController,
     required this.addrController,
     required this.entAddrController,
-    required this.CACRegController,
+    required this.cACRegController,
     required this.bankNameController,
     required this.acctNameController,
     required this.acctNumberController,
@@ -53,7 +52,7 @@ class ProfileState {
       emailController: TextEditingController(),
       phoneController: TextEditingController(),
       addrController: TextEditingController(),
-      CACRegController: TextEditingController(),
+      cACRegController: TextEditingController(),
       entAddrController: TextEditingController(),
       bankNameController: TextEditingController(),
       acctNameController: TextEditingController(),
@@ -76,7 +75,7 @@ class ProfileState {
     phoneController,
     addrController,
     entAddrController,
-    CACRegController,
+    cACRegController,
     bankNameController,
     acctNameController,
     acctNumberController,
@@ -91,7 +90,7 @@ class ProfileState {
       phoneController: phoneController ?? this.phoneController,
       emailController: emailController ?? this.emailController,
       addrController: addrController ?? this.addrController,
-      CACRegController: CACRegController ?? this.CACRegController,
+      cACRegController: cACRegController ?? this.cACRegController,
       appNotificationList: appNotificationList ?? this.appNotificationList,
       entAddrController: entAddrController ?? this.entAddrController,
       bankNameController: bankNameController ?? this.bankNameController,

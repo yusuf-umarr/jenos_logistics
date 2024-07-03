@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,12 +5,11 @@ import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 import 'package:jenos/scr/features/onboarding/screens/get_started_screen.dart';
-import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 
 class AuthCheckScreen extends ConsumerStatefulWidget {
-  final accountType;
+  final dynamic  accountType;
   final String? fcmToken;
-  const AuthCheckScreen({this.accountType, this.fcmToken});
+  const AuthCheckScreen({super.key, this.accountType, this.fcmToken});
   @override
   ConsumerState<AuthCheckScreen> createState() => _AuthCheckScreenState();
 }

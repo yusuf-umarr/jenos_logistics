@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
 import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
-import 'package:jenos/scr/common_widgets/recent_transaction_card.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/enums.dart';
@@ -47,7 +46,7 @@ class _WalletPageState extends ConsumerState<WalletPage> {
           Consumer(builder: (context, ref, _) {
             final provider = ref.watch(profileController);
             return CustomWidget.walletBalanceCard(context,
-                balance: provider.wallet!);
+                balance: provider.wallet);
           }),
           const SizedBox(
             height: AppSize.defaultPadding,
@@ -180,7 +179,7 @@ class _WalletPageState extends ConsumerState<WalletPage> {
                                     _amountController.text,
                                     context,
                                   );
-                              Future.delayed(Duration(seconds: 1), () {
+                              Future.delayed(const Duration(seconds: 1), () {
                                 navigate(context, const BottomBar());
                                 // Navigator.pop(context);
                               });

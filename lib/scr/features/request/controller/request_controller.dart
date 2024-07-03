@@ -60,7 +60,7 @@ class RequestController extends StateNotifier<RequestState> {
           ref.read(navBarController.notifier).setNavbarIndex(2);
         });
 
-        Future.delayed(Duration(seconds: 4), () {
+        Future.delayed(const Duration(seconds: 4), () {
           state = state.copyWith(
             loadState: NetworkState.idle,
           );

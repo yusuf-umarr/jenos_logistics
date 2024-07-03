@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
@@ -81,7 +79,7 @@ class _UpdatePersonalDetailPageState
             //   ],
             // ),
 
-            ProfilePictureWidget(),
+            const ProfilePictureWidget(),
             const SizedBox(
               height: AppSize.defaultPadding,
             ),

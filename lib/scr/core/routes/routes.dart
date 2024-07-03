@@ -40,7 +40,7 @@ Route<dynamic> ongenerateRoute(RouteSettings settings) {
       page = const NotificationPage(isArrowBack:true);
       break;
     case AppRoutes.bottomNav:
-      page = BottomBar();
+      page = const BottomBar();
       break;
     case AppRoutes.getStarted:
       page = const GetStartedScreen();

@@ -36,7 +36,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   List<Map<String, dynamic>> assetsList = [];
 
   bool isShowPop = true;
-  int _current = 0;
+  final int _current = 0;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -80,7 +80,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               itemCount: dataList.length,
               itemBuilder:
                   (BuildContext context, int itemIndex, int pageViewIndex) {
-                final data = dataList[itemIndex];
+                // final data = dataList[itemIndex];
                 return Stack(
                   children: [
                     Container(

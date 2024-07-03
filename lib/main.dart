@@ -61,7 +61,7 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-  var accountType;
+  dynamic accountType;
 
   @override
   void initState() {

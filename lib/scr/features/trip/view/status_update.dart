@@ -171,7 +171,7 @@ class _StatusUpdatePageState extends State<StatusUpdatePage> {
       Function(bool)? onChange}) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: 80,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

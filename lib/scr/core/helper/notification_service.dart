@@ -3,10 +3,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:jenos/main.dart';
-import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 import 'package:jenos/scr/features/notification/view/notification_page.dart';
-
-// import 'package:how_bodi_mobile/v2/howbodi.dart';
 
 class NotificationService {
   static Future<void> initializeNotification() async {
@@ -75,7 +72,7 @@ class NotificationService {
   static Future<void> onActionReceivedMethod(
       ReceivedAction receivedAction) async {
     debugPrint('onActionReceivedMethod');
-    final payload = receivedAction.payload ?? {};
+    // final payload = receivedAction.payload ?? {};
       MyApp.navigatorKey.currentState?.push(
       MaterialPageRoute(builder: (_) => const NotificationPage(isArrowBack: false,)),
     );

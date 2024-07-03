@@ -40,7 +40,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   File? image;
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    // final Size size = MediaQuery.of(context).size;
     return Consumer(builder: (context, ref, _) {
       ref.listen<ProfileState>(profileController, (prev, state) {
         if (state.loadState == NetworkState.error) {
@@ -211,7 +211,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               Consumer(builder: (context, ref, _) {
                 final loadState = ref.watch(profileController).loadState;
 
-                final personalNotifier = ref.read(profileController.notifier);
+                // final personalNotifier = ref.read(profileController.notifier);
 
                 //loadState: NetworkState.loading
                 return AppButton(

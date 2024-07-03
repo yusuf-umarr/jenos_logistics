@@ -8,7 +8,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/core/util/enums.dart';
-import 'package:jenos/scr/core/models/user_merchant_model.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/auth/controller/signin/signin_state.dart';
 import 'package:jenos/scr/core/repository/auth_repository.dart';

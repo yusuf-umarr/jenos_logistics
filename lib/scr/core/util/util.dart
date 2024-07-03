@@ -1,9 +1,5 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -249,7 +245,7 @@ class Util {
   }
 
   static getSingleMerchant(List data, String userId) {
-    var merchant;
+     String merchant ="";
     for (var ele in data) {
       if (userId == ele["_id"]) {
         // log("user found ${ele}");
@@ -271,7 +267,7 @@ class Util {
         source: ImageSource.gallery, imageQuality: 25);
 
     if (image != null) {
-      file = File(image!.path);
+      file = File(image.path);
     }
 
     try {
@@ -416,7 +412,7 @@ class Util {
   }
 
   static callNumber(number) async {
-    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+    // bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
   static getCurrencySymbol(context) {

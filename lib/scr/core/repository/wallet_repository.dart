@@ -4,7 +4,6 @@
 /// @since   2023-12-19
 ///
 
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +11,6 @@ import 'package:jenos/scr/constant/app_endpoint.dart';
 import 'package:jenos/scr/core/helper/api_response.dart';
 import 'package:jenos/scr/core/dio_provider/dio_provider.dart';
 import 'package:jenos/scr/core/helper/app_exception.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class representing the authentication repository.
 abstract class WalletRepository {
@@ -60,7 +58,7 @@ class WalletRepositoryImpl implements WalletRepository {
 
   @override
   Future<ApiResponse<dynamic>> getWithdrawer() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
     // String userId = prefs.getString('userId') ?? "";
 
     try {

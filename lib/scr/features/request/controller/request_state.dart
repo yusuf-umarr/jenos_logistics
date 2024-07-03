@@ -10,7 +10,7 @@ import 'package:jenos/scr/core/util/enums.dart';
 class RequestState {
   final String? selectedCustomer;
   final NetworkState loadState;
-  final requestData;
+  final dynamic requestData;
   final String? message;
    String? paymentMethod;
    String? paymentType;

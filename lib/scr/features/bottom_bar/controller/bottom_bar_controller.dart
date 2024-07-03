@@ -1,18 +1,11 @@
-/// This class defines the NavBarController
-/// @author  Yusuf umar
-/// @version 1.0
-/// @since   2023-12-19
-///
 
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/constant/app_endpoint.dart';
-import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_state.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 /// Controller class for managing the navigation bar state.
 class NavBarController extends StateNotifier<NavBarState> {
@@ -27,11 +20,10 @@ class NavBarController extends StateNotifier<NavBarState> {
   }
 
   Future<bool> validateToken() async {
-    print("validateToken is called");
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
-    String accountType = prefs.getString('accountType') ?? "individual";
+    // String accountType = prefs.getString('accountType') ?? "individual";
 
     final dio = Dio();
     dio.options.connectTimeout = const Duration(seconds: 15); // 5 seconds timeout
@@ -48,7 +40,7 @@ class NavBarController extends StateNotifier<NavBarState> {
     // var pathUrl = accountType == "individual" ? "/rider/me" : "/enterprise/me";
 
     try {
-      final response = await dio.get(
+     await dio.get(
         "${Endpoint.baseUrl}/rider/me",
         options: Options(headers: headers),
       );
@@ -57,7 +49,7 @@ class NavBarController extends StateNotifier<NavBarState> {
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
-        print("Request timeout");
+        log("Request timeout");
 
         return false;
       }
@@ -65,7 +57,7 @@ class NavBarController extends StateNotifier<NavBarState> {
       //   print("Response error: ${e.response?.statusCode}");
       // }
       else {
-        print("Other error: $e");
+        log("Other error: $e");
       }
       return false;
     }

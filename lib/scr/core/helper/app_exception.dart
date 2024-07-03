@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:jenos/scr/core/helper/api_response.dart';
-import 'package:jenos/scr/core/util/logger.dart';
 
 class AppException {
   //HANDLE ERROR

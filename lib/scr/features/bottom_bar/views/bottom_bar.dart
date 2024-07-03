@@ -34,7 +34,7 @@ import 'package:upgrader/upgrader.dart';
 class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({super.key, this.accountType});
 
-  final accountType;
+  final dynamic accountType;
 
   static const String routeName = '/bottom-bar';
   @override
@@ -53,7 +53,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   void updateFcmToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String fcmToken = await prefs.getString("fcmToken") ?? "";
+    String fcmToken =  prefs.getString("fcmToken") ?? "";
     //  log("fcmToken:${widget.fcmToken}");
     if (fcmToken != "") {
       await ref.read(profileController.notifier).updateFCMToken(fcmToken);
@@ -165,6 +165,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
         onWillPop: () async {
           ref.read(navBarController.notifier).setNavbarIndex(0);

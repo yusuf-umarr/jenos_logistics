@@ -21,16 +21,15 @@ class ProfilePictureWidget extends ConsumerStatefulWidget {
 class _ProfilePictureWidgetState extends ConsumerState<ProfilePictureWidget> {
   File imageUpload = File("");
 
-  var imageFile;
+   dynamic imageFile;
 
   void selectImages(context, accountType) async {
-    print("called 1");
     imageUpload = await Util.myUploadImage();
     imageFile = imageUpload;
 
     imageFile = imageUpload;
 
-    log("call 2 ${imageFile}");
+    log("call 2 $imageFile");
     setState(() {});
 
     if (imageFile != null) {

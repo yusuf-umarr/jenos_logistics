@@ -39,7 +39,6 @@ class _ContactServiceState extends State<ContactService> {
   File? image;
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Consumer(builder: (context, ref, _) {
       ref.listen<ProfileState>(profileController, (prev, state) {
         if (state.loadState == NetworkState.error) {

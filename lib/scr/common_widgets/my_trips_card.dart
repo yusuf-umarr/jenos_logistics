@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jenos/scr/common_widgets/custom_widget.dart';
 import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
@@ -157,7 +156,7 @@ class MyTripsCard extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            "${Util.getCurrencySymbol(context)} ${price != null ? price : 0} ",
+                            "${Util.getCurrencySymbol(context)} ${price ?? 0} ",
                             style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.primaryColor),

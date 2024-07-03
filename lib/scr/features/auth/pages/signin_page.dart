@@ -10,6 +10,7 @@ import 'package:jenos/scr/features/auth/controller/password_visibility/password_
 import 'package:jenos/scr/features/auth/controller/signin/signin_notifier.dart';
 import 'package:jenos/scr/features/auth/controller/signin/signin_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jenos/scr/features/auth/pages/forgot_password.dart';
 import 'package:jenos/scr/features/auth/pages/signup_page.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
@@ -46,7 +47,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
       ref.listen<SigninState>(signinNotifier, (prev, state) {
         if (state.loadState == NetworkState.error) {
-       
           // Util.showSnackBar(
           //   context,
           //   state.message != "" ? state.message.toString() : "Server error",
@@ -101,10 +101,8 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                       height: size.height * 0.02,
                     ),
                     Util.inputField2(
-                  
                       externalText: "Email",
                       hint: "john@gmail.com",
-                    
                       controller: _emailController,
                       validator: signinState.validateEmail,
                     ),
@@ -116,10 +114,10 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                           ref.watch(passwordNotifier).visibility;
                       return Util.inputField2(
                         isPassword: isVisibility,
-                     
+
                         externalText: "Password",
                         hint: "******",
-                   
+
                         controller: _passwordController,
                         validator: signinState.validatePassword,
                         suffixWidget: IconButton(
@@ -141,7 +139,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        navigate(context, const SignupPage());
+                        navigate(context, const ForgotPassword());
                       },
                       child: Text(
                         "Forgot password",

@@ -9,11 +9,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/navigation.dart';
+import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/core/util/enums.dart';
 import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/auth/controller/signup/signup_state.dart';
 import 'package:jenos/scr/core/repository/auth_repository.dart';
+import 'package:jenos/scr/features/auth/pages/reset_password.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
+import 'package:jenos/scr/features/auth/pages/verify_otp.dart';
 
 /// Notifier class for handling the Signup state.
 class SignupNotifier extends StateNotifier<SignupState> {
@@ -129,6 +132,168 @@ class SignupNotifier extends StateNotifier<SignupState> {
     }
     return null;
   }
+
+    //
+  Future<void> forgotPassword(
+    String email,
+    context,
+  ) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await authRepository.forgotPassword(email);
+
+      if (response.success) {
+        log("forgotPassword response success:$response");
+        state = state.copyWith(
+          userModel: response.data,
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+        navigate(context, const VerifyOtp());
+
+        Future.delayed(const Duration(seconds: 1), () {
+          state = state.copyWith(
+            loadState: NetworkState.idle,
+          );
+        });
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+      log("response.message erro 1:${response.message}");
+
+      Util.showSnackBar(
+        context,
+        state.message != ""
+            ? state.message.toString()
+            : "Server unavailable, please try again",
+        color: Colors.red,
+      );
+
+      return;
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+//
+  Future<void> verifyOtp(
+    String otp,
+    context,
+  ) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await authRepository.verifyOtp(otp);
+
+      if (response.success) {
+        state = state.copyWith(
+          userModel: response.data,
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+
+        Future.delayed(const Duration(seconds: 1), () {
+          state = state.copyWith(
+            loadState: NetworkState.idle,
+          );
+        });
+        navigate(context, const ResetPassword());
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+      log("response.message erro 1:${response.message}");
+
+      Util.showSnackBar(
+        context,
+        state.message != ""
+            ? state.message.toString()
+            : "Server unavailable, please try again",
+        color: Colors.red,
+      );
+
+      return;
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+
+      log("response.message error 2$e");
+    }
+  }
+
+//
+  Future<void> resetPassword(
+    String password,
+    context,
+  ) async {
+    state = state.copyWith(
+      loadState: NetworkState.loading,
+    );
+    try {
+      final response = await authRepository.resetPassword(password);
+
+      if (response.success) {
+        state = state.copyWith(
+          userModel: response.data,
+          loadState: NetworkState.success,
+          message: response.message,
+        );
+        Util.showSnackBar(
+          context,
+          "Password reset successful",
+          color: AppColors.primaryColor,
+        );
+
+        Future.delayed(const Duration(seconds: 2), () {
+          state = state.copyWith(
+            loadState: NetworkState.idle,
+          );
+          navigate(context, const SignInPage());
+        });
+
+        return;
+      }
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: response.message,
+      );
+      log("response.message erro 1:${response.message}");
+
+      Util.showSnackBar(
+        context,
+        state.message != ""
+            ? state.message.toString()
+            : "Server unavailable, please try again",
+        color: Colors.red,
+      );
+
+      return;
+    } catch (e) {
+      state = state.copyWith(
+        loadState: NetworkState.error,
+        message: e.toString(),
+      );
+
+      log("response.message error 2$e");
+    }
+  }
+
+//
 }
 
 /// Provider for the SignupNotifier class.

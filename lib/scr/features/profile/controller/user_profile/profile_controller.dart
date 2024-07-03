@@ -41,7 +41,7 @@ class ProfileController extends StateNotifier<ProfileState> {
             phoneController:
                 TextEditingController(text: response.data["phoneNumber"]),
             imagePath: response.data["image"],
-            CACRegController: TextEditingController(
+            cACRegController: TextEditingController(
                 text: accountType != "individual"
                     ? response.data["riderId"]
                     : ""),

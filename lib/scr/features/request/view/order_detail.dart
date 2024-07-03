@@ -12,11 +12,10 @@ import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_controller.dart';
 import 'package:jenos/scr/features/bottom_bar/views/bottom_bar.dart';
 import 'package:jenos/scr/features/request/controller/request_controller.dart';
-import 'package:jenos/scr/features/request/controller/request_state.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 
 class OrderDetailsPage extends ConsumerStatefulWidget {
-  final request;
+  final dynamic request;
   final bool isFromTrip;
   final bool isCompleted;
   const OrderDetailsPage({
@@ -44,10 +43,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    log("request detail:${widget.request['token']}");
-    log("request detail:${widget.request['_id']}");
+    // log("request detail:${widget.request['token']}");
+    // log("request detail:${widget.request['_id']}");
     final Size size = MediaQuery.of(context).size;
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         navigate(context, const BottomBar());

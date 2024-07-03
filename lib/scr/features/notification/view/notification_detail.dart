@@ -7,7 +7,7 @@ import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/core/util/util.dart';
 
 class NotificationDetail extends StatelessWidget {
-  final index;
+  final dynamic index;
   const NotificationDetail({super.key, this.index});
 
   @override

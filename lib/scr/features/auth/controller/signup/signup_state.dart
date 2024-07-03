@@ -1,5 +1,4 @@
 import 'package:jenos/scr/core/util/enums.dart';
-import 'package:jenos/scr/core/models/user_merchant_model.dart';
 
 /// This class defines the SignupState
 /// @author  Yusuf umar

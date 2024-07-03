@@ -65,6 +65,7 @@ class _GetStartedScreenState extends ConsumerState<GetStartedScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         return false;

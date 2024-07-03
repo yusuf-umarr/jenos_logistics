@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jenos/scr/common_widgets/appbbutton.dart';
@@ -8,13 +7,11 @@ import 'package:jenos/scr/constant/app_assets.dart';
 import 'package:jenos/scr/constant/app_colors.dart';
 import 'package:jenos/scr/constant/app_size.dart';
 import 'package:jenos/scr/features/auth/pages/signin_page.dart';
-import 'package:jenos/scr/features/onboarding/controller/onboard_controller.dart';
 import 'package:jenos/scr/features/profile/controller/user_profile/profile_controller.dart';
 import 'package:jenos/scr/features/profile/view/account_details.dart';
 import 'package:jenos/scr/features/profile/view/change_password.dart';
 import 'package:jenos/scr/features/profile/view/contact_service.dart';
 import 'package:jenos/scr/features/profile/view/update_personal_details_page.dart';
-import 'package:jenos/scr/features/profile/view/verification_page.dart';
 import 'package:jenos/scr/features/trip/controller/trips_controller.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -61,7 +58,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ),
 
           Consumer(builder: (context, ref, _) {
-            final accountType = ref.watch(onboardController).accountType;
+            // final accountType = ref.watch(onboardController).accountType;
             return Container(
               margin: const EdgeInsets.only(bottom: AppSize.defaultPadding),
               width: double.infinity,

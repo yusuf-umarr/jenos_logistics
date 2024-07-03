@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,7 +9,7 @@ import 'package:jenos/scr/core/util/util.dart';
 import 'package:jenos/scr/features/request/view/order_detail.dart';
 
 class RequestOrderCardWIdget extends StatelessWidget {
-  final request;
+  final dynamic request;
   const RequestOrderCardWIdget({super.key, this.request});
 
   @override

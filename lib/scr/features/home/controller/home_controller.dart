@@ -5,8 +5,6 @@
 ///
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jenos/scr/features/bottom_bar/controller/bottom_bar_state.dart';
-import 'package:dio/dio.dart';
 import 'package:jenos/scr/features/home/controller/home_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,6 +1,5 @@
 // import 'package:dio/dio.dart';
 // import 'package:jenos/scr/core/logger.dart';
-import 'dart:developer';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +42,7 @@ class AppInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = await prefs.getString('token');
+    String? token = prefs.getString('token');
 
 
 
@@ -55,7 +54,7 @@ class AppInterceptor extends Interceptor {
 
     // log("token:$token");
 
-    options.sendTimeout = Duration(milliseconds: 30000);
+    options.sendTimeout = const Duration(milliseconds: 30000);
        options.headers = {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',

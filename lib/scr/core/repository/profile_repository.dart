@@ -64,7 +64,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     String address,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String accountType = prefs.getString('accountType') ?? "";
+    // String accountType = prefs.getString('accountType') ?? "";
     String userId = prefs.getString('userId') ?? "";
 
     // final pathUrl =
@@ -220,7 +220,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<ApiResponse<dynamic>> changePassword(
       String oldPass, String newPass) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
       final response = await _dio.put(
@@ -321,7 +321,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = prefs.getString('userId') ?? "";
-    String accountType = prefs.getString('accountType') ?? "";
+    // String accountType = prefs.getString('accountType') ?? "";
 
     try {
       FormData formData = FormData.fromMap({
